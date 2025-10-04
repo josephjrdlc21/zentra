@@ -1,0 +1,112 @@
+import * as React from 'react';
+
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    SidebarRail,
+} from '@/components/ui/sidebar';
+import { VersionSwitcher } from '@/components/version-switcher';
+import { 
+    LayoutDashboard, 
+    Users, 
+    PanelsTopLeft, 
+    ListTodo, 
+    FileChartColumnIncreasing, 
+    BookUser,
+    UserCog,
+    BrickWallShield,
+} from 'lucide-react';
+
+// This is sample data.
+const data = {
+    versions: ['1.0.1'],
+    navMain: [
+        {
+            title: 'Navigation',
+            url: '#',
+            items: [
+                {
+                    title: 'Dashboard',
+                    url: '#',
+                    icon: <LayoutDashboard className="size-4" />,
+                    isActive: true,
+                },
+                {
+                    title: 'Users',
+                    url: '#',
+                    icon: <Users className="size-4" />,
+                },
+                {
+                    title: 'Projects',
+                    url: '#',
+                    icon: <PanelsTopLeft className="size-4" />,
+                },
+                {
+                    title: 'Task',
+                    url: '#',
+                    icon: <ListTodo className="size-4" />,
+                },
+                {
+                    title: 'Analytics',
+                    url: '#',
+                    icon: <FileChartColumnIncreasing className="size-4" />,
+                },
+                {
+                    title: 'Team Members',
+                    url: '#',
+                    icon: <BookUser className="size-4" />,
+                },
+                {
+                    title: 'Roles',
+                    url: '#',
+                    icon: <UserCog className="size-4" />,
+                },
+                {
+                    title: 'Permissions',
+                    url: '#',
+                    icon: <BrickWallShield className="size-4" />,
+                },
+            ],
+        },
+    ],
+};
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    return (
+        <Sidebar {...props}>
+            <SidebarHeader>
+                <VersionSwitcher versions={data.versions} defaultVersion={data.versions[0]} />
+            </SidebarHeader>
+            <SidebarContent>
+                {/* We create a SidebarGroup for each parent. */}
+                {data.navMain.map((item) => (
+                    <SidebarGroup key={item.title}>
+                        <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+                        <SidebarGroupContent>
+                            <SidebarMenu>
+                                {item.items.map((item) => (
+                                    <SidebarMenuItem key={item.title}>
+                                        <SidebarMenuButton asChild isActive={item.isActive}>
+                                            <a href={item.url} className="flex items-center gap-2">
+                                                {item.icon}
+                                                <span>{item.title}</span>
+                                            </a>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                ))}
+                            </SidebarMenu>
+                        </SidebarGroupContent>
+                    </SidebarGroup>
+                ))}
+            </SidebarContent>
+            <SidebarRail />
+        </Sidebar>
+    );
+}
