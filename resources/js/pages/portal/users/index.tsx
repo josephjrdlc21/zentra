@@ -53,7 +53,7 @@ export default function Index({ values }: { values: Users }){
             </Head>
             
             <Card className="p-0 gap-0">
-                <div className="flex justify-between px-5 py-4">
+                <div className="flex justify-between px-5 py-4 gap-2 overflow-x-auto">
                     <div className="flex flex-row gap-2">
                         <div className="relative w-[250px]">
                             <button type="submit" className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
@@ -86,9 +86,9 @@ export default function Index({ values }: { values: Users }){
                 </div>
 
                 <Separator/>
-                
+
                 <Table>
-                    <TableHeader className="bg-gray-200">
+                    <TableHeader className="bg-orange-100">
                         <TableRow>
                             <TableHead className="min-w-[200px] pl-5"><b>Name</b></TableHead>
                             <TableHead className="min-w-[150px]"><b>Role</b></TableHead>
