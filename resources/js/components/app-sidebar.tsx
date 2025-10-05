@@ -24,6 +24,9 @@ import {
     BrickWallShield,
 } from 'lucide-react';
 
+import { index as dashboard } from '@/routes/portal';
+import { index as users } from '@/routes/portal/users';
+
 // This is sample data.
 const data = {
     versions: ['1.0.1'],
@@ -34,14 +37,15 @@ const data = {
             items: [
                 {
                     title: 'Dashboard',
-                    url: '#',
+                    url: dashboard.url(),
                     icon: <LayoutDashboard className="size-4" />,
-                    isActive: true,
+                    isActive: location.pathname === dashboard.url(),
                 },
                 {
                     title: 'Users',
-                    url: '#',
+                    url: users.url(),
                     icon: <Users className="size-4" />,
+                    isActive: location.pathname.startsWith(users.url()),
                 },
                 {
                     title: 'Projects',

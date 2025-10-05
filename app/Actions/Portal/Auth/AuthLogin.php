@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Auth;
 class AuthLogin{
     private array $request = [];
 
-    public function __construct(
-        array $request = [],
-    ) {
+    public function __construct(array $request = [],) {
         $this->request = $request;
     }
 

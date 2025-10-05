@@ -13,7 +13,7 @@ class RequestManager extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -26,7 +26,7 @@ class RequestManager extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        session()->flash('notification-status','error');
+        session()->flash('notification-status','failed');
         session()->flash('notification-msg','Some fields are missing or not accepted.');
         
         throw (new ValidationException($validator))
@@ -40,7 +40,7 @@ class RequestManager extends FormRequest
             return response()->json($errors, 422);
         }
 
-        session()->flash('notification-status','error');
+        session()->flash('notification-status','failed');
         session()->flash('notification-msg','Some fields are missing or not accepted.');
 
         return $this->redirector->to($this->getRedirectUrl())
