@@ -1,13 +1,8 @@
-import { useAppearance } from "@/hooks/use-appearance";
-import { Moon, Sun, Monitor } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import {
-    DropdownMenu,
-    DropdownMenuTrigger,
-    DropdownMenuContent,
-    DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { useAppearance } from '@/hooks/use-appearance';
+import { Monitor, Moon, Sun } from 'lucide-react';
+import { useState } from 'react';
 
 export function ModeToggle() {
     const { appearance, updateAppearance } = useAppearance();
@@ -16,14 +11,10 @@ export function ModeToggle() {
     return (
         <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger asChild>
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label="Toggle theme"
-                >
-                    {appearance === "dark" ? (
+                <Button variant="ghost" size="icon" aria-label="Toggle theme">
+                    {appearance === 'dark' ? (
                         <Moon className="h-[1.2rem] w-[1.2rem]" />
-                    ) : appearance === "light" ? (
+                    ) : appearance === 'light' ? (
                         <Sun className="h-[1.2rem] w-[1.2rem]" />
                     ) : (
                         <Monitor className="h-[1.2rem] w-[1.2rem]" />
@@ -31,20 +22,20 @@ export function ModeToggle() {
                 </Button>
             </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => updateAppearance("light")}>
-                <Sun className="mr-2 h-4 w-4" />
-                Light
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => updateAppearance("dark")}>
-                <Moon className="mr-2 h-4 w-4" />
-                Dark
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => updateAppearance("system")}>
-                <Monitor className="mr-2 h-4 w-4" />
-                System
-            </DropdownMenuItem>
-        </DropdownMenuContent>
+            <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => updateAppearance('light')}>
+                    <Sun className="mr-2 h-4 w-4" />
+                    Light
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => updateAppearance('dark')}>
+                    <Moon className="mr-2 h-4 w-4" />
+                    Dark
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => updateAppearance('system')}>
+                    <Monitor className="mr-2 h-4 w-4" />
+                    System
+                </DropdownMenuItem>
+            </DropdownMenuContent>
         </DropdownMenu>
     );
 }
