@@ -9,11 +9,11 @@ export function strTitleCase(str: string): string {
 export function statusBadgeClass(status: string): string {
     switch (status.toLowerCase()){
         case "active":
-            return "green";
+            return "success";
         case "inactive":
-            return "red";
+            return "destructive";
         default:
-            return "gray";
+            return "default";
     }
 }
 

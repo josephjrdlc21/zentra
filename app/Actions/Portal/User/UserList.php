@@ -20,15 +20,6 @@ class UserList{
             $query->whereRaw("LOWER(name) LIKE '%{$this->data['keyword']}%'")
                 ->orWhereRaw("LOWER(email) LIKE '%{$this->data['keyword']}%'");
         })
-        ->when(strlen($this->data['selected_status']) > 0, function ($query) {
-            $query->where('status', $this->data['selected_status']);
-        })
-        ->when(strlen($this->data['start_date']) > 0, function ($query) {
-            $query->whereDate('created_at', '>=', Carbon::parse($this->data['start_date'])->format("Y-m-d"));
-        })
-        ->when(strlen($this->data['end_date']) > 0, function ($query) {
-            $query->whereDate('created_at', '<=', Carbon::parse($this->data['end_date'])->format("Y-m-d"));
-        })
         ->latest()
         ->where('id', '!=', '1')
         ->paginate($this->per_page);

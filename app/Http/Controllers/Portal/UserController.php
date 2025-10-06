@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Portal;
 
 use App\Actions\Portal\User\UserList;
 use App\Actions\Portal\User\UserCreate;
+use App\Actions\Portal\User\UserUpdate;
 
 use App\Http\Requests\PageRequest;
 use App\Http\Requests\Portal\UserRequest;
@@ -28,19 +29,12 @@ class UserController extends Controller{
 
     public function index(PageRequest $request): Response {
         $this->data['page_title'] .= " - List";
-
         $this->data['keyword'] = Str::lower($request->get('keyword'));
-        $this->data['selected_status'] = $request->get('status');
-        $first_record = \App\Models\User::where('id', '!=', '1')->oldest()->first();
-        $start_date = $first_record ? $request->get('start_date', $first_record->created_at->format("Y-m-d")) : $request->get('start_date', now()->startOfMonth());
-        $this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
-        $this->data['end_date'] = Carbon::parse($request->get('end_date', now()))->format("Y-m-d");
 
         $action = new UserList(
             $this->data,
             $this->per_page
         );
-
         $result = $action->execute();
 
         $this->data['record'] = $result['record'];
@@ -61,12 +55,56 @@ class UserController extends Controller{
         $action = new UserCreate(
             $this->request
         );
-
         $result = $action->execute();
 
         session()->flash('notification-status', $result['status']);
         session()->flash('notification-msg', $result['message']);
 
         return $result['success'] ? redirect()->route('portal.users.index') : redirect()->back();
+    }
+
+    public function edit(PageRequest $request, ?int $id = null): Response|RedirectResponse {
+        $this->data['page_title'] .= " - Edit User";
+        $this->data['user'] = \App\Models\User::find($id);
+
+        if(!$this->data['user']){
+            session()->flash('notification-status', 'failed');
+            session()->flash('notification-msg', "Record not found.");
+
+            return redirect()->route('portal.users.index');
+        }
+
+        return inertia('portal/users/edit', ['values' => $this->data]);
+    }
+
+    public function update(UserRequest $request, ?int $id = null): RedirectResponse {
+        $this->request['id'] = $id;
+        $this->request['name'] = $request->input('name');
+        $this->request['email'] = $request->input('email');
+
+        $action = new UserUpdate(
+            $this->request
+        );
+        $result = $action->execute();
+
+        session()->flash('notification-status', $result['status']);
+        session()->flash('notification-msg', $result['message']);
+
+        return $result['success'] ? redirect()->route('portal.users.index') : redirect()->back();
+    }
+
+    public function show(PageRequest $request, ?int $id = null): Response|RedirectResponse {
+        $this->data['page_title'] .= " - Show User";
+
+        $this->data['user'] = \App\Models\User::find($id);
+
+        if(!$this->data['user']){
+            session()->flash('notification-status', 'failed');
+            session()->flash('notification-msg', "Record not found.");
+
+            return redirect()->route('portal.users.index');
+        }
+
+        return inertia('portal/users/show', ['values' => $this->data]);
     }
 }

@@ -1,7 +1,7 @@
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import { User } from "@/types/portal/user";
 import { PageProps } from '@/types/props';
-import { index, store } from "@/routes/portal/users";
+import { index, update } from "@/routes/portal/users";
 
 import Main from "@/layouts/main";
 import { Notification } from "@/components/notification";
@@ -12,27 +12,27 @@ import { Button } from "@/components/ui/button";
 
 import { LoaderCircle } from 'lucide-react';
 
-export default function Create({ values }: { values: User }){
+export default function Edit({ values }: { values: User }){
     const { flash } = usePage<PageProps>().props;
 
-    const form = useForm({name: '', email: '',});
+    const form = useForm({name: values.user.name ?? '', email:  values.user.email ?? '',});
 
     const handelSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        form.submit(store());
+        form.submit(update(values.user.id));
     };
 
     return(
         <Main>
             <Head title={values.page_title}>
-                <meta name="description" content="Create user for Zentra app." />
+                <meta name="description" content="Edit user for Zentra app." />
             </Head>
 
             <Card className="w-full max-w-2xl">
                 <form onSubmit={handelSubmit}>
                     <CardHeader>
-                        <CardTitle className="text-lg">Create user form</CardTitle>
+                        <CardTitle className="text-lg">Edit user form</CardTitle>
                         <CardDescription>Fill up the ( * ) required fields before submitting the form.</CardDescription>
                     </CardHeader>
 
@@ -56,14 +56,14 @@ export default function Create({ values }: { values: User }){
                             {/* {form.errors.name && <small className="text-red-500">{form.errors.name}</small>} */}
                         </div>
                     </CardContent>
-
+                    
                     <CardFooter className="flex justify-end gap-2 mt-5">
                         <Link href={index.url()}>
                             <Button variant={"secondary"}>Cancel</Button>
                         </Link>
                         <Button type="submit" disabled={form.processing}>
                             {form.processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                            Submit
+                            Update
                         </Button>
                     </CardFooter>
                 </form>
