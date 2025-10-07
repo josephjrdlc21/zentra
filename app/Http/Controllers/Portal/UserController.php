@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Portal;
 use App\Actions\Portal\User\UserList;
 use App\Actions\Portal\User\UserCreate;
 use App\Actions\Portal\User\UserUpdate;
+use App\Actions\Portal\User\UserUpdateStatus;
+use App\Actions\Portal\User\UserUpdatePassword;
+use App\Actions\Portal\User\UserDelete;
 
 use App\Http\Requests\PageRequest;
 use App\Http\Requests\Portal\UserRequest;
@@ -31,10 +34,7 @@ class UserController extends Controller{
         $this->data['page_title'] .= " - List";
         $this->data['keyword'] = Str::lower($request->get('keyword'));
 
-        $action = new UserList(
-            $this->data,
-            $this->per_page
-        );
+        $action = new UserList($this->data, $this->per_page);
         $result = $action->execute();
 
         $this->data['record'] = $result['record'];
@@ -48,13 +48,11 @@ class UserController extends Controller{
         return inertia('portal/users/create', ['values' => $this->data]);
     }
 
-      public function store(UserRequest $request): RedirectResponse {
+    public function store(UserRequest $request): RedirectResponse {
         $this->request['name'] = $request->input('name');
         $this->request['email'] = $request->input('email');
 
-        $action = new UserCreate(
-            $this->request
-        );
+        $action = new UserCreate($this->request);
         $result = $action->execute();
 
         session()->flash('notification-status', $result['status']);
@@ -82,9 +80,31 @@ class UserController extends Controller{
         $this->request['name'] = $request->input('name');
         $this->request['email'] = $request->input('email');
 
-        $action = new UserUpdate(
-            $this->request
-        );
+        $action = new UserUpdate($this->request);
+        $result = $action->execute();
+
+        session()->flash('notification-status', $result['status']);
+        session()->flash('notification-msg', $result['message']);
+
+        return $result['success'] ? redirect()->route('portal.users.index') : redirect()->back();
+    }
+
+    public function update_status(PageRequest $request, ?int $id = null): RedirectResponse {
+        $this->request['id'] = $id;
+        
+        $action = new UserUpdateStatus($this->request);
+        $result = $action->execute();
+
+        session()->flash('notification-status', $result['status']);
+        session()->flash('notification-msg', $result['message']);
+
+        return $result['success'] ? redirect()->route('portal.users.index') : redirect()->back();
+    }
+
+    public function update_password(PageRequest $request, ?int $id = null): RedirectResponse {
+        $this->request['id'] = $id;
+        
+        $action = new UserUpdatePassword($this->request);
         $result = $action->execute();
 
         session()->flash('notification-status', $result['status']);
@@ -106,5 +126,17 @@ class UserController extends Controller{
         }
 
         return inertia('portal/users/show', ['values' => $this->data]);
+    }
+
+    public function destroy(PageRequest $request, ?int $id = null): RedirectResponse {
+        $this->request['id'] = $id;
+        
+        $action = new UserDelete($this->request);
+        $result = $action->execute();
+
+        session()->flash('notification-status', $result['status']);
+        session()->flash('notification-msg', $result['message']);
+
+        return $result['success'] ? redirect()->route('portal.users.index') : redirect()->back();
     }
 }

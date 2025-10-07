@@ -22,12 +22,12 @@ import {
     BookUser,
     UserCog,
     BrickWallShield,
+    Logs,
 } from 'lucide-react';
 
 import { index as dashboard } from '@/routes/portal';
 import { index as users } from '@/routes/portal/users';
 
-// This is sample data.
 const data = {
     versions: ['1.0.1'],
     navMain: [
@@ -48,6 +48,22 @@ const data = {
                     isActive: location.pathname.startsWith(users.url()),
                 },
                 {
+                    title: 'Analytics',
+                    url: '#',
+                    icon: <FileChartColumnIncreasing className="size-4" />,
+                },
+                {
+                    title: 'Activity Logs',
+                    url: '#',
+                    icon: <Logs className="size-4" />,
+                },
+            ],
+        },
+        {
+            title: 'Task Management',
+            url: '#',
+            items: [
+                {
                     title: 'Projects',
                     url: '#',
                     icon: <PanelsTopLeft className="size-4" />,
@@ -58,15 +74,16 @@ const data = {
                     icon: <ListTodo className="size-4" />,
                 },
                 {
-                    title: 'Analytics',
-                    url: '#',
-                    icon: <FileChartColumnIncreasing className="size-4" />,
-                },
-                {
                     title: 'Team Members',
                     url: '#',
                     icon: <BookUser className="size-4" />,
                 },
+            ]
+        },
+        {
+            title: 'Settings',
+            url: '#',
+            items: [
                 {
                     title: 'Roles',
                     url: '#',
@@ -77,7 +94,7 @@ const data = {
                     url: '#',
                     icon: <BrickWallShield className="size-4" />,
                 },
-            ],
+            ]
         },
     ],
 };

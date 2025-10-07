@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
+import Footer from "@/components/footer";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { ModeToggle } from "@/components/ui/mode";
@@ -44,9 +45,10 @@ export default function Main({ children }: { children: ReactNode }){
                         <Profile />
                     </div>
                 </header>
-                <div className="min-h-[100vh] flex-1 rounded-xl md:min-h-min px-6 py-2">
+                <div className="min-h-[100vh] flex-1 rounded-xl md:min-h-min px-4 py-2">
                     {children}
                 </div>
+                <Footer/>
             </SidebarInset>
         </SidebarProvider>
     );

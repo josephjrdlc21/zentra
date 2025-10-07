@@ -43,7 +43,7 @@ export default function Profile(){
                         <DropdownMenuItem>
                             Change Password
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem asChild className="cursor-pointer">
                             <Link href={logout()}>Logout</Link>
                         </DropdownMenuItem>
                     </DropdownMenuGroup>

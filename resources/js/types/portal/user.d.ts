@@ -7,10 +7,13 @@ export interface User extends Title {
         id: number; 
         name: string;
         email: string;
+        status: string;
         source: null | string;
         filename: null | string;
         path: null | string;
         directory: null | string;
+        created_at: string;
+        updated_at: string;
     };
 }
 

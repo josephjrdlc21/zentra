@@ -1,11 +1,12 @@
-import { Head, Link, usePage, useForm } from "@inertiajs/react";
+import { Head, Link, usePage, useForm, router } from "@inertiajs/react";
 import { Users } from "@/types/portal/user";
 import { PageProps } from "@/types/props";
-import { index, create, edit, show } from "@/routes/portal/users";
-import { statusBadgeClass, dateTime } from "@/lib/helper";
+import { index, create, edit, show, update_status, update_password, deleteMethod } from "@/routes/portal/users";
+import { statusBadgeClass, dateTime, initialsFormat } from "@/lib/helper";
 
 import Main from "@/layouts/main";
 import PagePagination from "@/components/page-paginate";
+import ConfirmDialog from "@/components/confirmation";
 import { Notification } from "@/components/notification";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,12 +22,24 @@ import { MoreHorizontal, Search, FunnelX, Plus } from "lucide-react";
 export default function Index({ values }: { values: Users }){
     const { flash } = usePage<PageProps>().props;
     
-    const form = useForm({keyword: '',});
+    const form = useForm({keyword: values.keyword ?? '',});
 
     const handleFilter = (e: React.FormEvent) => {
         e.preventDefault();
 
         form.submit(index());
+    }
+
+    const handleSPassword = (id: number) => {
+        router.put(update_password.url(id));
+    }
+
+    const handleStatus = (id: number) => {
+        router.put(update_status.url(id));
+    }
+
+    const handleDelete = (id: number) => {
+        router.delete(deleteMethod.url(id));
     }
 
     return(
@@ -47,18 +60,19 @@ export default function Index({ values }: { values: Users }){
                             <Button type="submit" variant={"secondary"}>
                                 <Search className="size-4"/>
                             </Button>
-                            <Link href={index.url()}>
-                                <Button variant={"secondary"}>
+                            <Button variant={"secondary"} asChild>
+                                <Link href={index.url()}>
                                     <FunnelX className="size-4"/>
-                                </Button>
-                            </Link>
+                                </Link>
+                            </Button>
                         </div>
                         <div className="flex flex-row gap-2">
-                            <Link href={create.url()}>
-                                <Button>
-                                <Plus className="size-4"/> Add User
-                                </Button>
-                            </Link>
+                            <Button asChild>
+                                <Link href={create.url()}>
+                                    <Plus className="size-4"/>
+                                    Add User
+                                </Link>
+                            </Button>
                         </div>
                     </div>
                 </form>
@@ -70,7 +84,7 @@ export default function Index({ values }: { values: Users }){
                 <Separator className="mt-2"/>
 
                 <Table>
-                    <TableHeader className="bg-orange-100">
+                    <TableHeader className="bg-orange-100 dark:bg-orange-800">
                         <TableRow>
                             <TableHead className="min-w-[200px] pl-5"><b>Name</b></TableHead>
                             <TableHead className="min-w-[150px]"><b>Position</b></TableHead>
@@ -86,7 +100,7 @@ export default function Index({ values }: { values: Users }){
                                     <div className="flex gap-2 items-center">
                                         <Avatar>
                                             <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                                            <AvatarFallback>{user.name}</AvatarFallback>
+                                            <AvatarFallback>{initialsFormat(user.name)}</AvatarFallback>
                                         </Avatar>
                                         <div>
                                             <span className="text-blue-400">{user.name}</span><br/>
@@ -108,16 +122,47 @@ export default function Index({ values }: { values: Users }){
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-                                            <DropdownMenuItem>
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
                                                 <Link href={show(user.id)}>View</Link>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem>
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
                                                 <Link href={edit(user.id)}>Edit</Link>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem>Reset</DropdownMenuItem>
-                                            <DropdownMenuItem>Deactivate</DropdownMenuItem>
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                                <ConfirmDialog
+                                                    triggerText="Reset"
+                                                    title="Do want to reset user account password?"
+                                                    description="Resetting this user’s password will immediately revoke their current credentials. The user will need to use the new password to log in."
+                                                    confirmText="Reset Password"
+                                                    onConfirm={() => handleSPassword(user.id)}
+                                                    cancelText="Cancel"
+                                                    variant="ghost"
+                                                />
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                                <ConfirmDialog
+                                                    triggerText={user.status == "active" ? "Deactivate" : "Activate"}
+                                                    title="Do want to update user account status?"
+                                                    description="Changing the account status will affect the user's ability to access the system. You can update this again at any time."
+                                                    confirmText={user.status == "active" ? "Deactivate" : "Activate"}
+                                                    onConfirm={() => handleStatus(user.id)}
+                                                    cancelText="Cancel"
+                                                    variant="ghost"
+                                                />
+                                            </DropdownMenuItem>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                                 <ConfirmDialog
+                                                    triggerText="Delete"
+                                                    title="Do want to delete this user account?"
+                                                    description="Deleting this user will permanently remove their account and all associated data. This action cannot be undone."
+                                                    confirmText="Delete User"
+                                                    onConfirm={() => handleDelete(user.id)}
+                                                    cancelText="Cancel"
+                                                    variant="ghost"
+                                                    className="text-red-500"
+                                                />
+                                            </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 </TableCell>
@@ -125,7 +170,7 @@ export default function Index({ values }: { values: Users }){
                         ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={5}>No Record Found.</TableCell>
+                                <TableCell colSpan={5} className="text-center py-4">No Record Found.</TableCell>
                             </TableRow>
                         )}
                     </TableBody>
