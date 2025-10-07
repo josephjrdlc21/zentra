@@ -57,7 +57,7 @@ export default function Index({ values }: { values: Users }){
                 <h4 className="font-bold px-6 pt-5">All Users</h4>
 
                 <form onSubmit={handleFilter}>
-                    <div className="flex justify-between px-5 py-5 gap-2 overflow-x-auto">
+                    <div className="flex flex-col md:flex-row justify-between px-5 py-5 gap-2">
                         <div className="flex flex-row gap-2">
                             <div className="w-[250px]">
                                 <Input name="keyword" placeholder="Search for users" value={form.data.keyword} onChange={(e) => form.setData('keyword', e.target.value)}/>

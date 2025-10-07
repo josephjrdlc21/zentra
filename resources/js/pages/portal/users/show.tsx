@@ -34,7 +34,9 @@ export default function Show({ values }: { values: User }){
                             <small>{values.user.email}</small>
                         </div>
                     </div>
+
                     <h1 className="mt-4 text-lg font-semibold">About</h1>
+
                     <div className="flex flex-col md:flex-row mt-2 gap-5 md:gap-10">
                         <div className="text-sm">
                             <div className="flex flex-col md:flex-row gap-3 mt-2">
@@ -46,6 +48,7 @@ export default function Show({ values }: { values: User }){
                                 <p>{dateTime(values.user.created_at)}</p>
                             </div>
                         </div>
+                        
                         <div className="text-sm">
                             <div className="flex flex-col md:flex-row gap-3 mt-2">
                                 <p><b>Status:</b></p>

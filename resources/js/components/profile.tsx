@@ -17,6 +17,8 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { Lock, LogOut, User2Icon } from "lucide-react";
+
 export default function Profile(){
 
     return(
@@ -28,23 +30,26 @@ export default function Profile(){
             </div>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Avatar>
+                    <Avatar className="cursor-pointer">
                         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Master Admin</DropdownMenuLabel>
+                    <DropdownMenuLabel>
+                        Master Admin <br/>
+                        <small>master admin</small>
+                    </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                        <DropdownMenuItem>
-                            Profile
+                        <DropdownMenuItem className="cursor-pointer">
+                           <User2Icon/> Profile
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            Change Password
+                        <DropdownMenuItem className="cursor-pointer">
+                            <Lock/> Change Password
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild className="cursor-pointer">
-                            <Link href={logout()}>Logout</Link>
+                            <Link href={logout()}><LogOut/>Logout</Link>
                         </DropdownMenuItem>
                     </DropdownMenuGroup>
                 </DropdownMenuContent>
