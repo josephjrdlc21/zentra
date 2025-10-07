@@ -8,7 +8,7 @@ import Main from "@/layouts/main";
 import PagePagination from "@/components/page-paginate";
 import ConfirmDialog from "@/components/confirmation";
 import { Notification } from "@/components/notification";
-import { Card } from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -47,6 +47,11 @@ export default function Index({ values }: { values: Users }){
             <Head title={values.page_title}>
                 <meta name="description" content="List of user for Zentra app." />
             </Head>
+
+            <Card className="py-0 gap-0 px-6 mb-5">
+                <CardTitle className="text-lg mt-5">User Management</CardTitle>
+                <CardDescription className="mt-2 mb-5">Manage user profiles, account settings, activate or deactivate accounts and control user permissions.</CardDescription>
+            </Card>
             
             <Card className="p-0 gap-0">
                 <h4 className="font-bold px-6 pt-5">All Users</h4>
