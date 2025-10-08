@@ -27,6 +27,7 @@ import {
 
 import { index as dashboard } from '@/routes/portal';
 import { index as users } from '@/routes/portal/users';
+import { index as projects } from '@/routes/portal/projects';
 
 const data = {
     versions: ['1.0.1'],
@@ -65,8 +66,9 @@ const data = {
             items: [
                 {
                     title: 'Projects',
-                    url: '#',
+                    url: projects.url(),
                     icon: <PanelsTopLeft className="size-4" />,
+                    isActive: location.pathname.startsWith(projects.url()),
                 },
                 {
                     title: 'Task',
