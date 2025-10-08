@@ -82,8 +82,8 @@ export default function Index({ values }: { values: Projects }){
                             <TableHead className="min-w-[200px] pl-5"><b>Project</b></TableHead>
                             <TableHead className="min-w-[100px]"><b>Status</b></TableHead>
                             <TableHead className="min-w-[250px]"><b>Start/Due Date</b></TableHead>
-                            <TableHead className="min-w-[200px]"><b>Users</b></TableHead>
-                            <TableHead className="min-w-[200px]"><b>Lead</b></TableHead>
+                            <TableHead className="min-w-[200px]"><b>Members</b></TableHead>
+                            <TableHead className="min-w-[200px]"><b>Owner</b></TableHead>
                             <TableHead className="min-w-[80px] text-center pr-5"><b>Action</b></TableHead>
                         </TableRow>
                     </TableHeader>
