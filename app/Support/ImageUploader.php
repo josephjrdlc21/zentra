@@ -16,7 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
 use Intervention\Image\Facades\Image;
-use App\Laravel\Services\Helper;
+use App\Support\Helper;
 
 class ImageUploader {
 

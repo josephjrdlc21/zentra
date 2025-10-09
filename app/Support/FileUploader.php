@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Support;
 
 /*
 *
@@ -16,7 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
 use Intervention\Image\Image;
-use App\Services\Helper;
+use App\Support\Helper;
 
 class FileUploader {
 

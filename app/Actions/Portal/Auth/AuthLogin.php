@@ -19,6 +19,16 @@ class AuthLogin{
         ])){
             $account = Auth::guard($this->request['guard'])->user();
 
+            if($account->status == "inactive") {
+                Auth::guard($this->request['guard'])->logout();
+
+                return [
+                    'success' => false, 
+                    'status'  => "warning", 
+                    'message' => "Account is inactive!"
+                ];
+            }
+
             return [
                 'success' => true, 
                 'status'  => "success", 

@@ -1,8 +1,8 @@
 import { Head, Link, usePage, useForm, router } from "@inertiajs/react";
 import { Projects } from "@/types/portal/project";
 import { PageProps } from "@/types/props";
-import { index, create } from "@/routes/portal/projects";
-import { statusBadgeClass, dateTime, initialsFormat } from "@/lib/helper";
+import { index, create, show } from "@/routes/portal/projects";
+import { statusBadgeClass, dateOnly, initialsFormat } from "@/lib/helper";
 
 import Main from "@/layouts/main";
 import PagePagination from "@/components/page-paginate";
@@ -81,81 +81,83 @@ export default function Index({ values }: { values: Projects }){
                         <TableRow>
                             <TableHead className="min-w-[200px] pl-5"><b>Project</b></TableHead>
                             <TableHead className="min-w-[100px]"><b>Status</b></TableHead>
-                            <TableHead className="min-w-[250px]"><b>Start/Due Date</b></TableHead>
                             <TableHead className="min-w-[200px]"><b>Members</b></TableHead>
+                            <TableHead className="min-w-[250px]"><b>Start/Due Date</b></TableHead>
                             <TableHead className="min-w-[200px]"><b>Owner</b></TableHead>
                             <TableHead className="min-w-[80px] text-center pr-5"><b>Action</b></TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow>
-                            <TableCell className="pl-5">
-                                <span className="text-blue-400">Health Care Website</span><br/>
-                                <small>6 of 10 tasks completed</small>
-                            </TableCell>
-                            <TableCell>
-                                <Badge variant="success">completed</Badge>
-                            </TableCell>
-                            <TableCell>
-                                26-07-2025 - 17-12-2025
-                            </TableCell>
-                            <TableCell>
-                                <div className="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2">
-                                    <Avatar>
-                                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                                        <AvatarFallback>CN</AvatarFallback>
-                                    </Avatar>
-                                    <Avatar>
-                                        <AvatarImage
-                                            src="https://github.com/maxleiter.png"
-                                            alt="@maxleiter"
-                                        />
-                                        <AvatarFallback>LR</AvatarFallback>
-                                    </Avatar>
-                                    <Avatar>
-                                        <AvatarImage
-                                            src="https://github.com/evilrabbit.png"
-                                            alt="@evilrabbit"
-                                        />
-                                        <AvatarFallback>ER</AvatarFallback>
-                                    </Avatar>
-                                </div>
-                            </TableCell>
-                            <TableCell>
-                                <div className="flex gap-2 items-center">
-                                    <Avatar>
-                                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                                        <AvatarFallback>JD</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <span>Juan Dela Cruz</span>
+                        {values?.record?.data && values?.record?.data.length > 0 ? ((values?.record?.data.map)(project => (
+                            <TableRow key={project.id}>
+                                <TableCell className="pl-5">
+                                    <span className="text-blue-400">{project.name}</span><br/>
+                                    <small>6 of 10 tasks completed</small>
+                                </TableCell>
+                                <TableCell>
+                                    <Badge variant={statusBadgeClass(project.status) as any}>{project.status}</Badge>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2">
+                                        {project.members.slice(0, 5).map((member: any) => (
+                                            <Avatar key={member.id}>
+                                                <AvatarImage src="https://github.com/shadcn.png" alt={member.name} />
+                                                <AvatarFallback>{initialsFormat(member.name)}</AvatarFallback>
+                                            </Avatar>
+                                        ))}
+
+                                        {project.members.length > 5 && (
+                                            <Avatar key="extra">
+                                                <AvatarFallback>
+                                                    +{project.members.length - 5}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                        )}
                                     </div>
-                                </div>
-                            </TableCell>
-                            <TableCell className="text-center pr-5">
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" className="h-8 w-8 p-0">
-                                            <span className="sr-only">Open menu</span>
-                                            <MoreHorizontal />
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                        <DropdownMenuItem className="cursor-pointer" asChild>
-                                            <Link href="#">View</Link>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem className="cursor-pointer" asChild>
-                                            <Link href="#">Edit</Link>
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            </TableCell>
-                        </TableRow>
+                                </TableCell>
+                                <TableCell>
+                                    {dateOnly(project.start_date)} - {dateOnly(project.due_date)}
+                                </TableCell>
+                                <TableCell>
+                                    <div className="flex gap-2 items-center">
+                                        <Avatar>
+                                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                            <AvatarFallback>{initialsFormat(project.owner.name)}</AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <span>{project.owner.name}</span>
+                                        </div>
+                                    </div>
+                                </TableCell>
+                                <TableCell className="text-center pr-5">
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                                <span className="sr-only">Open menu</span>
+                                                <MoreHorizontal />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end">
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                                <Link href={show(project.id)}>View</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                                <Link href="#">Edit</Link>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </TableCell>
+                            </TableRow>
+                        ))
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={6} className="text-center py-4">No Record Found.</TableCell>
+                            </TableRow>
+                        )}
                     </TableBody>
                 </Table>
 
                 <Separator/>
-
 
             </Card>
         </Main>

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Project extends Model{
     
@@ -42,5 +43,19 @@ class Project extends Model{
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'start_date' => 'date',
+        'due_date' => 'date',
+    ];
+
+    public function members(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'project_users', 'project_id', 'user_id')
+            ->withTimestamps();
+    }
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'lead_id', 'id');
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\CustomValidator;
+use App\Support\CustomValidator;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;

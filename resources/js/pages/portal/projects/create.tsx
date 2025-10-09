@@ -1,7 +1,7 @@
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import { Project } from "@/types/portal/project";
 import { PageProps } from '@/types/props';
-import { index } from "@/routes/portal/projects";
+import { index, store } from "@/routes/portal/projects";
 
 import Main from "@/layouts/main";
 import { Notification } from "@/components/notification";
@@ -18,11 +18,12 @@ import { LoaderCircle } from 'lucide-react';
 
 export default function Create({ values }: { values: Project }){
     const { flash } = usePage<PageProps>().props;
+    const today = new Date().toISOString().split("T")[0];
 
     const form = useForm({
         name: '',
         start_date: '',
-        end_date: '',
+        due_date: '',
         owner: '', 
         members: [] as any[],
         description: '',
@@ -31,7 +32,7 @@ export default function Create({ values }: { values: Project }){
     const handelSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        //form.submit(store());
+        form.submit(store());
     };
 
     return(
@@ -58,17 +59,20 @@ export default function Create({ values }: { values: Project }){
                         <div className="flex flex-col gap-2 mb-4 mt-4">
                             <Label htmlFor="name">Project Name <span className="text-red-500">*</span></Label>
                             <Input id="name" type="text" placeholder="Team Collaboration Platform" value={form.data.name} onChange={(e) => form.setData('name', e.target.value)}/>
+                            {form.errors.name && <small className="text-red-500">{form.errors.name}</small>}
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
                             <div className="flex flex-col gap-2 mb-4 mt-4">
                                 <Label htmlFor="start_date">Start Date <span className="text-red-500">*</span></Label>
-                                <Input id="start_date" type="date" value={form.data.start_date} onChange={(e) => form.setData('start_date', e.target.value)}/>
+                                <Input id="start_date" type="date" min={today} value={form.data.start_date} onChange={(e) => form.setData('start_date', e.target.value)}/>
+                                {form.errors.start_date && <small className="text-red-500">{form.errors.start_date}</small>}
                             </div>
 
                             <div className="flex flex-col gap-2 mb-4 mt-4">
-                                <Label htmlFor="end_date">Due Date <span className="text-red-500">*</span></Label>
-                                <Input id="end_date" type="date" value={form.data.end_date} onChange={(e) => form.setData('end_date', e.target.value)}/>
+                                <Label htmlFor="due_date">Due Date <span className="text-red-500">*</span></Label>
+                                <Input id="due_date" type="date" min={today} value={form.data.due_date} onChange={(e) => form.setData('due_date', e.target.value)}/>
+                                {form.errors.due_date && <small className="text-red-500">{form.errors.due_date}</small>}
                             </div>
                         </div>
 
@@ -81,15 +85,13 @@ export default function Create({ values }: { values: Project }){
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
-                                            <SelectLabel>Users</SelectLabel>
-                                            <SelectItem value="apple">Apple</SelectItem>
-                                            <SelectItem value="banana">Banana</SelectItem>
-                                            <SelectItem value="blueberry">Blueberry</SelectItem>
-                                            <SelectItem value="grapes">Grapes</SelectItem>
-                                            <SelectItem value="pineapple">Pineapple</SelectItem>
+                                           {Object.entries(values.users).map(([id, name]) => (
+                                                <SelectItem key={id} value={id}>{name}</SelectItem>
+                                            ))}
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
+                                {form.errors.owner && <small className="text-red-500">{form.errors.owner}</small>}
                             </div>
 
                             <div className="flex flex-col gap-2 mb-4 mt-4">
@@ -100,19 +102,24 @@ export default function Create({ values }: { values: Project }){
                                     </MultiSelectTrigger>
                                     <MultiSelectContent>
                                         <MultiSelectGroup>
-                                            <MultiSelectItem value="next.js">Next.js</MultiSelectItem>
-                                            <MultiSelectItem value="sveltekit">SvelteKit</MultiSelectItem>
-                                            <MultiSelectItem value="astro">Astro</MultiSelectItem>
-                                            <MultiSelectItem value="vue">Vue.js</MultiSelectItem>
+                                            {Object.entries(values.users).map(([id, name]) => (
+                                                <MultiSelectItem key={id} value={id}>{name}</MultiSelectItem>
+                                            ))}
                                         </MultiSelectGroup>
                                     </MultiSelectContent>
                                 </MultiSelect>
+                                {form.errors.members && <small className="text-red-500">{form.errors.members}</small>}
                             </div>
                         </div>
 
                         <div className="flex flex-col gap-2 mb-4 mt-4">
-                            <Label htmlFor="name">Project Description <span className="text-red-500">*</span></Label>
+                            <Label htmlFor="description">Project Description <span className="text-red-500">*</span></Label>
                             <Textarea placeholder="Type project description here." className="h-50" value={form.data.description} onChange={(e) => form.setData('description', e.target.value)}/>
+                            {form.errors.description && <small className="text-red-500">{form.errors.description}</small>}
+                        </div>
+
+                        <div className="text-sm text-muted-foreground text-right">
+                            {form.data.description.length}/1000
                         </div>
                     </CardContent>
 
@@ -124,7 +131,8 @@ export default function Create({ values }: { values: Project }){
                                 Cancel
                             </Link>
                         </Button>
-                        <Button type="submit">
+                        <Button type="submit" disabled={form.processing}>
+                            {form.processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                             Submit
                         </Button>
                     </CardFooter>

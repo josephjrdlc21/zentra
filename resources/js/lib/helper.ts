@@ -8,9 +8,17 @@ export function strTitleCase(str: string): string {
 
 export function statusBadgeClass(status: string): string {
     switch (status.toLowerCase()){
+        case "pending":
+            return "default";
+        case "in_progress":
+            return "warning";
+        case "on_hold":
+            return "secondary"
         case "active":
+        case "completed":
             return "success";
         case "inactive":
+        case "cancelled":
             return "destructive";
         default:
             return "default";
@@ -31,6 +39,16 @@ export function dateTime(input: string): string {
         minute: "2-digit",
         hour12: true,
     }).format(date);
+}
+
+export function dateOnly(isoString: string): string {
+    const date = new Date(isoString);
+    
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+
+    return `${month}-${day}-${year}`;
 }
 
 export function formatId(id: number, length: number = 5): string {

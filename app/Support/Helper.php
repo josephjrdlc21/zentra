@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Support;
 
 use Illuminate\Support\Str;
 use Propaganistas\LaravelPhone\PhoneNumber;
