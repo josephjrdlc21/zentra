@@ -159,6 +159,7 @@ export default function Index({ values }: { values: Projects }){
 
                 <Separator/>
 
+                <PagePagination links={values.record.links}/>
             </Card>
         </Main>
     );
