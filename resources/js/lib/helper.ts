@@ -88,3 +88,16 @@ export function initialsFormat(name: string): string {
 
     return initials;
 }
+
+export function dateInput(dateString: string | null | undefined): string {
+  if (!dateString) return ''
+
+    const date = new Date(dateString)
+
+    if (isNaN(date.getTime())) {
+        console.warn(`Invalid date string: ${dateString}`)
+        return ''
+    }
+
+    return date.toISOString().split('T')[0]
+}

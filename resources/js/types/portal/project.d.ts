@@ -5,6 +5,7 @@ export interface Title {
 export interface Project extends Title {
     users: { [id: string]: string };
     project: {
+        id: number;
         name: string;
         description: string;
         status: string;

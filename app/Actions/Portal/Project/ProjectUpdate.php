@@ -8,7 +8,7 @@ use App\Models\ProjectUser;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class ProjectCreate{
+class ProjectUpdate{
     private array $request = [];
 
     public function __construct(array $request = []) {
@@ -16,14 +16,18 @@ class ProjectCreate{
     }
 
     public function execute(): array {
+        $project = Project::find($this->request['id']);
+
+        if(!$project){
+            return ['success' => false, 'status' => "failed", 'message' => "Record not found."];
+        }
+
         DB::beginTransaction();
         try {
-            $project = new Project;
             $project->name = Str::title($this->request['name']);
-            $project->start_date = $this->request['start_date'];
             $project->due_date = $this->request['due_date'];
             $project->lead_id = $this->request['owner'];
-            $project->status = "pending"; /* pending, in progress, on hold, completed, cancelled  */
+            //$project->status = "pending"; /* pending, in progress, on hold, completed, cancelled  */
             $project->description = $this->request['description'];
             $project->save();
 
@@ -43,7 +47,7 @@ class ProjectCreate{
         return [
             'success' => true, 
             'status'  => "success", 
-            'message' => "New project has been successfully created. You can now assign a task for this project."
+            'message' => "Project details has been updated."
         ];
     }
 }

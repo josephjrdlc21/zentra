@@ -23,11 +23,14 @@ import {
     UserCog,
     BrickWallShield,
     Logs,
+    SquareMinus,
 } from 'lucide-react';
 
 import { index as dashboard } from '@/routes/portal';
 import { index as users } from '@/routes/portal/users';
 import { index as projects } from '@/routes/portal/projects';
+import { index as tasks } from '@/routes/portal/tasks';
+import { board as boards } from '@/routes/portal/tasks';
 
 const data = {
     versions: ['1.0.1'],
@@ -46,7 +49,18 @@ const data = {
                     title: 'Users',
                     url: users.url(),
                     icon: <Users className="size-4" />,
-                    isActive: location.pathname.startsWith(users.url()),
+                    isActive: location.pathname === users.url(),
+                },
+                {
+                    title: 'Projects',
+                    url: projects.url(),
+                    icon: <PanelsTopLeft className="size-4" />,
+                    isActive: location.pathname === projects.url(),
+                },
+                {
+                    title: 'Team Members',
+                    url: '#',
+                    icon: <BookUser className="size-4" />,
                 },
                 {
                     title: 'Analytics',
@@ -65,20 +79,16 @@ const data = {
             url: '#',
             items: [
                 {
-                    title: 'Projects',
-                    url: projects.url(),
-                    icon: <PanelsTopLeft className="size-4" />,
-                    isActive: location.pathname.startsWith(projects.url()),
-                },
-                {
-                    title: 'Task',
-                    url: '#',
+                    title: 'Tasks',
+                    url: tasks.url(),
                     icon: <ListTodo className="size-4" />,
+                    isActive: location.pathname === tasks.url(),
                 },
                 {
-                    title: 'Team Members',
-                    url: '#',
-                    icon: <BookUser className="size-4" />,
+                    title: 'Boards',
+                    url: boards.url(),
+                    icon: <SquareMinus className="size-4" />,
+                    isActive: location.pathname === boards.url(),
                 },
             ]
         },

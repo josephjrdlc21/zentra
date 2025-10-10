@@ -30,51 +30,55 @@ export default function Create({ values }: { values: User }){
                 <meta name="description" content="Create user for Zentra app." />
             </Head>
 
-            <Card className="w-full max-w-2xl">
-                <form onSubmit={handelSubmit}>
-                    <CardHeader>
-                        <CardTitle className="text-lg">Create user form</CardTitle>
-                        <CardDescription>Fill up the ( * ) required fields before submitting the form.</CardDescription>
-                    </CardHeader>
+            <div className="w-full flex justify-center">
 
-                    <Separator className="my-5"/>
+                <Card className="w-full max-w-2xl">
+                    <form onSubmit={handelSubmit}>
+                        <CardHeader>
+                            <CardTitle className="text-lg">Create user form</CardTitle>
+                            <CardDescription>Fill up the ( * ) required fields before submitting the form.</CardDescription>
+                        </CardHeader>
 
-                    <CardContent>
-                        {flash.message && <div className="mt-4">
-                            <Notification status={flash.status} message={flash.message} />
-                        </div>}
-                        <div className="flex flex-col gap-2 mb-4 mt-4">
-                            <Label htmlFor="name">Name <span className="text-red-500">*</span></Label>
-                            <Input id="name" type="text" placeholder="Juan Dela Cruz" value={form.data.name} onChange={(e) => form.setData('name', e.target.value)}/>
-                            {form.errors.name && <small className="text-red-500">{form.errors.name}</small>}
-                        </div>
-                        <div className="flex flex-col gap-2 mb-4">
-                            <Label htmlFor="email">Email <span className="text-red-500">*</span></Label>
-                            <Input id="email" type="email" placeholder="juandelacruz@example.com" value={form.data.email} onChange={(e) => form.setData('email', e.target.value)}/>
-                            {form.errors.email && <small className="text-red-500">{form.errors.email}</small>}
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <Label htmlFor="role">Assign Role <span className="text-red-500">*</span></Label>
-                            <Input id="role" type="text" placeholder="-- Select Role --"/>
-                            {/* {form.errors.name && <small className="text-red-500">{form.errors.name}</small>} */}
-                        </div>
-                    </CardContent>
+                        <Separator className="my-5"/>
 
-                    <Separator className="mt-10"/>
+                        <CardContent>
+                            {flash.message && <div className="mt-4">
+                                <Notification status={flash.status} message={flash.message} />
+                            </div>}
+                            <div className="flex flex-col gap-2 mb-4 mt-4">
+                                <Label htmlFor="name">Name <span className="text-red-500">*</span></Label>
+                                <Input id="name" type="text" placeholder="Juan Dela Cruz" value={form.data.name} onChange={(e) => form.setData('name', e.target.value)}/>
+                                {form.errors.name && <small className="text-red-500">{form.errors.name}</small>}
+                            </div>
+                            <div className="flex flex-col gap-2 mb-4">
+                                <Label htmlFor="email">Email <span className="text-red-500">*</span></Label>
+                                <Input id="email" type="email" placeholder="juandelacruz@example.com" value={form.data.email} onChange={(e) => form.setData('email', e.target.value)}/>
+                                {form.errors.email && <small className="text-red-500">{form.errors.email}</small>}
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <Label htmlFor="role">Assign Role <span className="text-red-500">*</span></Label>
+                                <Input id="role" type="text" placeholder="-- Select Role --"/>
+                                {/* {form.errors.name && <small className="text-red-500">{form.errors.name}</small>} */}
+                            </div>
+                        </CardContent>
 
-                    <CardFooter className="flex justify-end gap-2 mt-5">
-                        <Button variant={"secondary"} asChild>
-                            <Link href={index.url()}>
-                                Cancel
-                            </Link>
-                        </Button>
-                        <Button type="submit" disabled={form.processing}>
-                            {form.processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                            Submit
-                        </Button>
-                    </CardFooter>
-                </form>
-            </Card>
+                        <Separator className="mt-10"/>
+
+                        <CardFooter className="flex justify-end gap-2 mt-5">
+                            <Button variant={"secondary"} asChild>
+                                <Link href={index.url()}>
+                                    Cancel
+                                </Link>
+                            </Button>
+                            <Button type="submit" disabled={form.processing}>
+                                {form.processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
+                                Submit
+                            </Button>
+                        </CardFooter>
+                    </form>
+                </Card>
+
+            </div>
         </Main>
     );
 }

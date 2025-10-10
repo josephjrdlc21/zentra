@@ -17,66 +17,70 @@ export default function Show({ values }: { values: User }){
                 <meta name="description" content="Show user for Zentra app." />
             </Head>
 
-            <Card className="w-full max-w-2xl">
-                <CardHeader>
-                    <CardTitle className="text-lg">User details</CardTitle>
-                    <CardDescription>Manage the personal information and account settings of the selected user.</CardDescription>
-                </CardHeader>
+            <div className="w-full flex justify-center">
 
-                <CardContent>
-                    <div className="flex flex-col md:flex-row gap-5 md:items-center">
-                        <Avatar className="h-12 w-12">
-                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn"/>
-                            <AvatarFallback>{values.user.name}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                            <span className="text-blue-400">{values.user.name}</span><br/>
-                            <small>{values.user.email}</small>
-                        </div>
-                    </div>
+                <Card className="w-full max-w-2xl">
+                    <CardHeader>
+                        <CardTitle className="text-lg">User details</CardTitle>
+                        <CardDescription>Manage the personal information and account settings of the selected user.</CardDescription>
+                    </CardHeader>
 
-                    <h1 className="mt-4 text-lg font-semibold">About</h1>
-
-                    <div className="flex flex-col md:flex-row mt-2 gap-5 md:gap-10">
-                        <div className="text-sm">
-                            <div className="flex flex-col md:flex-row gap-3 mt-2">
-                                <p><b>Role:</b></p>
-                                <p>Admin</p>
-                            </div>
-                            <div className="flex flex-col md:flex-row gap-3 mt-2">
-                                <p><b>Created:</b></p>
-                                <p>{dateTime(values.user.created_at)}</p>
+                    <CardContent>
+                        <div className="flex flex-col md:flex-row gap-5 md:items-center">
+                            <Avatar className="h-12 w-12">
+                                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn"/>
+                                <AvatarFallback>{values.user.name}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                                <span className="text-blue-400">{values.user.name}</span><br/>
+                                <small>{values.user.email}</small>
                             </div>
                         </div>
-                        
-                        <div className="text-sm">
-                            <div className="flex flex-col md:flex-row gap-3 mt-2">
-                                <p><b>Status:</b></p>
-                                <Badge variant={statusBadgeClass(values.user.status) as any}>{values.user.status}</Badge>
+
+                        <h1 className="mt-4 text-lg font-semibold">About</h1>
+
+                        <div className="flex flex-col md:flex-row mt-2 gap-5 md:gap-10">
+                            <div className="text-sm">
+                                <div className="flex flex-col md:flex-row gap-3 mt-2">
+                                    <p><b>Role:</b></p>
+                                    <p>Admin</p>
+                                </div>
+                                <div className="flex flex-col md:flex-row gap-3 mt-2">
+                                    <p><b>Created:</b></p>
+                                    <p>{dateTime(values.user.created_at)}</p>
+                                </div>
                             </div>
-                            <div className="flex flex-col md:flex-row gap-3 mt-2">
-                                <p><b>Updated:</b></p>
-                                <p>{dateTime(values.user.updated_at)}</p>
+                            
+                            <div className="text-sm">
+                                <div className="flex flex-col md:flex-row gap-3 mt-2">
+                                    <p><b>Status:</b></p>
+                                    <Badge variant={statusBadgeClass(values.user.status) as any}>{values.user.status}</Badge>
+                                </div>
+                                <div className="flex flex-col md:flex-row gap-3 mt-2">
+                                    <p><b>Updated:</b></p>
+                                    <p>{dateTime(values.user.updated_at)}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </CardContent>
+                    </CardContent>
 
-                <Separator/>
+                    <Separator/>
 
-                <CardFooter className="flex justify-end gap-2">
-                    <Button variant={"secondary"} asChild>
-                        <Link href={index.url()}>
-                            Go Back
-                        </Link>
-                    </Button>
-                    <Button variant={"secondary"} asChild>
-                        <Link href={edit(values.user.id)}>
-                            Edit
-                        </Link>
-                    </Button>
-                </CardFooter>
-            </Card>
+                    <CardFooter className="flex justify-end gap-2">
+                        <Button variant={"secondary"} asChild>
+                            <Link href={index.url()}>
+                                Go Back
+                            </Link>
+                        </Button>
+                        <Button variant={"secondary"} asChild>
+                            <Link href={edit(values.user.id)}>
+                                Edit
+                            </Link>
+                        </Button>
+                    </CardFooter>
+                </Card>
+
+            </div>
         </Main>
     );
 }

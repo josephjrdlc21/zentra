@@ -1,6 +1,6 @@
 import { Head, Link } from "@inertiajs/react";
 import { Project } from "@/types/portal/project";
-import { index } from "@/routes/portal/projects";
+import { index, edit } from "@/routes/portal/projects";
 import { statusBadgeClass, dateOnly, initialsFormat, dateTime } from "@/lib/helper";
 
 import Main from "@/layouts/main";
@@ -19,146 +19,143 @@ export default function Show({ values }: { values: Project }){
                 <meta name="description" content="Show project for Zentra app." />
             </Head>
 
-            <Card className="w-full">
-                <CardHeader>
-                    <CardTitle className="text-lg">Project details</CardTitle>
-                    <CardDescription>Review the project’s overview, adjust its settings, and manage assigned members.</CardDescription>
-                </CardHeader>
+            <div className="w-full flex justify-center">
+                
+                <Card className="w-full max-w-4xl">
+                    <CardHeader>
+                        <CardTitle className="text-lg">Project details</CardTitle>
+                        <CardDescription>Review the project’s overview, adjust its settings, and manage assigned members.</CardDescription>
+                    </CardHeader>
 
-                <CardContent>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                        <div>
-                            <div className="flex flex-col md:flex-row mt-2 gap-5 md:gap-10">
-                                <div className="text-sm">
-                                    <div className="flex flex-col md:flex-row gap-3">
-                                        <p><b>Project:</b></p>
-                                        <p className="text-gray-500 dark:text-gray-200">{values.project.name}</p>
-                                    </div>
-                                      <div className="flex flex-col md:flex-row gap-3 mt-5">
-                                        <p><b>Start Date:</b></p>
-                                        <p className="text-gray-500 dark:text-gray-200">{dateOnly(values.project.start_date)}</p>
-                                    </div>
-                                    <div className="flex flex-col md:flex-row gap-3 mt-5 md:items-center">
-                                        <p><b>Owner:</b></p>
-                                        <div className="flex gap-2 items-center">
-                                            <Avatar>
-                                                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                                                <AvatarFallback>{initialsFormat(values.project.owner.name)}</AvatarFallback>
-                                            </Avatar>
-                                            <div className="text-gray-500 dark:text-gray-200">
-                                                <span>{values.project.owner.name}</span>
-                                            </div>
+                    <CardContent>
+                        <div className="flex flex-col md:flex-row mt-2 gap-5 md:gap-10">
+                            <div className="text-sm">
+                                <div className="flex flex-col md:flex-row gap-3">
+                                    <p><b>Project:</b></p>
+                                    <p className="text-gray-500 dark:text-gray-200">{values.project.name}</p>
+                                </div>
+                                    <div className="flex flex-col md:flex-row gap-3 mt-5">
+                                    <p><b>Start Date:</b></p>
+                                    <p className="text-gray-500 dark:text-gray-200">{dateOnly(values.project.start_date)}</p>
+                                </div>
+                                <div className="flex flex-col md:flex-row gap-3 mt-5 md:items-center">
+                                    <p><b>Owner:</b></p>
+                                    <div className="flex gap-2 items-center">
+                                        <Avatar>
+                                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                            <AvatarFallback>{initialsFormat(values.project.owner.name)}</AvatarFallback>
+                                        </Avatar>
+                                        <div className="text-gray-500 dark:text-gray-200">
+                                            <span>{values.project.owner.name}</span>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div className="text-sm">
-                                    <div className="flex flex-col md:flex-row gap-3">
-                                        <p><b>Status:</b></p>
-                                        <Badge variant={statusBadgeClass(values.project.status) as any}>{values.project.status}</Badge>
-                                    </div>
-                                    <div className="flex flex-col md:flex-row gap-3 mt-5">
-                                        <p><b>Due Date:</b></p>
-                                        <p className="text-gray-500 dark:text-gray-200">{dateOnly(values.project.due_date)}</p>
-                                    </div>
-                                    <div className="flex flex-col md:flex-row gap-3 mt-6">
-                                        <p><b>Created:</b></p>
-                                        <p className="text-gray-500 dark:text-gray-200">{dateTime(values.project.created_at)}</p>
-                                    </div>
+                            <div className="text-sm">
+                                <div className="flex flex-col md:flex-row gap-3">
+                                    <p><b>Status:</b></p>
+                                    <Badge variant={statusBadgeClass(values.project.status) as any}>{values.project.status}</Badge>
+                                </div>
+                                <div className="flex flex-col md:flex-row gap-3 mt-5">
+                                    <p><b>Due Date:</b></p>
+                                    <p className="text-gray-500 dark:text-gray-200">{dateOnly(values.project.due_date)}</p>
+                                </div>
+                                <div className="flex flex-col md:flex-row gap-3 mt-6">
+                                    <p><b>Created:</b></p>
+                                    <p className="text-gray-500 dark:text-gray-200">{dateTime(values.project.created_at)}</p>
                                 </div>
                             </div>
-                            <div className="text-sm mt-10">
-                                <p><b>Recent Tasks</b></p>
-                                <Table className="[&_tr]:border-0 [&_td]:border-0 [&_th]:border-0 [&_td]:pl-0">
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell className="text-gray-500 dark:text-gray-200">Landing Page</TableCell>
-                                            <TableCell>
-                                                <Badge variant="default">pending</Badge>
-                                            </TableCell>
-                                            <TableCell className="text-gray-500 dark:text-gray-200">10/09/2025, 09:23 PM</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className="text-gray-500 dark:text-gray-200">Login Authentication</TableCell>
-                                            <TableCell>
-                                                <Badge variant="default">pending</Badge>
-                                            </TableCell>
-                                            <TableCell className="text-gray-500 dark:text-gray-200">10/09/2025, 09:23 PM</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className="text-gray-500 dark:text-gray-200">Users Management</TableCell>
-                                            <TableCell>
-                                                <Badge variant="default">pending</Badge>
-                                            </TableCell>
-                                            <TableCell className="text-gray-500 dark:text-gray-200">10/09/2025, 09:23 PM</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className="text-gray-500 dark:text-gray-200">Activity Logs</TableCell>
-                                            <TableCell>
-                                                <Badge variant="default">pending</Badge>
-                                            </TableCell>
-                                            <TableCell className="text-gray-500 dark:text-gray-200">10/09/2025, 09:23 PM</TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
-                            </div>
-                            <div className="text-sm mt-10">
-                                <p><b>Description</b></p>
-                                <p className="text-gray-500 dark:text-gray-200 mt-4">
-                                    {values.project.description}
-                                </p>
-                            </div>  
                         </div>
-
-                        <div>
-                            <div className="text-sm mt-2">
-                                <p><b>Members</b></p>
-                                <Table>
-                                    <TableBody>
-                                        {values?.project?.members && values?.project?.members.length > 0 ? ((values?.project?.members.map)(member => (
-                                            <TableRow key={member.id}>
-                                                <TableCell>
-                                                    <div className="flex gap-2 items-center">
-                                                        <Avatar>
-                                                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                                                            <AvatarFallback>{initialsFormat(member.name)}</AvatarFallback>
-                                                        </Avatar>
-                                                        <div>
-                                                            <span className="text-blue-400 dark:text-gray-200">{member.name}</span><br/>
-                                                            <small className="text-gray-500 dark:text-gray-200">{member.email}</small>
-                                                        </div>
+                        <div className="text-sm mt-10">
+                            <p><b>Members</b></p>
+                            <Table className="[&_td]:pl-0 [&_tr:hover]:bg-transparent">
+                                <TableBody>
+                                    {values?.project?.members && values?.project?.members.length > 0 ? ((values?.project?.members.map)(member => (
+                                        <TableRow key={member.id}>
+                                            <TableCell>
+                                                <div className="flex gap-2 items-center">
+                                                    <Avatar>
+                                                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                                        <AvatarFallback>{initialsFormat(member.name)}</AvatarFallback>
+                                                    </Avatar>
+                                                    <div>
+                                                        <span className="text-blue-400 dark:text-gray-200">{member.name}</span><br/>
+                                                        <small className="text-gray-500 dark:text-gray-200">{member.email}</small>
                                                     </div>
-                                                </TableCell>
-                                                <TableCell className="text-gray-500 dark:text-gray-200">Project Manager</TableCell>
-                                            </TableRow>
-                                        ))
-                                        ) : (
-                                            <TableRow>
-                                                <TableCell colSpan={2} className="text-center py-4">No Members Yet.</TableCell>
-                                            </TableRow>
-                                        )}
-                                    </TableBody>
-                                </Table>
-                            </div>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="text-gray-500 dark:text-gray-200">Project Manager</TableCell>
+                                        </TableRow>
+                                    ))
+                                    ) : (
+                                        <TableRow>
+                                            <TableCell colSpan={2} className="text-center py-4">No Members Yet.</TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
                         </div>
-                    </div>
-                </CardContent>
+                        <div className="text-sm mt-10">
+                            <p><b>Recent Tasks</b></p>
+                            <Table className="[&_tr]:border-0 [&_td]:border-0 [&_th]:border-0 [&_td]:pl-0 [&_tr:hover]:bg-transparent">
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell className="text-gray-500 dark:text-gray-200">Landing Page</TableCell>
+                                        <TableCell>
+                                            <Badge variant="default">pending</Badge>
+                                        </TableCell>
+                                        <TableCell className="text-gray-500 dark:text-gray-200">10/09/2025, 09:23 PM</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className="text-gray-500 dark:text-gray-200">Login Authentication</TableCell>
+                                        <TableCell>
+                                            <Badge variant="default">pending</Badge>
+                                        </TableCell>
+                                        <TableCell className="text-gray-500 dark:text-gray-200">10/09/2025, 09:23 PM</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className="text-gray-500 dark:text-gray-200">Users Management</TableCell>
+                                        <TableCell>
+                                            <Badge variant="default">pending</Badge>
+                                        </TableCell>
+                                        <TableCell className="text-gray-500 dark:text-gray-200">10/09/2025, 09:23 PM</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className="text-gray-500 dark:text-gray-200">Activity Logs</TableCell>
+                                        <TableCell>
+                                            <Badge variant="default">pending</Badge>
+                                        </TableCell>
+                                        <TableCell className="text-gray-500 dark:text-gray-200">10/09/2025, 09:23 PM</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </div>
+                        <div className="text-sm mt-10">
+                            <p><b>Description</b></p>
+                            <p className="text-gray-500 dark:text-gray-200 mt-4">
+                                {values.project.description}
+                            </p>
+                        </div>  
+                    </CardContent>
 
-                <Separator/>
+                    <Separator/>
 
-                <CardFooter className="flex justify-end gap-2">
-                    <Button variant={"secondary"} asChild>
-                        <Link href={index.url()}>
-                            Go Back
-                        </Link>
-                    </Button>
-                    <Button variant={"secondary"} asChild>
-                        <Link href="#">
-                            Edit
-                        </Link>
-                    </Button>
-                </CardFooter>
-            </Card>
+                    <CardFooter className="flex justify-end gap-2">
+                        <Button variant={"secondary"} asChild>
+                            <Link href={index.url()}>
+                                Go Back
+                            </Link>
+                        </Button>
+                        <Button variant={"secondary"} asChild>
+                            <Link href={edit.url(values.project.id)}>
+                                Edit
+                            </Link>
+                        </Button>
+                    </CardFooter>
+                </Card>
+            
+            </div>
         </Main>
     );
 }

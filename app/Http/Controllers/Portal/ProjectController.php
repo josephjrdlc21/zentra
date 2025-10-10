@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Portal;
 
 use App\Actions\Portal\Project\ProjectList;
 use App\Actions\Portal\Project\ProjectCreate;
+use App\Actions\Portal\Project\ProjectUpdate;
 
 use App\Http\Requests\PageRequest;
 use App\Http\Requests\Portal\ProjectRequest;
@@ -54,6 +55,38 @@ class ProjectController extends Controller{
         $this->request['description'] = $request->input('description');
 
         $action = new ProjectCreate($this->request);
+        $result = $action->execute();
+
+        session()->flash('notification-status', $result['status']);
+        session()->flash('notification-msg', $result['message']);
+
+        return $result['success'] ? redirect()->route('portal.projects.index') : redirect()->back();
+    }
+
+    public function edit(PageRequest $request, ?int $id = null): Response|RedirectResponse {
+        $this->data['page_title'] .= " - Edit Projet";
+        $this->data['users'] = \App\Models\User::where('status', 'active')->pluck('name', 'id')->toArray();
+        $this->data['project'] = \App\Models\Project::with(['members', 'owner'])->find($id);
+
+        if(!$this->data['project']){
+            session()->flash('notification-status', 'failed');
+            session()->flash('notification-msg', "Record not found.");
+
+            return redirect()->route('portal.projects.index');
+        }
+
+        return inertia('portal/projects/edit', ['values' => $this->data]);
+    }
+
+    public function update(ProjectRequest $request, ?int $id = null): RedirectResponse {
+        $this->request['id'] = $id;
+        $this->request['name'] = $request->input('name');
+        $this->request['due_date'] = $request->input('due_date');
+        $this->request['owner'] = $request->input('owner');
+        $this->request['members'] = $request->input('members');
+        $this->request['description'] = $request->input('description');
+
+        $action = new ProjectUpdate($this->request);
         $result = $action->execute();
 
         session()->flash('notification-status', $result['status']);

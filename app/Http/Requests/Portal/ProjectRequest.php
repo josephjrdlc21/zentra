@@ -32,6 +32,10 @@ class ProjectRequest extends RequestManager
             'description' => "required|max:1000",
         ];
 
+        if($id > 0) {
+            $rules['start_date'] = 'nullable|date';
+        }
+
         return $rules;
     }
 
