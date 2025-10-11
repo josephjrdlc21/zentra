@@ -101,3 +101,34 @@ export function dateInput(dateString: string | null | undefined): string {
 
     return date.toISOString().split('T')[0]
 }
+
+export function boardDate(input: string): string {
+    if (!input) return '';
+
+    const date = new Date(input);
+
+    const options: Intl.DateTimeFormatOptions = {
+        month: 'long',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+    };
+
+    const formatted = date.toLocaleString('en-US', options);
+
+    return formatted.replace(',', ' -');
+}
+
+export function statusPriority(status: string): string {
+    switch (status.toLowerCase()){
+        case "normal":
+            return "text-blue-500";
+        case "medium":
+            return "text-amber-500";
+        case "high":
+            return "text-red-500"
+        default:
+            return "default";
+    }
+}

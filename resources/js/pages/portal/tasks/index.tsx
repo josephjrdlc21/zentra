@@ -1,7 +1,7 @@
 import { Head, Link, usePage, useForm, router } from "@inertiajs/react";
 import { Tasks } from "@/types/portal/task";
 import { PageProps } from "@/types/props";
-import { index } from "@/routes/portal/tasks";
+import { index, create } from "@/routes/portal/tasks";
 import { statusBadgeClass, dateTime, initialsFormat } from "@/lib/helper";
 
 import Main from "@/layouts/main";
@@ -55,7 +55,7 @@ export default function Index({ values }: { values: Tasks }){
                         </div>
                         <div className="flex flex-row gap-2">
                             <Button asChild>
-                                <Link href="#">
+                                <Link href={create.url()}>
                                     <Plus className="size-4"/>
                                     Add Task
                                 </Link>

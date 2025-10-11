@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use App\Models\User;
+use App\Models\ProjectUser;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Validator;
@@ -30,4 +31,11 @@ class CustomValidator extends Validator {
         }
     }
 
+    public function validateIsMember($attribute, $value, $parameters)
+    {
+        $assigned_to = strtolower($value);
+        $project = (is_array($parameters) and isset($parameters[0])) ? $parameters[0] : "0";
+
+        return ProjectUser::where('project_id', $project)->where('user_id', $assigned_to)->exists();
+    }
 }

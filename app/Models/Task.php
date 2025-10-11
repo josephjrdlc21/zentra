@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Task extends Model{
     
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     /**
      * The database table used by the model.
@@ -44,8 +45,8 @@ class Task extends Model{
      * @var array
      */
     protected $casts = [
-        'start_date' => 'date',
-        'due_date' => 'date',
+        'start_date' => 'datetime',
+        'due_date' => 'datetime',
     ];
 
     public function assigned(): BelongsTo

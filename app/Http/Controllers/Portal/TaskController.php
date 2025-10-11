@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\Actions\Portal\Task\BoardList;
+use App\Actions\Portal\Task\TaskCreate;
+
 use App\Http\Requests\PageRequest;
-//use App\Http\Requests\Portal\TaskRequest;
+use App\Http\Requests\Portal\TaskRequest;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 
 use Inertia\Response;
+use Inertia\Inertia;
 use Carbon\Carbon;
 
 class TaskController extends Controller{
@@ -31,7 +35,38 @@ class TaskController extends Controller{
 
     public function board(PageRequest $request): Response {
         $this->data['page_title'] .= " - List";
+        $this->data['keyword'] = Str::lower($request->get('keyword'));
+
+        $action = new BoardList($this->data, $this->per_page);
+        $result = $action->execute();
+
+        $this->data['record'] = $result['record'];
 
         return inertia('portal/tasks/board', ['values' => $this->data]);
+    }
+
+    public function create(PageRequest $request): Response {
+        $this->data['page_title'] .= " - Create";
+        $this->data['projects'] = \App\Models\Project::where('status', '!=', 'cancelled')->pluck('name', 'id')->toArray();
+        $this->data['users'] = \App\Models\User::where('status', '!=', 'inactive')->pluck('name', 'id')->toArray();
+
+        return inertia('portal/tasks/create', ['values' => $this->data]);
+    }
+
+    public function store(TaskRequest $request): RedirectResponse {
+        $this->request['name'] = $request->input('name');
+        $this->request['start_date'] = $request->input('start_date');
+        $this->request['due_date'] = $request->input('due_date');
+        $this->request['project'] = $request->input('project');
+        $this->request['priority'] = $request->input('priority');
+        $this->request['assigned_to'] = $request->input('assigned_to');
+       
+        $action = new TaskCreate($this->request);
+        $result = $action->execute();
+
+        session()->flash('notification-status', $result['status']);
+        session()->flash('notification-msg', $result['message']);
+
+        return $result['success'] ? redirect()->route('portal.tasks.board') : redirect()->back();
     }
 }

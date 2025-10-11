@@ -1,11 +1,13 @@
+import { useState, useEffect } from "react";
 import { Head, Link, usePage, useForm, router } from "@inertiajs/react";
-import { Tasks } from "@/types/portal/task";
+import { useInView } from "react-intersection-observer";
+import { Boards } from "@/types/portal/task";
 import { PageProps } from "@/types/props";
-import { board } from "@/routes/portal/tasks";
-import { statusBadgeClass, dateTime, initialsFormat } from "@/lib/helper";
+import { board, create } from "@/routes/portal/tasks";
+import { initialsFormat, statusPriority, boardDate } from "@/lib/helper";
+import { cn } from '@/lib/utils';
 
 import Main from "@/layouts/main";
-import PagePagination from "@/components/page-paginate";
 import ConfirmDialog from "@/components/confirmation";
 import { Notification } from "@/components/notification";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
@@ -20,10 +22,50 @@ import { MoreHorizontal, Search, FunnelX, Plus, CircleDot, CircleEllipsis, Circl
     ContactRound, CalendarClock, Flag
 } from "lucide-react";
 
-export default function Board({ values }: { values: Tasks }){
+interface ResponseType {
+    props: {
+        values: {
+            record: {
+                data: any[];
+            };
+        };
+    };
+}
+
+export default function Board({ values }: { values: Boards }){
     const { flash } = usePage<PageProps>().props;
+    const { ref, inView, entry } = useInView({});
+
+    const [tasks, setTasks] = useState(values.record.data);
+    const [page, setPage] = useState(0);
     
     const form = useForm({keyword: values.keyword ?? '',});
+
+    const handleFilter = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        form.submit(board());
+    }
+
+    useEffect(() => {
+        if (inView) {
+            const nextPage = page + 1;
+            
+            router.reload({
+                data: { page: nextPage },
+                onSuccess: (response: any) => {
+                    setTasks((prev) => {
+                        const all = [...prev, ...response.props.values.record.data];
+                        const unique = all.filter(
+                            (task, index, self) => index === self.findIndex((t) => t.id === task.id)
+                        );
+                        return unique;
+                    });
+                    setPage(nextPage);
+                },
+            });
+        }
+    }, [inView])
 
     return(
         <Main>
@@ -38,7 +80,7 @@ export default function Board({ values }: { values: Tasks }){
 
             <h4 className="font-bold">All Tasks</h4>
             
-            <form>
+            <form onSubmit={handleFilter}>
                 <div className="flex flex-col md:flex-row justify-between py-3 gap-2">
                     <div className="flex flex-row gap-2">
                         <div className="w-[250px]">
@@ -55,7 +97,7 @@ export default function Board({ values }: { values: Tasks }){
                     </div>
                     <div className="flex flex-row gap-2">
                         <Button asChild>
-                            <Link href="#">
+                            <Link href={create.url()}>
                                 <Plus className="size-4"/>
                                 Add Task
                             </Link>
@@ -77,51 +119,59 @@ export default function Board({ values }: { values: Tasks }){
                         </div>
                     </Card>
 
-                    <Card className="p-0 mt-5">
-                        <div className="p-3">
-                            <div className="flex justify-between items-center">
-                                <p>Solutions Pages</p>
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" className="h-8 w-8 p-0">
-                                            <span className="sr-only">Open menu</span>
-                                            <MoreHorizontal />
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                        <DropdownMenuItem className="cursor-pointer" asChild>
-                                            <Link href="#">View</Link>
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            </div>
+                    {tasks
+                        ?.filter((task: any) => task.status === 'pending')
+                        .map((task: any) => (
+                        <Card key={task.id} className="p-0 mt-5">
+                            <div className="p-3">
+                                <div className="flex justify-between items-center">
+                                    <p className="text-sm">{task.name}</p>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                                <span className="sr-only">Open menu</span>
+                                                <MoreHorizontal />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end">
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                                <Link href="#">View</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
+                                                <Link href="#">Delete</Link>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </div>
 
-                            <Separator className="my-2"/>
+                                <Separator className="my-2"/>
 
-                            <div className="flex items-center gap-3 text-gray-500">
-                                <ContactRound className="size-4"/>
-                                <div className="flex items-center gap-3">
-                                    <Avatar>
-                                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                                        <AvatarFallback>JD</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <small>Juan Dela Cruz</small>
+                                <div className="flex items-center gap-3 text-gray-500">
+                                    <ContactRound className="size-4"/>
+                                    <div className="flex items-center gap-3">
+                                        <Avatar>
+                                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                            <AvatarFallback>{initialsFormat(task.assigned.name)}</AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <small>{task.assigned.name}</small>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className="flex items-center gap-3 text-gray-500 mt-2">
-                                <CalendarClock className="size-4"/>
-                                <p><small>March 17 - 09:00 AM</small></p>
-                            </div>
+                                <div className="flex items-center gap-3 text-gray-500 mt-2">
+                                    <CalendarClock className="size-4"/>
+                                    <p><small>{boardDate(task.end_date)}</small></p>
+                                </div>
 
-                            <div className="flex items-center gap-3 mt-2">
-                                <Flag className="size-4 text-blue-800"/>
-                                <p><small className="text-gray-500">Normal Priority</small></p>
+                                <div className="flex items-center gap-3 mt-2">
+                                    <Flag className={cn('size-4', statusPriority(task.priority))}/>
+                                    <p><small className="text-gray-500">{task.priority} priority</small></p>
+                                </div>
                             </div>
-                        </div>
-                    </Card>
+                        </Card>
+                    ))}
                 </div>
 
                 <div>
@@ -131,6 +181,60 @@ export default function Board({ values }: { values: Tasks }){
                             <Plus className="size-4"/>
                         </div>
                     </Card>
+
+                    {tasks
+                        ?.filter((task: any) => task.status === 'in_progress')
+                        .map((task: any) => (
+                        <Card key={task.id} className="p-0 mt-5">
+                            <div className="p-3">
+                                <div className="flex justify-between items-center">
+                                    <p className="text-sm">{task.name}</p>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                                <span className="sr-only">Open menu</span>
+                                                <MoreHorizontal />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end">
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                                <Link href="#">View</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
+                                                <Link href="#">Delete</Link>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </div>
+
+                                <Separator className="my-2"/>
+
+                                <div className="flex items-center gap-3 text-gray-500">
+                                    <ContactRound className="size-4"/>
+                                    <div className="flex items-center gap-3">
+                                        <Avatar>
+                                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                            <AvatarFallback>{initialsFormat(task.assigned.name)}</AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <small>{task.assigned.name}</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-3 text-gray-500 mt-2">
+                                    <CalendarClock className="size-4"/>
+                                    <p><small>{boardDate(task.end_date)}</small></p>
+                                </div>
+
+                                <div className="flex items-center gap-3 mt-2">
+                                    <Flag className={cn('size-4', statusPriority(task.priority))}/>
+                                    <p><small className="text-gray-500">{task.priority} priority</small></p>
+                                </div>
+                            </div>
+                        </Card>
+                    ))}
                 </div>
 
                 <div>
@@ -140,6 +244,60 @@ export default function Board({ values }: { values: Tasks }){
                             <Plus className="size-4"/>
                         </div>
                     </Card>
+
+                    {tasks
+                        ?.filter((task: any) => task.status === 'cancelled')
+                        .map((task: any) => (
+                        <Card key={task.id} className="p-0 mt-5">
+                            <div className="p-3">
+                                <div className="flex justify-between items-center">
+                                    <p className="text-sm">{task.name}</p>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                                <span className="sr-only">Open menu</span>
+                                                <MoreHorizontal />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end">
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                                <Link href="#">View</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
+                                                <Link href="#">Delete</Link>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </div>
+
+                                <Separator className="my-2"/>
+
+                                <div className="flex items-center gap-3 text-gray-500">
+                                    <ContactRound className="size-4"/>
+                                    <div className="flex items-center gap-3">
+                                        <Avatar>
+                                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                            <AvatarFallback>{initialsFormat(task.assigned.name)}</AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <small>{task.assigned.name}</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-3 text-gray-500 mt-2">
+                                    <CalendarClock className="size-4"/>
+                                    <p><small>{boardDate(task.end_date)}</small></p>
+                                </div>
+
+                                <div className="flex items-center gap-3 mt-2">
+                                    <Flag className={cn('size-4', statusPriority(task.priority))}/>
+                                    <p><small className="text-gray-500">{task.priority} priority</small></p>
+                                </div>
+                            </div>
+                        </Card>
+                    ))}
                 </div>
 
                 <div>
@@ -149,8 +307,63 @@ export default function Board({ values }: { values: Tasks }){
                             <Plus className="size-4"/>
                         </div>
                     </Card>
-                </div>
+
+                    {tasks
+                        ?.filter((task: any) => task.status === 'completed')
+                        .map((task: any) => (
+                        <Card key={task.id} className="p-0 mt-5">
+                            <div className="p-3">
+                                <div className="flex justify-between items-center">
+                                    <p className="text-sm">{task.name}</p>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                                <span className="sr-only">Open menu</span>
+                                                <MoreHorizontal />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end">
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                                <Link href="#">View</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
+                                                <Link href="#">Delete</Link>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </div>
+
+                                <Separator className="my-2"/>
+
+                                <div className="flex items-center gap-3 text-gray-500">
+                                    <ContactRound className="size-4"/>
+                                    <div className="flex items-center gap-3">
+                                        <Avatar>
+                                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                            <AvatarFallback>{initialsFormat(task.assigned.name)}</AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <small>{task.assigned.name}</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-3 text-gray-500 mt-2">
+                                    <CalendarClock className="size-4"/>
+                                    <p><small>{boardDate(task.end_date)}</small></p>
+                                </div>
+
+                                <div className="flex items-center gap-3 mt-2">
+                                    <Flag className={cn('size-4', statusPriority(task.priority))}/>
+                                    <p><small className="text-gray-500">{task.priority} priority</small></p>
+                                </div>
+                            </div>
+                        </Card>
+                    ))}
+                </div>  
             </div>
+            <div ref={ref} className="text-center mt-5">Loading...</div>
         </Main>
     );
 }
