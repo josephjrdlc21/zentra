@@ -14,7 +14,7 @@ export default function PagePagination({ links }: PaginationProps) {
   if (!links || links.length === 0) return null
 
   return (
-        <Pagination className="py-3 justify-center">
+        <Pagination className="py-3 justify-center overflow-y-auto">
             <PaginationContent>
                 {links.map((link, index) => {
                 const isPrev = index === 0

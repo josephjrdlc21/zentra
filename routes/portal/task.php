@@ -8,4 +8,5 @@ Route::middleware('portal.auth')->prefix('tasks')->name('tasks.')->group(functio
     Route::get('/board', [TaskController::class, 'board'])->name('board');
     Route::get('/create', [TaskController::class, 'create'])->name('create');
     Route::post('/store', [TaskController::class, 'store'])->name('store');
+    Route::get('/show/{id?}', [TaskController::class, 'show'])->name('show');
 });

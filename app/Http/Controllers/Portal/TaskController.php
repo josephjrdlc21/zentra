@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Actions\Portal\Task\BoardList;
+use App\Actions\Portal\Task\TaskList;
 use App\Actions\Portal\Task\TaskCreate;
 
 use App\Http\Requests\PageRequest;
@@ -29,6 +30,12 @@ class TaskController extends Controller{
 
     public function index(PageRequest $request): Response {
         $this->data['page_title'] .= " - List";
+        $this->data['keyword'] = Str::lower($request->get('keyword'));
+
+        $action = new TaskList($this->data, $this->per_page);
+        $result = $action->execute();
+
+        $this->data['record'] = $result['record'];
 
         return inertia('portal/tasks/index', ['values' => $this->data]);
     }
@@ -68,5 +75,20 @@ class TaskController extends Controller{
         session()->flash('notification-msg', $result['message']);
 
         return $result['success'] ? redirect()->route('portal.tasks.board') : redirect()->back();
+    }
+
+    public function show(PageRequest $request, ?int $id = null): Response|RedirectResponse {
+        $this->data['page_title'] .= " - Show Task";
+
+        $this->data['tasks'] = \App\Models\Task::with(['assigned', 'project'])->find($id);
+
+        if(!$this->data['tasks']){
+            session()->flash('notification-status', 'failed');
+            session()->flash('notification-msg', "Record not found.");
+
+            return redirect()->route('portal.tasks.board');
+        }
+
+        return inertia('portal/tasks/show', ['values' => $this->data]);
     }
 }

@@ -9,8 +9,10 @@ export function strTitleCase(str: string): string {
 export function statusBadgeClass(status: string): string {
     switch (status.toLowerCase()){
         case "pending":
+        case "normal":
             return "default";
         case "in_progress":
+        case "medium":
             return "warning";
         case "on_hold":
             return "secondary"
@@ -19,6 +21,7 @@ export function statusBadgeClass(status: string): string {
             return "success";
         case "inactive":
         case "cancelled":
+        case "high":
             return "destructive";
         default:
             return "default";
@@ -132,3 +135,15 @@ export function statusPriority(status: string): string {
             return "default";
     }
 }
+
+export function textSpace(str: string): string {
+    return str.replace(/_/g, ' ');
+};
+
+export function titleCase (str: string): string {
+    return str
+        .toLowerCase()
+        .split(/[\s_]+/)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+};

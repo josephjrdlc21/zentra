@@ -1,12 +1,11 @@
-import { Head, Link, usePage, useForm, router } from "@inertiajs/react";
+import { Head, Link, usePage, useForm } from "@inertiajs/react";
 import { Tasks } from "@/types/portal/task";
 import { PageProps } from "@/types/props";
-import { index, create } from "@/routes/portal/tasks";
-import { statusBadgeClass, dateTime, initialsFormat } from "@/lib/helper";
+import { index, create, show } from "@/routes/portal/tasks";
+import { statusBadgeClass, textSpace, initialsFormat, boardDate } from "@/lib/helper";
 
 import Main from "@/layouts/main";
 import PagePagination from "@/components/page-paginate";
-import ConfirmDialog from "@/components/confirmation";
 import { Notification } from "@/components/notification";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,7 +23,13 @@ export default function Index({ values }: { values: Tasks }){
     
     const form = useForm({keyword: values.keyword ?? '',});
 
-     return(
+    const handleFilter = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        form.submit(index());
+    }
+
+    return(
         <Main>
             <Head title={values.page_title}>
                 <meta name="description" content="List of tasks for Zentra app." />
@@ -38,7 +43,7 @@ export default function Index({ values }: { values: Tasks }){
             <Card className="p-0 gap-0">
                 <h4 className="font-bold px-6 pt-5">All Tasks</h4>
 
-                <form>
+                <form onSubmit={handleFilter}>
                     <div className="flex flex-col md:flex-row justify-between px-5 py-5 gap-2">
                         <div className="flex flex-row gap-2">
                             <div className="w-[250px]">
@@ -82,44 +87,59 @@ export default function Index({ values }: { values: Tasks }){
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow>
-                            <TableCell className="pl-5">Solution Pages</TableCell>
-                            <TableCell>
-                                <Badge variant="warning"><Flag /> Medium</Badge>
-                            </TableCell>
-                            <TableCell>
-                                <div className="flex items-center gap-3">
-                                    <Avatar>
-                                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                                        <AvatarFallback>JD</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <small>Juan Dela Cruz</small>
+                        {values?.record?.data && values?.record?.data.length > 0 ? ((values?.record?.data.map)(task => (
+                            <TableRow key={task.id}>
+                                <TableCell className="pl-5">{task.name}</TableCell>
+                                <TableCell>
+                                    <Badge variant={statusBadgeClass(task.priority) as any}><Flag /> {task.priority}</Badge>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="flex items-center gap-3">
+                                        <Avatar>
+                                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                            <AvatarFallback>{initialsFormat(task.assigned.name)}</AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <small>{task.assigned.name}</small>
+                                        </div>
                                     </div>
-                                </div>
-                            </TableCell>
-                            <TableCell>
-                                <Badge variant="default"><CircleDot /> Pending</Badge>
-                            </TableCell>
-                            <TableCell>March 17 - 09:00 AM</TableCell>
-                            <TableCell className="text-center pr-5">
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" className="h-8 w-8 p-0">
-                                            <span className="sr-only">Open menu</span>
-                                            <MoreHorizontal />
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                        <DropdownMenuItem className="cursor-pointer" asChild>
-                                            <Link href="#">View</Link>
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            </TableCell>
-                        </TableRow>
+                                </TableCell>
+                                <TableCell>
+                                    <Badge variant={statusBadgeClass(task.status) as any}> {textSpace(task.status)}</Badge>
+                                </TableCell>
+                                <TableCell>{boardDate(task.end_date)}</TableCell>
+                                <TableCell className="text-center pr-5">
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                                <span className="sr-only">Open menu</span>
+                                                <MoreHorizontal />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end">
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                                <Link href={show(task.id)}>View</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
+                                                <Link href="#">Delete</Link>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </TableCell>
+                            </TableRow>
+                        ))
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={6} className="text-center py-4">No Record Found.</TableCell>
+                            </TableRow>
+                        )}
                     </TableBody>
                 </Table>
+
+                <Separator/>
+                
+                <PagePagination links={values.record.links}/>
             </Card>
         </Main>
     );

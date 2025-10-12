@@ -3,12 +3,11 @@ import { Head, Link, usePage, useForm, router } from "@inertiajs/react";
 import { useInView } from "react-intersection-observer";
 import { Boards } from "@/types/portal/task";
 import { PageProps } from "@/types/props";
-import { board, create } from "@/routes/portal/tasks";
+import { board, create, show } from "@/routes/portal/tasks";
 import { initialsFormat, statusPriority, boardDate } from "@/lib/helper";
 import { cn } from '@/lib/utils';
 
 import Main from "@/layouts/main";
-import ConfirmDialog from "@/components/confirmation";
 import { Notification } from "@/components/notification";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -34,10 +33,11 @@ interface ResponseType {
 
 export default function Board({ values }: { values: Boards }){
     const { flash } = usePage<PageProps>().props;
-    const { ref, inView, entry } = useInView({});
+    const { ref, inView } = useInView({});
 
     const [tasks, setTasks] = useState(values.record.data);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
+    const lastPage = values.record.last_page;
     
     const form = useForm({keyword: values.keyword ?? '',});
 
@@ -49,10 +49,10 @@ export default function Board({ values }: { values: Boards }){
 
     useEffect(() => {
         if (inView) {
-            const nextPage = page + 1;
+            const nextPage = page === lastPage ? page : page + 1;
             
             router.reload({
-                data: { page: nextPage },
+                data: { page: nextPage, keyword: form.data.keyword},
                 onSuccess: (response: any) => {
                     setTasks((prev) => {
                         const all = [...prev, ...response.props.values.record.data];
@@ -135,7 +135,7 @@ export default function Board({ values }: { values: Boards }){
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
                                             <DropdownMenuItem className="cursor-pointer" asChild>
-                                                <Link href="#">View</Link>
+                                                <Link href={show(task.id)}>View</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
@@ -147,7 +147,7 @@ export default function Board({ values }: { values: Boards }){
 
                                 <Separator className="my-2"/>
 
-                                <div className="flex items-center gap-3 text-gray-500">
+                                <div className="flex items-center gap-3 text-gray-500 dark:text-gray-200">
                                     <ContactRound className="size-4"/>
                                     <div className="flex items-center gap-3">
                                         <Avatar>
@@ -160,14 +160,14 @@ export default function Board({ values }: { values: Boards }){
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 text-gray-500 mt-2">
+                                <div className="flex items-center gap-3 text-gray-500 dark:text-gray-200 mt-2">
                                     <CalendarClock className="size-4"/>
                                     <p><small>{boardDate(task.end_date)}</small></p>
                                 </div>
 
                                 <div className="flex items-center gap-3 mt-2">
                                     <Flag className={cn('size-4', statusPriority(task.priority))}/>
-                                    <p><small className="text-gray-500">{task.priority} priority</small></p>
+                                    <p><small className="text-gray-500 dark:text-gray-200">{task.priority} priority</small></p>
                                 </div>
                             </div>
                         </Card>
@@ -198,7 +198,7 @@ export default function Board({ values }: { values: Boards }){
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
                                             <DropdownMenuItem className="cursor-pointer" asChild>
-                                                <Link href="#">View</Link>
+                                                <Link href={show(task.id)}>View</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
@@ -210,7 +210,7 @@ export default function Board({ values }: { values: Boards }){
 
                                 <Separator className="my-2"/>
 
-                                <div className="flex items-center gap-3 text-gray-500">
+                                <div className="flex items-center gap-3 text-gray-500 dark:text-gray-200">
                                     <ContactRound className="size-4"/>
                                     <div className="flex items-center gap-3">
                                         <Avatar>
@@ -223,14 +223,14 @@ export default function Board({ values }: { values: Boards }){
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 text-gray-500 mt-2">
+                                <div className="flex items-center gap-3 text-gray-500 dark:text-gray-200 mt-2">
                                     <CalendarClock className="size-4"/>
                                     <p><small>{boardDate(task.end_date)}</small></p>
                                 </div>
 
                                 <div className="flex items-center gap-3 mt-2">
                                     <Flag className={cn('size-4', statusPriority(task.priority))}/>
-                                    <p><small className="text-gray-500">{task.priority} priority</small></p>
+                                    <p><small className="text-gray-500 dark:text-gray-200">{task.priority} priority</small></p>
                                 </div>
                             </div>
                         </Card>
@@ -261,7 +261,7 @@ export default function Board({ values }: { values: Boards }){
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
                                             <DropdownMenuItem className="cursor-pointer" asChild>
-                                                <Link href="#">View</Link>
+                                                <Link href={show(task.id)}>View</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
@@ -273,7 +273,7 @@ export default function Board({ values }: { values: Boards }){
 
                                 <Separator className="my-2"/>
 
-                                <div className="flex items-center gap-3 text-gray-500">
+                                <div className="flex items-center gap-3 text-gray-500 dark:text-gray-200">
                                     <ContactRound className="size-4"/>
                                     <div className="flex items-center gap-3">
                                         <Avatar>
@@ -286,14 +286,14 @@ export default function Board({ values }: { values: Boards }){
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 text-gray-500 mt-2">
+                                <div className="flex items-center gap-3 text-gray-500 dark:text-gray-200 mt-2">
                                     <CalendarClock className="size-4"/>
                                     <p><small>{boardDate(task.end_date)}</small></p>
                                 </div>
 
                                 <div className="flex items-center gap-3 mt-2">
                                     <Flag className={cn('size-4', statusPriority(task.priority))}/>
-                                    <p><small className="text-gray-500">{task.priority} priority</small></p>
+                                    <p><small className="text-gray-500 dark:text-gray-200">{task.priority} priority</small></p>
                                 </div>
                             </div>
                         </Card>
@@ -324,7 +324,7 @@ export default function Board({ values }: { values: Boards }){
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
                                             <DropdownMenuItem className="cursor-pointer" asChild>
-                                                <Link href="#">View</Link>
+                                                <Link href={show(task.id)}>View</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
@@ -336,7 +336,7 @@ export default function Board({ values }: { values: Boards }){
 
                                 <Separator className="my-2"/>
 
-                                <div className="flex items-center gap-3 text-gray-500">
+                                <div className="flex items-center gap-3 text-gray-500 dark:text-gray-200">
                                     <ContactRound className="size-4"/>
                                     <div className="flex items-center gap-3">
                                         <Avatar>
@@ -349,21 +349,25 @@ export default function Board({ values }: { values: Boards }){
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 text-gray-500 mt-2">
+                                <div className="flex items-center gap-3 text-gray-500 dark:text-gray-200 mt-2">
                                     <CalendarClock className="size-4"/>
                                     <p><small>{boardDate(task.end_date)}</small></p>
                                 </div>
 
                                 <div className="flex items-center gap-3 mt-2">
                                     <Flag className={cn('size-4', statusPriority(task.priority))}/>
-                                    <p><small className="text-gray-500">{task.priority} priority</small></p>
+                                    <p><small className="text-gray-500 dark:text-gray-200">{task.priority} priority</small></p>
                                 </div>
                             </div>
                         </Card>
                     ))}
                 </div>  
             </div>
-            <div ref={ref} className="text-center mt-5">Loading...</div>
+            {page != lastPage && 
+                <div className="flex items-center justify-center mt-5">
+                    <div ref={ref} className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-500 dark:border-gray-200"></div>
+                </div>
+            }
         </Main>
     );
 }

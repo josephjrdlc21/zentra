@@ -28,4 +28,15 @@ export interface Tasks extends Title {
 export interface Task extends Title {
     projects: { [id: string]: string };
     users: { [id: string]: string };
+    tasks: {
+        id: number;
+        assigned: any;
+        project: any;
+        name: string;
+        priority: string;
+        status: string;
+        start_date: string;
+        end_date: string;
+        created_at: string;
+    }
 }
