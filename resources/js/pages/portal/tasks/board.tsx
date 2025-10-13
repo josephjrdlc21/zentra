@@ -6,6 +6,7 @@ import { PageProps } from "@/types/props";
 import { board, create, show } from "@/routes/portal/tasks";
 import { initialsFormat, statusPriority, boardDate } from "@/lib/helper";
 import { cn } from '@/lib/utils';
+import { useVirtualizer, useWindowVirtualizer } from "@tanstack/react-virtual";
 
 import Main from "@/layouts/main";
 import { Notification } from "@/components/notification";
@@ -20,16 +21,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { MoreHorizontal, Search, FunnelX, Plus, CircleDot, CircleEllipsis, CircleX, CircleCheck, 
     ContactRound, CalendarClock, Flag
 } from "lucide-react";
-
-interface ResponseType {
-    props: {
-        values: {
-            record: {
-                data: any[];
-            };
-        };
-    };
-}
 
 export default function Board({ values }: { values: Boards }){
     const { flash } = usePage<PageProps>().props;
