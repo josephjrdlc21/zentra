@@ -18,7 +18,7 @@ class BoardList{
             $query->whereRaw("LOWER(name) LIKE '%{$this->data['keyword']}%'");
         })
         ->latest()
-        ->paginate($this->per_page);
+        ->paginate(15);
 
         return ['record' => $record];
     }

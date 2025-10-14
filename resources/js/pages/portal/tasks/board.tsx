@@ -3,7 +3,7 @@ import { Head, Link, usePage, useForm, router } from "@inertiajs/react";
 import { useInView } from "react-intersection-observer";
 import { Boards } from "@/types/portal/task";
 import { PageProps } from "@/types/props";
-import { board, create, show } from "@/routes/portal/tasks";
+import { board, create, show, index, edit } from "@/routes/portal/tasks";
 import { initialsFormat, statusPriority, boardDate } from "@/lib/helper";
 import { cn } from '@/lib/utils';
 
@@ -21,23 +21,12 @@ import { MoreHorizontal, Search, FunnelX, Plus, CircleDot, CircleEllipsis, Circl
     ContactRound, CalendarClock, Flag
 } from "lucide-react";
 
-interface ResponseType {
-    props: {
-        values: {
-            record: {
-                data: any[];
-            };
-        };
-    };
-}
-
 export default function Board({ values }: { values: Boards }){
     const { flash } = usePage<PageProps>().props;
     const { ref, inView } = useInView({});
 
     const [tasks, setTasks] = useState(values.record.data);
     const [page, setPage] = useState(1);
-    const lastPage = values.record.last_page;
     
     const form = useForm({keyword: values.keyword ?? '',});
 
@@ -48,8 +37,8 @@ export default function Board({ values }: { values: Boards }){
     }
 
     useEffect(() => {
-        if (inView) {
-            const nextPage = page === lastPage ? page : page + 1;
+        if (inView && page <= 5) {
+            const nextPage = page === 5 ? page : page + 1;
             
             router.reload({
                 data: { page: nextPage, keyword: form.data.keyword},
@@ -137,6 +126,9 @@ export default function Board({ values }: { values: Boards }){
                                             <DropdownMenuItem className="cursor-pointer" asChild>
                                                 <Link href={show(task.id)}>View</Link>
                                             </DropdownMenuItem>
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                                <Link href={edit(task.id)}>Edit</Link>
+                                            </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
                                                 <Link href="#">Delete</Link>
@@ -199,6 +191,9 @@ export default function Board({ values }: { values: Boards }){
                                         <DropdownMenuContent align="end">
                                             <DropdownMenuItem className="cursor-pointer" asChild>
                                                 <Link href={show(task.id)}>View</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                                <Link href={edit(task.id)}>Edit</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
@@ -263,6 +258,9 @@ export default function Board({ values }: { values: Boards }){
                                             <DropdownMenuItem className="cursor-pointer" asChild>
                                                 <Link href={show(task.id)}>View</Link>
                                             </DropdownMenuItem>
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                                <Link href={edit(task.id)}>Edit</Link>
+                                            </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
                                                 <Link href="#">Delete</Link>
@@ -326,6 +324,9 @@ export default function Board({ values }: { values: Boards }){
                                             <DropdownMenuItem className="cursor-pointer" asChild>
                                                 <Link href={show(task.id)}>View</Link>
                                             </DropdownMenuItem>
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                                <Link href={edit(task.id)}>Edit</Link>
+                                            </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
                                                 <Link href="#">Delete</Link>
@@ -363,11 +364,24 @@ export default function Board({ values }: { values: Boards }){
                     ))}
                 </div>  
             </div>
-            {page != lastPage && 
+            {page < 5 && values.keyword === '' && (
                 <div className="flex items-center justify-center mt-5">
-                    <div ref={ref} className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-500 dark:border-gray-200"></div>
+                    <div
+                    ref={ref}
+                    className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-500 dark:border-gray-200"
+                    ></div>
                 </div>
-            }
+            )}
+
+            {(page > 4 || values.keyword !== '') && (
+                <div className="flex items-center justify-center mt-5">
+                    <Button variant="secondary" asChild>
+                        <Link href={index.url()}>
+                            <Search className="size-4" /> See More Old Works...
+                        </Link>
+                    </Button>
+                </div>
+            )}
         </Main>
     );
 }

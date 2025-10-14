@@ -1,7 +1,7 @@
 import { Head, Link, usePage, useForm } from "@inertiajs/react";
 import { Tasks } from "@/types/portal/task";
 import { PageProps } from "@/types/props";
-import { index, create, show } from "@/routes/portal/tasks";
+import { index, create, show, edit } from "@/routes/portal/tasks";
 import { statusBadgeClass, textSpace, initialsFormat, boardDate } from "@/lib/helper";
 
 import Main from "@/layouts/main";
@@ -119,6 +119,9 @@ export default function Index({ values }: { values: Tasks }){
                                         <DropdownMenuContent align="end">
                                             <DropdownMenuItem className="cursor-pointer" asChild>
                                                 <Link href={show(task.id)}>View</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                                <Link href={edit(task.id)}>Edit</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem className="cursor-pointer text-red-500" asChild>

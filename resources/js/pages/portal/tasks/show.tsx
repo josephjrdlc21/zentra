@@ -1,9 +1,11 @@
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { Task } from "@/types/portal/task";
-import { board } from "@/routes/portal/tasks";
+import { board, edit, update_status } from "@/routes/portal/tasks";
+import { PageProps } from '@/types/props';
 import { statusBadgeClass, dateOnly, initialsFormat, textSpace, boardDate, titleCase } from "@/lib/helper";
 
 import Main from "@/layouts/main";
+import { Notification } from "@/components/notification";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -14,8 +16,17 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Flag } from "lucide-react";
 
 export default function Show({ values }: { values: Task }){
+    const { flash } = usePage<PageProps>().props;
 
-    console.log(values);
+    const handleStatus = (id: number, status: string) => {
+        const statuses = {
+            query: {
+                status: status,
+            },
+        };
+
+        router.put(update_status.url(id, statuses));
+    }
     
     return(
         <Main>
@@ -31,6 +42,10 @@ export default function Show({ values }: { values: Task }){
                     </CardHeader>
 
                     <CardContent>
+                        {flash.message && <div className="mb-5">
+                            <Notification status={flash.status} message={flash.message} />
+                        </div>}
+
                         <h2 className="text-lg font-semibold">{values.tasks.name}</h2>
                         <div className="flex gap-2 items-center mt-5">
                             <Avatar>
@@ -68,7 +83,7 @@ export default function Show({ values }: { values: Task }){
                             </Link>
                         </Button>
                         <Button variant={"secondary"} asChild>
-                            <Link href="#">
+                            <Link href={edit.url(values.tasks.id)}>
                                 Edit
                             </Link>
                         </Button>
@@ -80,10 +95,18 @@ export default function Show({ values }: { values: Task }){
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuItem>Pending</DropdownMenuItem>
-                                <DropdownMenuItem>In Progress</DropdownMenuItem>
-                                <DropdownMenuItem>Completed</DropdownMenuItem>
-                                <DropdownMenuItem>Cancelled</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleStatus(values.tasks.id, "pending")}>
+                                    Pending
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleStatus(values.tasks.id, "in_progress")}>
+                                    In Progress
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleStatus(values.tasks.id, "completed")}>
+                                    Completed
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleStatus(values.tasks.id, "cancelled")}>
+                                    Cancelled
+                                </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </CardFooter>
