@@ -19,7 +19,6 @@ import {
     PanelsTopLeft, 
     ListTodo, 
     FileChartColumnIncreasing, 
-    BookUser,
     UserCog,
     BrickWallShield,
     Logs,
@@ -46,7 +45,7 @@ const data = {
                     isActive: location.pathname === dashboard.url(),
                 },
                 {
-                    title: 'Users',
+                    title: 'Team Members',
                     url: users.url(),
                     icon: <Users className="size-4" />,
                     isActive: location.pathname === users.url(),
@@ -56,11 +55,6 @@ const data = {
                     url: projects.url(),
                     icon: <PanelsTopLeft className="size-4" />,
                     isActive: location.pathname === projects.url(),
-                },
-                {
-                    title: 'Team Members',
-                    url: '#',
-                    icon: <BookUser className="size-4" />,
                 },
                 {
                     title: 'Analytics',
