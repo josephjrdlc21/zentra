@@ -30,6 +30,7 @@ import { index as users } from '@/routes/portal/users';
 import { index as projects } from '@/routes/portal/projects';
 import { index as tasks } from '@/routes/portal/tasks';
 import { board as boards } from '@/routes/portal/tasks';
+import { index as reports } from '@/routes/portal/reports';
 
 const data = {
     versions: ['1.0.1'],
@@ -57,8 +58,8 @@ const data = {
                     isActive: location.pathname === projects.url(),
                 },
                 {
-                    title: 'Analytics',
-                    url: '#',
+                    title: 'Reports',
+                    url: reports.url(),
                     icon: <FileChartColumnIncreasing className="size-4" />,
                 },
                 {

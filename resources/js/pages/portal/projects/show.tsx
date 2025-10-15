@@ -1,7 +1,7 @@
 import { Head, Link } from "@inertiajs/react";
 import { Project } from "@/types/portal/project";
 import { index, edit } from "@/routes/portal/projects";
-import { statusBadgeClass, dateOnly, initialsFormat, dateTime } from "@/lib/helper";
+import { statusBadgeClass, dateOnly, initialsFormat, boardDate } from "@/lib/helper";
 
 import Main from "@/layouts/main";
 import { Separator } from "@/components/ui/separator";
@@ -63,7 +63,7 @@ export default function Show({ values }: { values: Project }){
                                 </div>
                                 <div className="flex flex-col md:flex-row gap-3 mt-6">
                                     <p><b>Created:</b></p>
-                                    <p className="text-gray-500 dark:text-gray-200">{dateTime(values.project.created_at)}</p>
+                                    <p className="text-gray-500 dark:text-gray-200">{boardDate(values.project.created_at)}</p>
                                 </div>
                             </div>
                         </div>
@@ -93,41 +93,6 @@ export default function Show({ values }: { values: Project }){
                                             <TableCell colSpan={2} className="text-center py-4">No Members Yet.</TableCell>
                                         </TableRow>
                                     )}
-                                </TableBody>
-                            </Table>
-                        </div>
-                        <div className="text-sm mt-10">
-                            <p><b>Recent Tasks</b></p>
-                            <Table className="[&_tr]:border-0 [&_td]:border-0 [&_th]:border-0 [&_td]:pl-0 [&_tr:hover]:bg-transparent">
-                                <TableBody>
-                                    <TableRow>
-                                        <TableCell className="text-gray-500 dark:text-gray-200">Landing Page</TableCell>
-                                        <TableCell>
-                                            <Badge variant="default">pending</Badge>
-                                        </TableCell>
-                                        <TableCell className="text-gray-500 dark:text-gray-200">10/09/2025, 09:23 PM</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="text-gray-500 dark:text-gray-200">Login Authentication</TableCell>
-                                        <TableCell>
-                                            <Badge variant="default">pending</Badge>
-                                        </TableCell>
-                                        <TableCell className="text-gray-500 dark:text-gray-200">10/09/2025, 09:23 PM</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="text-gray-500 dark:text-gray-200">Users Management</TableCell>
-                                        <TableCell>
-                                            <Badge variant="default">pending</Badge>
-                                        </TableCell>
-                                        <TableCell className="text-gray-500 dark:text-gray-200">10/09/2025, 09:23 PM</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="text-gray-500 dark:text-gray-200">Activity Logs</TableCell>
-                                        <TableCell>
-                                            <Badge variant="default">pending</Badge>
-                                        </TableCell>
-                                        <TableCell className="text-gray-500 dark:text-gray-200">10/09/2025, 09:23 PM</TableCell>
-                                    </TableRow>
                                 </TableBody>
                             </Table>
                         </div>

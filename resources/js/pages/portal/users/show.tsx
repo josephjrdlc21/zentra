@@ -1,7 +1,7 @@
 import { Head, Link } from "@inertiajs/react";
 import { User } from "@/types/portal/user";
 import { index, edit } from "@/routes/portal/users";
-import { statusBadgeClass, dateTime } from "@/lib/helper";
+import { statusBadgeClass, boardDate } from "@/lib/helper";
 
 import Main from "@/layouts/main";
 import { Separator } from "@/components/ui/separator";
@@ -47,7 +47,7 @@ export default function Show({ values }: { values: User }){
                                 </div>
                                 <div className="flex flex-col md:flex-row gap-3 mt-2">
                                     <p><b>Created:</b></p>
-                                    <p>{dateTime(values.user.created_at)}</p>
+                                    <p>{boardDate(values.user.created_at)}</p>
                                 </div>
                             </div>
                             
@@ -58,7 +58,7 @@ export default function Show({ values }: { values: User }){
                                 </div>
                                 <div className="flex flex-col md:flex-row gap-3 mt-2">
                                     <p><b>Updated:</b></p>
-                                    <p>{dateTime(values.user.updated_at)}</p>
+                                    <p>{boardDate(values.user.updated_at)}</p>
                                 </div>
                             </div>
                         </div>

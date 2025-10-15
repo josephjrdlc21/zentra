@@ -2,7 +2,7 @@ import { Head, Link, usePage, useForm, router } from "@inertiajs/react";
 import { Users } from "@/types/portal/user";
 import { PageProps } from "@/types/props";
 import { index, create, edit, show, update_status, update_password, deleteMethod } from "@/routes/portal/users";
-import { statusBadgeClass, dateTime, initialsFormat } from "@/lib/helper";
+import { statusBadgeClass, boardDate, initialsFormat } from "@/lib/helper";
 
 import Main from "@/layouts/main";
 import PagePagination from "@/components/page-paginate";
@@ -117,7 +117,7 @@ export default function Index({ values }: { values: Users }){
                                 <TableCell>
                                     <Badge variant={statusBadgeClass(user.status) as any}>{user.status}</Badge>
                                 </TableCell>
-                                <TableCell>{dateTime(user.created_at)}</TableCell>
+                                <TableCell>{boardDate(user.created_at)}</TableCell>
                                 <TableCell className="text-center pr-5">
                                     <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
