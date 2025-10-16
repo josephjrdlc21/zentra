@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Portal;
 
-//use App\Actions\Portal\Task\ReportList;
+use App\Actions\Portal\Report\ReportList;
+use App\Actions\Portal\Report\ReportExport;
+
+use App\Exports\ReportsExport;
 
 use App\Http\Requests\PageRequest;
 
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
-
 use Inertia\Response;
 use Inertia\Inertia;
 use Carbon\Carbon;
@@ -29,11 +32,22 @@ class ReportController extends Controller{
         $this->data['page_title'] .= " - List";
         $this->data['keyword'] = Str::lower($request->get('keyword'));
 
-        // $action = new TaskList($this->data, $this->per_page);
-        // $result = $action->execute();
+        $action = new ReportList($this->data, $this->per_page);
+        $result = $action->execute();
 
-        // $this->data['record'] = $result['record'];
+        $this->data['record'] = $result['record'];
 
         return inertia('portal/reports/index', ['values' => $this->data]);
+    }
+
+    public function export_report(PageRequest $request) {
+        $this->data['keyword'] = Str::lower($request->get('keyword'));
+
+        $action = new ReportExport($this->data);
+        $result = $action->execute();
+
+        return Excel::download(
+            new ReportsExport($result['record']), 'Task_Report_' . Carbon::now()->format('Y-m-d') . '.xlsx'
+        );
     }
 }

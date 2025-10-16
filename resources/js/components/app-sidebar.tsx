@@ -61,6 +61,7 @@ const data = {
                     title: 'Reports',
                     url: reports.url(),
                     icon: <FileChartColumnIncreasing className="size-4" />,
+                    isActive: location.pathname === reports.url(),
                 },
                 {
                     title: 'Activity Logs',
