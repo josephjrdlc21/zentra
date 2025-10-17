@@ -57,14 +57,15 @@ export default function Index({ values }: { values: Reports }){
                         </div>
                         <div className="flex flex-row gap-2">
                             <Button variant="destructive" asChild>
-                                <Link href={export_report.url(
-                                    { query: {
-                                        keyword: form.data.keyword,
-                                    },}
-                                )}>
-                                    <Download className="size-4"/>
+                                <a
+                                    href={export_report.url({
+                                        query: { keyword: form.data.keyword },
+                                    })}
+                                    download
+                                >
+                                    <Download className="size-4" />
                                     Export
-                                </Link>
+                                </a>
                             </Button>
                         </div>
                     </div>
