@@ -92,7 +92,6 @@ export default function Index({ values }: { values: Projects }){
                             <TableRow key={project.id}>
                                 <TableCell className="pl-5">
                                     <span className="text-blue-400">{project.name}</span><br/>
-                                    <small>6 of 10 tasks completed</small>
                                 </TableCell>
                                 <TableCell>
                                     <Badge variant={statusBadgeClass(project.status) as any}>{project.status}</Badge>
