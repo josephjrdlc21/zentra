@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\Actions\Portal\Main\DashboardList;
+
 use App\Http\Requests\PageRequest;
 
 use Inertia\Response;
@@ -17,6 +19,11 @@ class MainController extends Controller{
 
     public function index(PageRequest $request): Response {
         $this->data['page_title'] .= " - Dashboard";
+
+        $action = new DashboardList();
+        $result = $action->execute();
+
+        $this->data['record'] = $result['record'];
 
         return inertia('portal/index', ['values' => $this->data]);
     }
