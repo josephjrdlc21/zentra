@@ -1,6 +1,7 @@
 import { Head, Link } from "@inertiajs/react";
-import { User } from "@/types/portal/user";
-import { index, edit } from "@/routes/portal/users";
+import { index } from '@/routes/portal';
+import { edit_password } from "@/routes/portal/profile";
+import { Profile } from "@/types/portal/profile";
 import { statusBadgeClass, boardDate } from "@/lib/helper";
 
 import Main from "@/layouts/main";
@@ -8,32 +9,26 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
-export default function Show({ values }: { values: User }){
+export default function Index({ values }: { values: Profile }){
     return(
         <Main>
             <Head title={values.page_title}>
-                <meta name="description" content="Show user for Zentra app." />
+                <meta name="description" content="Profile for Zentra app." />
             </Head>
 
             <div className="w-full flex justify-center">
-
                 <Card className="w-full max-w-2xl">
-                    <CardHeader>
-                        <CardTitle className="text-lg">Member details</CardTitle>
-                        <CardDescription>Manage the personal information and account settings of the selected user.</CardDescription>
-                    </CardHeader>
-
                     <CardContent>
                         <div className="flex flex-col md:flex-row gap-5 md:items-center">
                             <Avatar className="h-12 w-12">
                                 <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn"/>
-                                <AvatarFallback>{values.user.name}</AvatarFallback>
+                                <AvatarFallback>{values.profile.name}</AvatarFallback>
                             </Avatar>
                             <div>
-                                <span className="text-blue-400">{values.user.name}</span><br/>
-                                <small>{values.user.email}</small>
+                                <span className="text-blue-400">{values.profile.name}</span><br/>
+                                <small>{values.profile.email}</small>
                             </div>
                         </div>
 
@@ -47,18 +42,18 @@ export default function Show({ values }: { values: User }){
                                 </div>
                                 <div className="flex flex-col md:flex-row gap-3 mt-2">
                                     <p><b>Created:</b></p>
-                                    <p>{boardDate(values.user.created_at)}</p>
+                                    <p>{boardDate(values.profile.created_at)}</p>
                                 </div>
                             </div>
                             
                             <div className="text-sm">
                                 <div className="flex flex-col md:flex-row gap-3 mt-2">
                                     <p><b>Status:</b></p>
-                                    <Badge variant={statusBadgeClass(values.user.status) as any}>{values.user.status}</Badge>
+                                    <Badge variant={statusBadgeClass(values.profile.status) as any}>{values.profile.status}</Badge>
                                 </div>
                                 <div className="flex flex-col md:flex-row gap-3 mt-2">
                                     <p><b>Updated:</b></p>
-                                    <p>{boardDate(values.user.updated_at)}</p>
+                                    <p>{boardDate(values.profile.updated_at)}</p>
                                 </div>
                             </div>
                         </div>
@@ -68,18 +63,17 @@ export default function Show({ values }: { values: User }){
 
                     <CardFooter className="flex justify-end gap-2">
                         <Button variant={"secondary"} asChild>
-                            <Link href={index.url()}>
-                                Go Back
+                            <Link href={index()}>
+                                Go to Dashboard
                             </Link>
                         </Button>
                         <Button variant={"secondary"} asChild>
-                            <Link href={edit(values.user.id)}>
-                                Edit
+                            <Link href={edit_password()}>
+                                Change Password
                             </Link>
                         </Button>
                     </CardFooter>
                 </Card>
-
             </div>
         </Main>
     );

@@ -35,7 +35,7 @@ export default function Create({ values }: { values: User }){
                 <Card className="w-full max-w-2xl">
                     <form onSubmit={handelSubmit}>
                         <CardHeader>
-                            <CardTitle className="text-lg">Create user form</CardTitle>
+                            <CardTitle className="text-lg">Create member form</CardTitle>
                             <CardDescription>Fill up the ( * ) required fields before submitting the form.</CardDescription>
                         </CardHeader>
 

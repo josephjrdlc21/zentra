@@ -1,4 +1,5 @@
 import { logout } from "@/routes/portal/auth";
+import { index, edit_password } from "@/routes/portal/profile";
 import { Link } from "@inertiajs/react";
 
 import {
@@ -42,11 +43,11 @@ export default function Profile(){
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                        <DropdownMenuItem className="cursor-pointer">
-                           <User2Icon/> Profile
+                        <DropdownMenuItem asChild className="cursor-pointer">
+                           <Link href={index()}><User2Icon/> Profile </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer">
-                            <Lock/> Change Password
+                        <DropdownMenuItem asChild className="cursor-pointer">
+                            <Link href={edit_password()}><Lock/> Change Password </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild className="cursor-pointer">
                             <Link href={logout()}><LogOut/>Logout</Link>

@@ -49,18 +49,18 @@ export default function Index({ values }: { values: Users }){
             </Head>
 
             <Card className="py-0 gap-0 px-6 mb-5">
-                <CardTitle className="text-lg mt-5">User Management</CardTitle>
+                <CardTitle className="text-lg mt-5">Team Members</CardTitle>
                 <CardDescription className="mt-2 mb-5">Manage user profiles, account settings, activate or deactivate accounts and control user permissions.</CardDescription>
             </Card>
             
             <Card className="p-0 gap-0">
-                <h4 className="font-bold px-6 pt-5">All Users</h4>
+                <h4 className="font-bold px-6 pt-5">All Members</h4>
 
                 <form onSubmit={handleFilter}>
                     <div className="flex flex-col md:flex-row justify-between px-5 py-5 gap-2">
                         <div className="flex flex-row gap-2">
                             <div className="w-[250px]">
-                                <Input name="keyword" placeholder="Search for users" value={form.data.keyword} onChange={(e) => form.setData('keyword', e.target.value)}/>
+                                <Input name="keyword" placeholder="Search for member" value={form.data.keyword} onChange={(e) => form.setData('keyword', e.target.value)}/>
                             </div>
                             <Button type="submit" variant={"secondary"}>
                                 <Search className="size-4"/>
@@ -75,7 +75,7 @@ export default function Index({ values }: { values: Users }){
                             <Button asChild>
                                 <Link href={create.url()}>
                                     <Plus className="size-4"/>
-                                    Add User
+                                    Add Member
                                 </Link>
                             </Button>
                         </div>

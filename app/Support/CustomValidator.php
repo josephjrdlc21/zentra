@@ -38,4 +38,26 @@ class CustomValidator extends Validator {
 
         return ProjectUser::where('project_id', $project)->where('user_id', $assigned_to)->exists();
     }
+
+    public function validatePasswordFormat($attribute, $value, $parameters){
+        return preg_match(("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/"), $value);
+    }
+
+    public function validateCurrentPassword($attribute, $value, $parameters){
+        if ($parameters) {
+            $user_id = (is_array($parameters) and isset($parameters[0])) ? $parameters[0] : "0";
+            $user = User::find($user_id);
+
+            return Hash::check($value, $user->password);
+        }
+
+        return false;
+    }
+
+    public function validateNewPassword($attribute, $value, $parameters){
+        $user_id = (is_array($parameters) and isset($parameters[0])) ? $parameters[0] : "0";
+        $user = User::find($user_id);
+
+        return !Hash::check($value, $user->password) ? true : false;
+    }
 }
