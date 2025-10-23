@@ -34,13 +34,13 @@ class UserPermissionSeeder extends Seeder
 
             ['name' => "portal.activity_logs.index", 'description' => "Activity Logs List", 'module' => "activity_logs", 'module_name' => "Activity Logs", 'guard_name' => "portal"],
 
-            ['name' => "portal.tasks.index", 'description' => "Tasks List", 'module' => "tasks", 'module_name' => "tasks", 'guard_name' => "portal"],  
-            ['name' => "portal.tasks.board", 'description' => "Tasks Board", 'module' => "tasks", 'module_name' => "tasks", 'guard_name' => "portal"],
-            ['name' => "portal.tasks.create", 'description' => "Create Task", 'module' => "tasks", 'module_name' => "tasks", 'guard_name' => "portal"],
-            ['name' => "portal.tasks.update", 'description' => "Update Task", 'module' => "tasks", 'module_name' => "tasks", 'guard_name' => "portal"],
-            ['name' => "portal.tasks.view", 'description' => "View Task", 'module' => "tasks", 'module_name' => "tasks", 'guard_name' => "portal"],   
-            ['name' => "portal.tasks.update_status", 'description' => "Update Task Status", 'module' => "tasks", 'module_name' => "tasks", 'guard_name' => "portal"],
-            ['name' => "portal.tasks.delete", 'description' => "Delete Task", 'module' => "tasks", 'module_name' => "tasks", 'guard_name' => "portal"], 
+            ['name' => "portal.tasks.index", 'description' => "Tasks List", 'module' => "tasks", 'module_name' => "Tasks", 'guard_name' => "portal"],  
+            ['name' => "portal.tasks.board", 'description' => "Tasks Board", 'module' => "tasks", 'module_name' => "Tasks", 'guard_name' => "portal"],
+            ['name' => "portal.tasks.create", 'description' => "Create Task", 'module' => "tasks", 'module_name' => "Tasks", 'guard_name' => "portal"],
+            ['name' => "portal.tasks.update", 'description' => "Update Task", 'module' => "tasks", 'module_name' => "Tasks", 'guard_name' => "portal"],
+            ['name' => "portal.tasks.view", 'description' => "View Task", 'module' => "tasks", 'module_name' => "Tasks", 'guard_name' => "portal"],   
+            ['name' => "portal.tasks.update_status", 'description' => "Update Task Status", 'module' => "tasks", 'module_name' => "Tasks", 'guard_name' => "portal"],
+            ['name' => "portal.tasks.delete", 'description' => "Delete Task", 'module' => "tasks", 'module_name' => "Tasks", 'guard_name' => "portal"], 
             
             ['name' => "portal.roles.index", 'description' => "Roles List", 'module' => "roles", 'module_name' => "Roles", 'guard_name' => "portal"],
             ['name' => "portal.roles.create", 'description' => "Create Role", 'module' => "roles", 'module_name' => "Roles", 'guard_name' => "portal"],

@@ -31,6 +31,7 @@ import { index as projects } from '@/routes/portal/projects';
 import { index as tasks } from '@/routes/portal/tasks';
 import { board as boards } from '@/routes/portal/tasks';
 import { index as reports } from '@/routes/portal/reports';
+import { index as permissions } from '@/routes/portal/permissions';
 
 const data = {
     versions: ['1.0.1'],
@@ -99,8 +100,9 @@ const data = {
                 },
                 {
                     title: 'Permissions',
-                    url: '#',
+                    url: permissions.url(),
                     icon: <BrickWallShield className="size-4" />,
+                    isActive: location.pathname === permissions.url(),
                 },
             ]
         },
