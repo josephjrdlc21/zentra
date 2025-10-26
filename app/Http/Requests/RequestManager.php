@@ -27,7 +27,7 @@ class RequestManager extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         session()->flash('notification-status','failed');
-        session()->flash('notification-msg','Some fields are missing or not accepted.');
+        session()->flash('notification-msg','Invalid or incomplete fields detected.');
         
         throw (new ValidationException($validator))
             ->errorBag($this->errorBag)

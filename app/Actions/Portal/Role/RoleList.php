@@ -14,7 +14,7 @@ class RoleList{
     }
 
     public function execute(): array {
-        $record = UserRole::when(strlen($this->data['keyword']) > 0, function ($query) {
+        $record = UserRole::withCount('permissions')->when(strlen($this->data['keyword']) > 0, function ($query) {
             $query->whereRaw("LOWER(name) LIKE '%{$this->data['keyword']}%'");
         })
         ->latest()

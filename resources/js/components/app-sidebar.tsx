@@ -32,6 +32,7 @@ import { index as tasks } from '@/routes/portal/tasks';
 import { board as boards } from '@/routes/portal/tasks';
 import { index as reports } from '@/routes/portal/reports';
 import { index as permissions } from '@/routes/portal/permissions';
+import { index as roles } from '@/routes/portal/roles';
 
 const data = {
     versions: ['1.0.1'],
@@ -95,8 +96,9 @@ const data = {
             items: [
                 {
                     title: 'Roles',
-                    url: '#',
+                    url: roles.url(),
                     icon: <UserCog className="size-4" />,
+                    isActive: location.pathname === roles.url(),
                 },
                 {
                     title: 'Permissions',

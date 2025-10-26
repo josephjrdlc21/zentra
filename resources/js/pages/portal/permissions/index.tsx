@@ -1,4 +1,4 @@
-import { Head, Link, usePage, useForm, router } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 import { index } from "@/routes/portal/permissions";
 import { Permissions } from "@/types/portal/permission";
 import { boardDate } from "@/lib/helper";
