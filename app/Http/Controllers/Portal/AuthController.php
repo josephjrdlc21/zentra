@@ -28,6 +28,12 @@ class AuthController extends Controller{
         return inertia('portal/auth/register', ['values' => $this->data]);
     }
 
+    public function verify(PageRequest $request): Response {
+        $this->data['page_title'] .= " - Verify";
+
+        return inertia('portal/auth/verify', ['values' => $this->data]);
+    }
+
     public function login(PageRequest $request): Response {
         $this->data['page_title'] .= " - Login";
 
