@@ -6,7 +6,8 @@ use League\Fractal;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\Resource\Collection;
-use App\Services\DataArraySerializer;
+
+use App\Support\DataArraySerializer;
 
 class TransformerManager
 {

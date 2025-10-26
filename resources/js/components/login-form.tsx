@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { authenticate } from '@/routes/portal/auth';
 import { PageProps } from '@/types/props';
 import { useForm, usePage } from '@inertiajs/react';
+import { register } from '@/routes/portal/auth';
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
     const { flash } = usePage<PageProps>().props;
@@ -84,7 +85,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                             </div>
                             <div className="text-center text-sm">
                                 Don&apos;t have an account?{' '}
-                                <a href="#" className="underline underline-offset-4">
+                                <a href={register.url()} className="underline underline-offset-4">
                                     Sign up
                                 </a>
                             </div>

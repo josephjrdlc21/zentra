@@ -79,7 +79,7 @@ trait ResponseGenerator
             'meta' => [
                 'copyright' => "Copyright © 2025 ".env("APP_NAME","Laravel 12"),
                 'authors' => [
-                    "RICHARD KENNEDY DOMINGO"
+                    "JOSEPH DELA CRUZ JR"
                 ],
                 'jsonapi' => [
                     'version' => env("APP_VERSION",0.1),
@@ -105,6 +105,7 @@ trait ResponseGenerator
         $response['current_page'] = $paginated_model->currentPage();
         $response['last_page'] = $paginated_model->lastPage();
         $response['has_more_pages'] = $paginated_model->hasMorePages();
+
         return $response;
     }
 }

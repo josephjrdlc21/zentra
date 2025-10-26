@@ -3,7 +3,7 @@ import { Auth } from "@/types/portal/auth";
 import { PocketKnife } from "lucide-react";
 import { LoginForm } from "@/components/login-form";
 
-export default function LoginPage({ values }: { values: Auth }) {
+export default function Login({ values }: { values: Auth }) {
 	return (
 		<>
 			<Head title={values.page_title}>
