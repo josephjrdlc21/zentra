@@ -3,6 +3,7 @@
 namespace App\Actions\Portal\User;
 
 use App\Models\User;
+use App\Models\UserRole;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -28,6 +29,9 @@ class UserUpdate{
             $user->name = Str::title($this->request['name']);
             $user->email = Str::lower($this->request['email']);
             $user->save();
+
+            $role = UserRole::where('name', $this->request['role'])->where('guard_name','portal')->first();
+            $user->syncRoles($role);
 
             DB::commit();
         } catch (\Exception $e) {

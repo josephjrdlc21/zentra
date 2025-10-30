@@ -4,7 +4,7 @@ namespace App\Http\Requests\Portal;
 
 use App\Http\Requests\RequestManager;
 
-class UserRequest extends RequestManager
+class AuthRequest extends RequestManager
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,17 +17,18 @@ class UserRequest extends RequestManager
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array
      */
     public function rules(): array
     {
         $id = $this->id ?? 0;
 
-        $rules = [
-            'name' => 'required|max:40',
-            'role' => "required",
+		$rules = [
+            'name' => "required|max:50",
+            'type' => "required",
             'email' => "required|email:rfc,dns|unique_email:{$id},user|max:40",
-        ];
+            'password' => "required|confirmed|password_format",
+		];
 
         return $rules;
     }
@@ -36,9 +37,11 @@ class UserRequest extends RequestManager
     {
         return [
             'required' => "Field is required.",
+            'confirmed' => "Password mismatch.",
             'email.email' => "Invalid email address.",
             'email.unique_email' => "Email address is already taken.",
             'max' => "Character inputs is too long.",
+            'password_format' => "Password must be atleast 8 characters long, should contain atleast 1 uppercase, 1 lowercase, 1 numeric and 1 special character.",
         ];
     }
 }

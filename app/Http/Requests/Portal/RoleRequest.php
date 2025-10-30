@@ -24,7 +24,7 @@ class RoleRequest extends RequestManager
         $id = $this->id ?? 0;
 
         $rules = [
-            'role' => "required|unique:users_roles,name,{$id},id",
+            'role' => "required|max:40|unique:users_roles,name,{$id},id",
             'permissions' => "required|array",
         ];
 

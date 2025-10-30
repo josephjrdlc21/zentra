@@ -10,13 +10,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import { LoaderCircle } from 'lucide-react';
 
 export default function Edit({ values }: { values: User }){
     const { flash } = usePage<PageProps>().props;
 
-    const form = useForm({name: values.user.name ?? '', email:  values.user.email ?? '',});
+    const form = useForm({name: values.user.name ?? '', email:  values.user.email ?? '', role: values.user.roles[0]?.name ?? '',});
 
     const handelSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -56,9 +57,25 @@ export default function Edit({ values }: { values: User }){
                                 {form.errors.email && <small className="text-red-500">{form.errors.email}</small>}
                             </div>
                             <div className="flex flex-col gap-2">
-                                <Label htmlFor="role">Assign Role <span className="text-red-500">*</span></Label>
-                                <Input id="role" type="text" placeholder="-- Select Role --"/>
-                                {/* {form.errors.name && <small className="text-red-500">{form.errors.name}</small>} */}
+                                <Label htmlFor="owner">Account Type </Label>
+                                <Select value={form.data.role} onValueChange={(e) => form.setData('role', e)}>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Select Type" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                        {values.roles.map((role: { id: number; name: string; }) => (
+                                            <SelectItem
+                                                key={role.id}
+                                                value={role.name}
+                                            >
+                                                {role.name}
+                                            </SelectItem>
+                                        ))}
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                                {form.errors.role && <small className="text-red-500">{form.errors.role}</small>}
                             </div>
                         </CardContent>
 

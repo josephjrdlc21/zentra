@@ -2,7 +2,7 @@ import { Head, Link } from "@inertiajs/react";
 import { index } from '@/routes/portal';
 import { edit_password } from "@/routes/portal/profile";
 import { Profile } from "@/types/portal/profile";
-import { statusBadgeClass, boardDate } from "@/lib/helper";
+import { statusBadgeClass, boardDate, titleCase, initialsFormat } from "@/lib/helper";
 
 import Main from "@/layouts/main";
 import { Separator } from "@/components/ui/separator";
@@ -24,7 +24,7 @@ export default function Index({ values }: { values: Profile }){
                         <div className="flex flex-col md:flex-row gap-5 md:items-center">
                             <Avatar className="h-12 w-12">
                                 <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn"/>
-                                <AvatarFallback>{values.profile.name}</AvatarFallback>
+                                <AvatarFallback>{initialsFormat(values.profile.name)}</AvatarFallback>
                             </Avatar>
                             <div>
                                 <span className="text-blue-400">{values.profile.name}</span><br/>
@@ -38,7 +38,11 @@ export default function Index({ values }: { values: Profile }){
                             <div className="text-sm">
                                 <div className="flex flex-col md:flex-row gap-3 mt-2">
                                     <p><b>Role:</b></p>
-                                    <p>Admin</p>
+                                    <p>
+                                        {values.profile.roles.length > 0
+                                        ? values.profile.roles.map((role: { name: string }) => titleCase(role.name)).join(',')
+                                        : 'No roles'}
+                                    </p>
                                 </div>
                                 <div className="flex flex-col md:flex-row gap-3 mt-2">
                                     <p><b>Created:</b></p>

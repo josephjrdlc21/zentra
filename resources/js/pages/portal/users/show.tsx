@@ -1,7 +1,7 @@
 import { Head, Link } from "@inertiajs/react";
 import { User } from "@/types/portal/user";
 import { index, edit } from "@/routes/portal/users";
-import { statusBadgeClass, boardDate } from "@/lib/helper";
+import { statusBadgeClass, boardDate, titleCase, initialsFormat } from "@/lib/helper";
 
 import Main from "@/layouts/main";
 import { Separator } from "@/components/ui/separator";
@@ -29,7 +29,7 @@ export default function Show({ values }: { values: User }){
                         <div className="flex flex-col md:flex-row gap-5 md:items-center">
                             <Avatar className="h-12 w-12">
                                 <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn"/>
-                                <AvatarFallback>{values.user.name}</AvatarFallback>
+                                <AvatarFallback>{initialsFormat(values.user.name)}</AvatarFallback>
                             </Avatar>
                             <div>
                                 <span className="text-blue-400">{values.user.name}</span><br/>
@@ -43,7 +43,11 @@ export default function Show({ values }: { values: User }){
                             <div className="text-sm">
                                 <div className="flex flex-col md:flex-row gap-3 mt-2">
                                     <p><b>Role:</b></p>
-                                    <p>Admin</p>
+                                    <p>
+                                        {values.user.roles.length > 0
+                                            ? values.user.roles.map((role: { name: string }) => titleCase(role.name)).join(',')
+                                            : 'No roles'}
+                                    </p>
                                 </div>
                                 <div className="flex flex-col md:flex-row gap-3 mt-2">
                                     <p><b>Created:</b></p>

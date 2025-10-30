@@ -44,6 +44,7 @@ class UserController extends Controller{
 
     public function create(PageRequest $request): Response {
         $this->data['page_title'] .= " - Create";
+        $this->data['roles'] = \App\Models\UserRole::whereNotIn('name', ['super admin'])->get();
 
         return inertia('portal/users/create', ['values' => $this->data]);
     }
@@ -51,6 +52,7 @@ class UserController extends Controller{
     public function store(UserRequest $request): RedirectResponse {
         $this->request['name'] = $request->input('name');
         $this->request['email'] = $request->input('email');
+        $this->request['role'] = $request->input('role');
 
         $action = new UserCreate($this->request);
         $result = $action->execute();
@@ -63,7 +65,8 @@ class UserController extends Controller{
 
     public function edit(PageRequest $request, ?int $id = null): Response|RedirectResponse {
         $this->data['page_title'] .= " - Edit User";
-        $this->data['user'] = \App\Models\User::find($id);
+        $this->data['user'] = \App\Models\User::with('roles')->find($id);
+        $this->data['roles'] = \App\Models\UserRole::whereNotIn('name', ['super admin'])->get();
 
         if(!$this->data['user']){
             session()->flash('notification-status', 'failed');
@@ -79,6 +82,7 @@ class UserController extends Controller{
         $this->request['id'] = $id;
         $this->request['name'] = $request->input('name');
         $this->request['email'] = $request->input('email');
+        $this->request['role'] = $request->input('role');
 
         $action = new UserUpdate($this->request);
         $result = $action->execute();
@@ -116,7 +120,7 @@ class UserController extends Controller{
     public function show(PageRequest $request, ?int $id = null): Response|RedirectResponse {
         $this->data['page_title'] .= " - Show User";
 
-        $this->data['user'] = \App\Models\User::find($id);
+        $this->data['user'] = \App\Models\User::with('roles')->find($id);
 
         if(!$this->data['user']){
             session()->flash('notification-status', 'failed');

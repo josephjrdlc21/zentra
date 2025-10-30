@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Portal;
 
 use App\Actions\Portal\Auth\AuthLogin;
 use App\Actions\Portal\Auth\AuthLogout;
+use App\Actions\Portal\Auth\AuthRegister;
 
 use App\Http\Requests\PageRequest;
+use App\Http\Requests\Portal\AuthRequest;
 
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response;
@@ -24,14 +26,24 @@ class AuthController extends Controller{
 
     public function register(PageRequest $request): Response {
         $this->data['page_title'] .= " - Register";
+        $this->data['roles'] = \App\Models\UserRole::whereIn('name', ['project manager', 'member'])->get();
 
         return inertia('portal/auth/register', ['values' => $this->data]);
     }
 
-    public function verify(PageRequest $request): Response {
-        $this->data['page_title'] .= " - Verify";
+    public function store(AuthRequest $request): RedirectResponse {
+        $this->request['name'] = $request->input('name');
+        $this->request['email'] = $request->input('email');
+        $this->request['password'] = $request->input('password');
+        $this->request['type'] = $request->input('type');
 
-        return inertia('portal/auth/verify', ['values' => $this->data]);
+        $action = new AuthRegister($this->request);
+        $result = $action->execute();
+
+        session()->flash('notification-status', $result['status']);
+        session()->flash('notification-msg', $result['message']);
+
+        return $result['success'] ? redirect()->route('portal.auth.login') : redirect()->back();
     }
 
     public function login(PageRequest $request): Response {

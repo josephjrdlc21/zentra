@@ -16,7 +16,7 @@ class UserList{
     }
 
     public function execute(): array {
-        $record = User::when(strlen($this->data['keyword']) > 0, function ($query) {
+        $record = User::with('roles')->when(strlen($this->data['keyword']) > 0, function ($query) {
             $query->whereRaw("LOWER(name) LIKE '%{$this->data['keyword']}%'")
                 ->orWhereRaw("LOWER(email) LIKE '%{$this->data['keyword']}%'");
         })

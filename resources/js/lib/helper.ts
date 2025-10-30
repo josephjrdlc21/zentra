@@ -159,13 +159,15 @@ export function textSpace(str: string): string {
     return str.replace(/_/g, ' ');
 };
 
-export function titleCase (str: string): string {
+export function titleCase(str?: string | null): string {
+    if (!str) return '';
+
     return str
         .toLowerCase()
         .split(/[\s_]+/)
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
-};
+}
 
 export function timeAgo(dateString: string): string {
     const date = new Date(dateString);

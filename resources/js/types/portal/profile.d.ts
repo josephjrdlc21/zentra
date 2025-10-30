@@ -14,6 +14,10 @@ export interface Profile extends Title {
         directory: null | string;
         created_at: string;
         updated_at: string;
+        roles: {
+            id: number;
+            name: string;
+        }[];
     },
     password: string;
     current_password: string;

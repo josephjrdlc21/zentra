@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Auth;
 
 use Inertia\Inertia;
 
@@ -28,6 +29,15 @@ class InertiaServiceProvider extends ServiceProvider
                     'status' => session()->get('notification-status'),
                     'message' => session()->get('notification-msg'),
                 ];
+            },
+
+            'auth_portal' => function () {
+                $user = Auth::guard('portal')->user();
+
+                return $user ? [
+                    'name' => $user->name,
+                    'roles' => $user->roles->pluck('name', 'name'),
+                ] : null;
             },
         ]);
     }

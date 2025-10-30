@@ -1,6 +1,6 @@
 import { Head, useForm, usePage  } from "@inertiajs/react";
 import { Regist } from "@/types/portal/register";
-import { login } from "@/routes/portal/auth";
+import { login, store } from "@/routes/portal/auth";
 import { PageProps } from '@/types/props';
 
 import { Notification } from '@/components/notification';
@@ -8,11 +8,28 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import { PocketKnife, LoaderCircle } from "lucide-react";
 
 export default function Register({ values }: { values: Regist }) {
     const { flash } = usePage<PageProps>().props;
+
+    const form = useForm(
+        {
+            name: '', 
+            email: '',
+            type: '',
+            password: '',
+            password_confirmation: '',
+        }
+    );
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        form.submit(store());
+    };
 
     return (
         <>
@@ -33,17 +50,41 @@ export default function Register({ values }: { values: Regist }) {
                             <CardDescription>Create a new account to get started</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 <div className="grid gap-6">
                                     {flash.message && <Notification status={flash.status} message={flash.message} />}
                                     <div className="grid gap-6">
+                                        <div className="grid gap-3">
+                                            <Label htmlFor="owner">Account Type </Label>
+                                            <Select value={form.data.type} onValueChange={(e) => form.setData('type', e)}>
+                                                <SelectTrigger className="w-full">
+                                                    <SelectValue placeholder="Select Type" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectGroup>
+                                                    {values.roles.map((role: { id: number; name: string; }) => (
+                                                        <SelectItem
+                                                            key={role.id}
+                                                            value={role.name}
+                                                        >
+                                                            {role.name}
+                                                        </SelectItem>
+                                                    ))}
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                            {form.errors.type && <small className="text-red-500">{form.errors.type}</small>}
+                                        </div>
                                         <div className="grid gap-3">
                                             <Label htmlFor="name">Full Name</Label>
                                             <Input
                                                 id="name"
                                                 type="text"
                                                 placeholder="Juan Dela Cruz"
+                                                value={form.data.name} 
+                                                onChange={(e) => form.setData('name', e.target.value)}
                                             />
+                                            {form.errors.name && <small className="text-red-500">{form.errors.name}</small>}
                                         </div>
                                         <div className="grid gap-3">
                                             <Label htmlFor="email">Email</Label>
@@ -51,7 +92,10 @@ export default function Register({ values }: { values: Regist }) {
                                                 id="email"
                                                 type="email"
                                                 placeholder="m@example.com"
+                                                value={form.data.email} 
+                                                onChange={(e) => form.setData('email', e.target.value)}
                                             />
+                                            {form.errors.email && <small className="text-red-500">{form.errors.email}</small>}
                                         </div>
                                         <div className="grid gap-3">
                                             <Label htmlFor="password">Password</Label>
@@ -59,8 +103,10 @@ export default function Register({ values }: { values: Regist }) {
                                                 id="password"
                                                 type="password"
                                                 placeholder="************"
-                                                required
+                                                value={form.data.password} 
+                                                onChange={(e) => form.setData('password', e.target.value)}
                                             />
+                                            {form.errors.password && <small className="text-red-500">{form.errors.password}</small>}
                                         </div>
                                         <div className="grid gap-3">
                                             <Label htmlFor="confirm_password">Confirm Password</Label>
@@ -68,10 +114,12 @@ export default function Register({ values }: { values: Regist }) {
                                                 id="confirm_password"
                                                 type="password"
                                                 placeholder="************"
-                                                required
+                                                value={form.data.password_confirmation} 
+                                                onChange={(e) => form.setData('password_confirmation', e.target.value)}
                                             />
                                         </div>
-                                        <Button type="submit" className="w-full">
+                                        <Button type="submit" className="w-full" disabled={form.processing}>
+                                            {form.processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                                             Register
                                         </Button>
                                     </div>

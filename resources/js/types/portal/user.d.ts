@@ -14,7 +14,15 @@ export interface User extends Title {
         directory: null | string;
         created_at: string;
         updated_at: string;
+        roles: {
+            id: number;
+            name: string;
+        }[];
     };
+    roles: {
+        id: number;
+        name: string;
+    }[];
 }
 
 export interface Users extends Title {

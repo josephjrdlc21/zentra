@@ -29,7 +29,7 @@ class ProfileController extends Controller{
     public function index(PageRequest $request, ?int $id = null): Response|RedirectResponse {
         $this->data['page_title'] .= " - Details";
 
-        $this->data['profile'] = \App\Models\User::find($this->id);
+        $this->data['profile'] = \App\Models\User::with('roles')->find($this->id);
 
         if(!$this->data['profile']){
             session()->flash('notification-status', 'failed');

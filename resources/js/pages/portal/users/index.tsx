@@ -2,7 +2,7 @@ import { Head, Link, usePage, useForm, router } from "@inertiajs/react";
 import { Users } from "@/types/portal/user";
 import { PageProps } from "@/types/props";
 import { index, create, edit, show, update_status, update_password, deleteMethod } from "@/routes/portal/users";
-import { statusBadgeClass, boardDate, initialsFormat } from "@/lib/helper";
+import { statusBadgeClass, boardDate, initialsFormat, titleCase } from "@/lib/helper";
 
 import Main from "@/layouts/main";
 import PagePagination from "@/components/page-paginate";
@@ -113,7 +113,11 @@ export default function Index({ values }: { values: Users }){
                                         </div>
                                     </div>
                                 </TableCell>
-                                <TableCell>Admin</TableCell>
+                                <TableCell>
+                                    {user.roles.length > 0
+                                        ? user.roles.map((role: { name: string }) => titleCase(role.name)).join(',')
+                                        : 'No roles'}
+                                </TableCell>
                                 <TableCell>
                                     <Badge variant={statusBadgeClass(user.status) as any}>{user.status}</Badge>
                                 </TableCell>

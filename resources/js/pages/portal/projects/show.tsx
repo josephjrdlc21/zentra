@@ -85,12 +85,11 @@ export default function Show({ values }: { values: Project }){
                                                     </div>
                                                 </div>
                                             </TableCell>
-                                            <TableCell className="text-gray-500 dark:text-gray-200">Project Manager</TableCell>
                                         </TableRow>
                                     ))
                                     ) : (
                                         <TableRow>
-                                            <TableCell colSpan={2} className="text-center py-4">No Members Yet.</TableCell>
+                                            <TableCell colSpan={1} className="text-center py-4">No Members Yet.</TableCell>
                                         </TableRow>
                                     )}
                                 </TableBody>

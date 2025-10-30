@@ -1,6 +1,8 @@
 import { logout } from "@/routes/portal/auth";
 import { index, edit_password } from "@/routes/portal/profile";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
+import { PageProps } from '@/types/props';
+import { initialsFormat } from "@/lib/helper";
 
 import {
     Avatar,
@@ -21,25 +23,30 @@ import {
 import { Lock, LogOut, User2Icon } from "lucide-react";
 
 export default function Profile(){
+    const { auth_portal } = usePage<PageProps>().props as any;
 
     return(
         <div className="flex justify-between items-center gap-2">
             <div>
                 <span className="hidden md:inline leading-tight">
-                    Master Admin
+                    {auth_portal.name}
                 </span>
             </div>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Avatar className="cursor-pointer">
                         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                        <AvatarFallback>CN</AvatarFallback>
+                        <AvatarFallback>{initialsFormat(auth_portal.name)}</AvatarFallback>
                     </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>
-                        Master Admin <br/>
-                        <small>master admin</small>
+                        {auth_portal.name} <br/>
+                        <small>
+                            {auth_portal.roles.length > 0
+                            ? auth_portal.roles.map((role: { name: string }) => role.name).join(',')
+                            : 'no roles'}
+                        </small>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
