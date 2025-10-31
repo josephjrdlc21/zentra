@@ -27,4 +27,10 @@ class MainController extends Controller{
 
         return inertia('portal/index', ['values' => $this->data]);
     }
+
+    public function home(PageRequest $request): Response {
+        $this->data['page_title'] .= " - Home";
+
+        return inertia('portal/home', ['values' => $this->data]);
+    }
 }

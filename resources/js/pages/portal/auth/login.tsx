@@ -1,5 +1,6 @@
 import { Head } from "@inertiajs/react";
 import { Auth } from "@/types/portal/auth";
+import { home } from "@/routes/portal";
 import { PocketKnife } from "lucide-react";
 import { LoginForm } from "@/components/login-form";
 
@@ -11,8 +12,8 @@ export default function Login({ values }: { values: Auth }) {
 			</Head>
 			<div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
 				<div className="flex w-full max-w-md flex-col gap-6">
-					<a href="#" className="flex items-center gap-2 self-center font-medium">
-						<div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+					<a href={home.url()} className="flex items-center gap-2 self-center font-medium">
+						<div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-xl">
 							<PocketKnife className="size-4" />
 						</div>
 						Zentra
