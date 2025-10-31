@@ -38,7 +38,7 @@ export default function Register({ values }: { values: Regist }) {
                 <meta name="description" content="Register to Zentra admin portal" />
             </Head>
             <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-                <div className="flex w-full max-w-md flex-col gap-6">
+                <div className="flex w-full max-w-xl flex-col gap-6">
                     <a href={home.url()} className="flex items-center gap-2 self-center font-medium">
                         <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-xl">
                             <PocketKnife className="size-4" />
@@ -56,10 +56,10 @@ export default function Register({ values }: { values: Regist }) {
                                     {flash.message && <Notification status={flash.status} message={flash.message} />}
                                     <div className="grid gap-6">
                                         <div className="grid gap-3">
-                                            <Label htmlFor="owner">Account Type </Label>
+                                            <Label htmlFor="owner">Registed as </Label>
                                             <Select value={form.data.type} onValueChange={(e) => form.setData('type', e)}>
                                                 <SelectTrigger className="w-full">
-                                                    <SelectValue placeholder="Select Type" />
+                                                    <SelectValue placeholder="Select" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectGroup>
