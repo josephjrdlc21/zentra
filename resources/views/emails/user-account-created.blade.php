@@ -199,7 +199,7 @@
 
             <tr class="bg-secondary">
                 <td class="text-center text-gray" style="padding-bottom: 20px;">
-                    <small>© {{ date('Y') }} {{ env('APP_NAME') }}. All Rights Reserved.</small> 
+                    <small>© {{ date('Y') }} Joseph DLC. All Rights Reserved.</small> 
                 <td>
             </tr>
         </table>

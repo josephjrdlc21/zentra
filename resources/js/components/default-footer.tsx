@@ -73,7 +73,7 @@ export default function DefaultFooter(){
                 </div>
             </div>
             <div className="container px-4 mt-8 flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground">
-                <p>© 2025 Zentra. All rights reserved.</p>
+                <p>© 2025 Joseph DLC. All rights reserved.</p>
                 <div className="flex items-center gap-4 mt-4 sm:mt-0">
                     {medias.map((media, index) => (
                         <a key={index} className="hover:text-foreground" href="#" data-discover="true">{media.icon}</a>
