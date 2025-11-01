@@ -35,7 +35,7 @@ export default function Hero(){
                         <h1 className="text-3xl font-bold text-pretty tracking-tighter sm:text-5xl xl:text-6xl/none">Get more done with <span className="text-primary">Zentra</span></h1>
                         <p className="max-w-[600px] text-muted-foreground md:text-xl text-pretty">The modern task management platform that helps teams organize, track, and complete work efficiently.</p>
                     </div>
-                    <div className="flex gap-2" style={{ opacity: 1, transform: 'none' }}>
+                    <div className="flex flex-col md:flex-row gap-2" style={{ opacity: 1, transform: 'none' }}>
                         {actions.map((action, index) => (
                             <a key={index} href={action.href} data-discover="true">
                                 <button
@@ -66,7 +66,7 @@ export default function Hero(){
                     transition={{ duration: 1, ease: "easeOut" }}
                     className="mx-auto flex items-center justify-center lg:justify-end max-w-full overflow-hidden" style={{ opacity: 1, transform: "none" }}
                 >
-                    <div className="relative w-full max-w-xs sm:max-w-md md:max-w-lg">
+                    <div className="relative w-full max-w-[260px]  md:max-w-lg">
                         <div className="absolute -top-12 left-1/2 -translate-x-1/2 h-64 w-64 rounded-full bg-primary/20 blur-3xl hidden sm:block"></div>
                         <img
                             src={DarkZentra}

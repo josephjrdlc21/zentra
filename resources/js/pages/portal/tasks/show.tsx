@@ -49,7 +49,7 @@ export default function Show({ values }: { values: Task }){
                         <h2 className="text-lg font-semibold">{values.tasks.name}</h2>
                         <div className="flex gap-2 items-center mt-5">
                             <Avatar>
-                                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                <AvatarImage src={`${values.tasks.assigned.directory}/${values.tasks.assigned.filename}`} alt="@shadcn" />
                                 <AvatarFallback>{initialsFormat(values.tasks.assigned.name)}</AvatarFallback>
                             </Avatar>
                             <div className="text-gray-500 dark:text-gray-200 ">

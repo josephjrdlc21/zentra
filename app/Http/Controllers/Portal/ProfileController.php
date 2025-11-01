@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Actions\Portal\Profile\ProfileUpdatePassword;
+use App\Actions\Portal\Profile\ProfileUpdatePicture;
 
 use App\Http\Requests\PageRequest;
 use App\Http\Requests\Portal\ProfileRequest;
@@ -61,6 +62,19 @@ class ProfileController extends Controller{
         $this->request['password'] = $request->input('password');
        
         $action = new ProfileUpdatePassword($this->request);
+        $result = $action->execute();
+
+        session()->flash('notification-status', $result['status']);
+        session()->flash('notification-msg', $result['message']);
+
+        return $result['success'] ? redirect()->route('portal.index') : redirect()->back();
+    }
+
+    public function update_profile(ProfileRequest $request, ?int $id = null): RedirectResponse {
+        $this->request['id'] = $this->id;
+        $this->request['profile_picture'] = $request->hasFile('profile_picture') ? $request->file('profile_picture') : null;
+       
+        $action = new ProfileUpdatePicture($this->request);
         $result = $action->execute();
 
         session()->flash('notification-status', $result['status']);

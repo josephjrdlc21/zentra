@@ -5,6 +5,8 @@ namespace App\Actions\Portal\User;
 use App\Models\User;
 use App\Models\UserRole;
 
+use App\Events\UserAccountCreated;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -30,6 +32,12 @@ class UserCreate{
             $role = UserRole::where('name', $this->request['role'])->where('guard_name','portal')->first();
             $user->assignRole($role);
 
+            if(env('MAIL_SERVICE', false)){
+                $link = route('portal.auth.login');
+
+                event(new UserAccountCreated($user, $password, $link));
+            }
+            
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();

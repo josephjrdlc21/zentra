@@ -42,7 +42,7 @@ export default function Show({ values }: { values: Project }){
                                     <p><b>Owner:</b></p>
                                     <div className="flex gap-2 items-center">
                                         <Avatar>
-                                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                            <AvatarImage src={`${values.project.owner.directory}/${values.project.owner.filename}`} alt="@shadcn" />
                                             <AvatarFallback>{initialsFormat(values.project.owner.name)}</AvatarFallback>
                                         </Avatar>
                                         <div className="text-gray-500 dark:text-gray-200">
@@ -76,7 +76,7 @@ export default function Show({ values }: { values: Project }){
                                             <TableCell>
                                                 <div className="flex gap-2 items-center">
                                                     <Avatar>
-                                                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                                        <AvatarImage src={`${member.directory}/${member.filename}`} alt="@shadcn" />
                                                         <AvatarFallback>{initialsFormat(member.name)}</AvatarFallback>
                                                     </Avatar>
                                                     <div>

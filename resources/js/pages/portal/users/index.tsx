@@ -104,7 +104,7 @@ export default function Index({ values }: { values: Users }){
                                 <TableCell className="pl-5">
                                     <div className="flex gap-2 items-center">
                                         <Avatar>
-                                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                            <AvatarImage src={`${user.directory}/${user.filename}`} alt="@shadcn" />
                                             <AvatarFallback>{initialsFormat(user.name)}</AvatarFallback>
                                         </Avatar>
                                         <div>

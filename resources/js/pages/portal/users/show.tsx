@@ -28,7 +28,7 @@ export default function Show({ values }: { values: User }){
                     <CardContent>
                         <div className="flex flex-col md:flex-row gap-5 md:items-center">
                             <Avatar className="h-12 w-12">
-                                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn"/>
+                                <AvatarImage src={`${values.user.directory}/${values.user.filename}`} alt="@shadcn"/>
                                 <AvatarFallback>{initialsFormat(values.user.name)}</AvatarFallback>
                             </Avatar>
                             <div>

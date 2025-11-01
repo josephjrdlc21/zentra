@@ -35,7 +35,7 @@ export default function Profile(){
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Avatar className="cursor-pointer">
-                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                        <AvatarImage src={auth_portal.avatar} alt="@shadcn" />
                         <AvatarFallback>{initialsFormat(auth_portal.name)}</AvatarFallback>
                     </Avatar>
                 </DropdownMenuTrigger>

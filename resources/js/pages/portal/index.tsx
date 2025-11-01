@@ -97,7 +97,7 @@ export default function Index({ values }: { values: Dashboard }){
                                 <TableCell>
                                     <div className="flex items-center gap-3">
                                         <Avatar>
-                                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                            <AvatarImage src={`${task.assigned.directory}/${task.assigned.filename}`} alt="@shadcn" />
                                             <AvatarFallback>{initialsFormat(task.assigned.name)}</AvatarFallback>
                                         </Avatar>
                                         <div>

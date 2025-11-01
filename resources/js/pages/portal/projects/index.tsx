@@ -100,7 +100,7 @@ export default function Index({ values }: { values: Projects }){
                                     <div className="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2">
                                         {project.members.slice(0, 5).map((member: any) => (
                                             <Avatar key={member.id}>
-                                                <AvatarImage src="https://github.com/shadcn.png" alt={member.name} />
+                                                <AvatarImage src={`${member.directory}/${member.filename}`} alt={member.name} />
                                                 <AvatarFallback>{initialsFormat(member.name)}</AvatarFallback>
                                             </Avatar>
                                         ))}
@@ -120,7 +120,7 @@ export default function Index({ values }: { values: Projects }){
                                 <TableCell>
                                     <div className="flex gap-2 items-center">
                                         <Avatar>
-                                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                            <AvatarImage src={`${project.owner.directory}/${project.owner.filename}`} alt="@shadcn" />
                                             <AvatarFallback>{initialsFormat(project.owner.name)}</AvatarFallback>
                                         </Avatar>
                                         <div>

@@ -8,19 +8,21 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class UserVerifyNotification extends Mailable
+class UserAccountCreatedNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $customer;
-    public $token;
+    public $user;
+    public $password;
+    public $link;
     /**
      * Create a new message instance.
      */
-    public function __construct($customer, $token)
+    public function __construct($user, $password, $link)
     {
-        $this->customer = $customer;
-        $this->token = $token;
+        $this->user = $user;
+        $this->password = $password;
+        $this->link = $link;
     }
     /**
      * Get the message envelope.
@@ -29,7 +31,7 @@ class UserVerifyNotification extends Mailable
     {
         return new Envelope(
             from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME')),
-            subject: 'Zentra Email Verify',
+            subject: 'Zentra New Account Created',
         );
     }
     /**
@@ -38,8 +40,8 @@ class UserVerifyNotification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.portal.customer-verify',
-            with: ['customer' => $this->customer, 'token' => $this->token],
+            view: 'emails.user-account-created',
+            with: ['user' => $this->user, 'password' => $this->password, 'link' => $this->link],
         );
     }
     /**

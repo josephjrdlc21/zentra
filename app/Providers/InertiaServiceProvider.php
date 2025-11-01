@@ -37,6 +37,7 @@ class InertiaServiceProvider extends ServiceProvider
                 return $user ? [
                     'name' => $user->name,
                     'roles' => $user->roles->pluck('name', 'name'),
+                    'avatar' => "{$user->directory}/{$user->filename}",
                 ] : null;
             },
         ]);

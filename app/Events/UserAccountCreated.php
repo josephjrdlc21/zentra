@@ -6,20 +6,22 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 
-class UserVerifyEvent
+class UserAccountCreated
 {
     use Dispatchable, SerializesModels;
     
-    public $customer;
-    public $token;
+    public $user;
+    public $password;
+    public $link;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($customer, $token)
+    public function __construct($user, $password, $link)
     {
-        $this->customer = $customer;
-        $this->token = $token;
+        $this->user = $user;
+        $this->password = $password;
+        $this->link = $link;
     }
 
     /**

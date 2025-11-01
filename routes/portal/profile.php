@@ -7,4 +7,5 @@ Route::middleware('portal.auth')->prefix('profile')->name('profile.')->group(fun
     Route::get('/', [ProfileController::class, 'index'])->name('index');
     Route::get('/edit-password', [ProfileController::class, 'edit_password'])->name('edit_password');
     Route::put('/update-pass', [ProfileController::class, 'update_pass'])->name('update_pass');
+    Route::post('/update-profile', [ProfileController::class, 'update_profile'])->name('update_profile');
 });
