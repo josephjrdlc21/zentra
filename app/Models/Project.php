@@ -12,6 +12,14 @@ class Project extends Model{
     
     use SoftDeletes;
 
+    protected static function booted(): void
+    {
+        static::deleting(function ($project) {
+            \App\Models\Task::where('project_id', $project->id)->delete();
+            \App\Models\ProjectUser::where('project_id', $project->id)->delete();
+        });
+    }
+
     /**
      * The database table used by the model.
      *

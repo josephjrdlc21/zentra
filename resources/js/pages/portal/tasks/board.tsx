@@ -3,12 +3,13 @@ import { Head, Link, usePage, useForm, router } from "@inertiajs/react";
 import { useInView } from "react-intersection-observer";
 import { Boards } from "@/types/portal/task";
 import { PageProps } from "@/types/props";
-import { board, create, show, index, edit } from "@/routes/portal/tasks";
+import { board, create, show, index, edit, deleteMethod } from "@/routes/portal/tasks";
 import { initialsFormat, statusPriority, boardDate } from "@/lib/helper";
 import { cn } from '@/lib/utils';
 
 import Main from "@/layouts/main";
 import { Notification } from "@/components/notification";
+import ConfirmDialog from "@/components/confirmation";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -34,6 +35,10 @@ export default function Board({ values }: { values: Boards }){
         e.preventDefault();
 
         form.submit(board());
+    }
+
+    const handleDelete = (id: number) => {
+        router.delete(deleteMethod.url(id));
     }
 
     useEffect(() => {
@@ -131,7 +136,16 @@ export default function Board({ values }: { values: Boards }){
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
-                                                <Link href="#">Delete</Link>
+                                                <ConfirmDialog
+                                                    triggerText="Delete"
+                                                    title="Do you want to delete this task?"
+                                                    description="Deleting this task will permanently remove. This action cannot be undone."
+                                                    confirmText="Delete Task"
+                                                    onConfirm={() => handleDelete(task.id)}
+                                                    cancelText="Cancel"
+                                                    variant="ghost"
+                                                    className="text-red-500"
+                                                />
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
@@ -197,7 +211,16 @@ export default function Board({ values }: { values: Boards }){
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
-                                                <Link href="#">Delete</Link>
+                                                <ConfirmDialog
+                                                    triggerText="Delete"
+                                                    title="Do you want to delete this task?"
+                                                    description="Deleting this task will permanently remove. This action cannot be undone."
+                                                    confirmText="Delete Task"
+                                                    onConfirm={() => handleDelete(task.id)}
+                                                    cancelText="Cancel"
+                                                    variant="ghost"
+                                                    className="text-red-500"
+                                                />
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
@@ -263,7 +286,16 @@ export default function Board({ values }: { values: Boards }){
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
-                                                <Link href="#">Delete</Link>
+                                                <ConfirmDialog
+                                                    triggerText="Delete"
+                                                    title="Do you want to delete this task?"
+                                                    description="Deleting this task will permanently remove. This action cannot be undone."
+                                                    confirmText="Delete Task"
+                                                    onConfirm={() => handleDelete(task.id)}
+                                                    cancelText="Cancel"
+                                                    variant="ghost"
+                                                    className="text-red-500"
+                                                />
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
@@ -329,7 +361,16 @@ export default function Board({ values }: { values: Boards }){
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
-                                                <Link href="#">Delete</Link>
+                                                <ConfirmDialog
+                                                    triggerText="Delete"
+                                                    title="Do you want to delete this task?"
+                                                    description="Deleting this task will permanently remove. This action cannot be undone."
+                                                    confirmText="Delete Task"
+                                                    onConfirm={() => handleDelete(task.id)}
+                                                    cancelText="Cancel"
+                                                    variant="ghost"
+                                                    className="text-red-500"
+                                                />
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>

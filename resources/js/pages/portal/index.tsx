@@ -113,7 +113,7 @@ export default function Index({ values }: { values: Dashboard }){
                         ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={4} className="text-center py-4">No Recent Task.</TableCell>
+                                <TableCell colSpan={5} className="text-center py-4">No Recent Task.</TableCell>
                             </TableRow>
                         )}
                     </TableBody>

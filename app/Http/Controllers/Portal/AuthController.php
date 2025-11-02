@@ -88,7 +88,7 @@ class AuthController extends Controller{
         session()->flash('notification-status', $result['status']);
         session()->flash('notification-msg', $result['message']);
 
-        return $result['success'] ? redirect()->route('portal.auth.login') : redirect()->back();
+        return $result['success'] ? redirect()->route('portal.index') : redirect()->back();
     }
 
     public function authenticate(PageRequest $request): RedirectResponse {

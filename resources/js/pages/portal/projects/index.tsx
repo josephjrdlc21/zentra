@@ -1,7 +1,7 @@
 import { Head, Link, usePage, useForm, router } from "@inertiajs/react";
 import { Projects } from "@/types/portal/project";
 import { PageProps } from "@/types/props";
-import { index, create, edit, show } from "@/routes/portal/projects";
+import { index, create, edit, show, deleteMethod } from "@/routes/portal/projects";
 import { statusBadgeClass, dateOnly, initialsFormat } from "@/lib/helper";
 
 import Main from "@/layouts/main";
@@ -28,6 +28,10 @@ export default function Index({ values }: { values: Projects }){
         e.preventDefault();
 
         form.submit(index());
+    }
+
+    const handleDelete = (id: number) => {
+        router.delete(deleteMethod.url(id));
     }
 
     return(
@@ -121,10 +125,10 @@ export default function Index({ values }: { values: Projects }){
                                     <div className="flex gap-2 items-center">
                                         <Avatar>
                                             <AvatarImage src={`${project.owner.directory}/${project.owner.filename}`} alt="@shadcn" />
-                                            <AvatarFallback>{initialsFormat(project.owner.name)}</AvatarFallback>
+                                            <AvatarFallback>{initialsFormat(project.owner.name) ?? 'N/A'}</AvatarFallback>
                                         </Avatar>
                                         <div>
-                                            <span>{project.owner.name}</span>
+                                            <span>{project.owner.name ?? 'N/A'}</span>
                                         </div>
                                     </div>
                                 </TableCell>
@@ -145,7 +149,16 @@ export default function Index({ values }: { values: Projects }){
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
-                                                <Link href="#">Delete</Link>
+                                                <ConfirmDialog
+                                                    triggerText="Delete"
+                                                    title="Do you want to delete this project?"
+                                                    description="Deleting this project will permanently remove its tasks and all associated data. This action cannot be undone."
+                                                    confirmText="Delete Project"
+                                                    onConfirm={() => handleDelete(project.id)}
+                                                    cancelText="Cancel"
+                                                    variant="ghost"
+                                                    className="text-red-500"
+                                                />
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>

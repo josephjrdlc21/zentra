@@ -7,6 +7,7 @@ use App\Actions\Portal\Task\TaskList;
 use App\Actions\Portal\Task\TaskCreate;
 use App\Actions\Portal\Task\TaskUpdate;
 use App\Actions\Portal\Task\TaskUpdateStatus;
+use App\Actions\Portal\Task\TaskDelete;
 
 use App\Http\Requests\PageRequest;
 use App\Http\Requests\Portal\TaskRequest;
@@ -138,5 +139,17 @@ class TaskController extends Controller{
         }
 
         return inertia('portal/tasks/show', ['values' => $this->data]);
+    }
+
+    public function destroy(PageRequest $request, ?int $id = null): RedirectResponse {
+        $this->request['id'] = $id;
+        
+        $action = new TaskDelete($this->request);
+        $result = $action->execute();
+
+        session()->flash('notification-status', $result['status']);
+        session()->flash('notification-msg', $result['message']);
+
+        return $result['success'] ? redirect()->route('portal.tasks.index') : redirect()->back();
     }
 }

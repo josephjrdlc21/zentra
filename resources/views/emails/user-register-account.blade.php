@@ -178,8 +178,8 @@
 
             <tr>
                 <td>
-                    This code will expire in <b>5 minutes</b>. If you did not request this verification, please ignore this email. Please click this site link to verify your account<br>
-                    <a href="{{ $link }}">{{ $link }}</a>
+                    This code will expire in <b>5 minutes</b>. If you did not request this verification, please ignore this email. Please click the link to verify your account<br>
+                    <a href="{{ $link }}">Click me!</a>
                 </td>
             </tr>
 

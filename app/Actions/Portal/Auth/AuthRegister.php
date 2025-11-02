@@ -36,7 +36,7 @@ class AuthRegister{
             $user_verification->user_id = $user->id;
             $user_verification->email = $user->email;
             $user_verification->code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-            $user_verification->token = Str::random(12);
+            $user_verification->token = Str::random(60);
             $user_verification->expires_at = Carbon::now()->addMinutes(5);
             $user_verification->save();
 
@@ -62,7 +62,7 @@ class AuthRegister{
             'status'  => "info", 
             'message' => "
                             Your account has been created successfully.
-                            A verification email has been sent to your address. Please check your inbox (and spam folder) to verify your account.
+                            A verification email has been sent to your address. Please verify your account.
                             If you didn’t receive the email, please contact your administrator.
                         "
         ];

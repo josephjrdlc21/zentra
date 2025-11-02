@@ -12,4 +12,5 @@ Route::middleware('portal.auth')->prefix('tasks')->name('tasks.')->group(functio
     Route::put('/update/{id?}', [TaskController::class, 'update'])->name('update');
     Route::put('/update-status/{id?}', [TaskController::class, 'update_status'])->name('update_status');
     Route::get('/show/{id?}', [TaskController::class, 'show'])->name('show');
+    Route::delete('/delete/{id?}', [TaskController::class, 'destroy'])->name('delete');
 });

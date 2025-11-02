@@ -10,4 +10,5 @@ Route::middleware('portal.auth')->prefix('projects')->name('projects.')->group(f
     Route::get('/edit/{id?}', [ProjectController::class, 'edit'])->name('edit');
     Route::put('/update/{id?}', [ProjectController::class, 'update'])->name('update');
     Route::get('/show/{id?}', [ProjectController::class, 'show'])->name('show');
+    Route::delete('/delete/{id?}', [ProjectController::class, 'destroy'])->name('delete');
 });

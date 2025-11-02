@@ -5,6 +5,7 @@ namespace App\Actions\Portal\Auth;
 use App\Models\User;
 use App\Models\UserVerification;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -48,6 +49,8 @@ class AuthVerify{
             $user->save();
 
             $verify->delete();
+
+            Auth::guard('portal')->login($user);
 
             DB::commit();
         } catch (\Exception $e) {

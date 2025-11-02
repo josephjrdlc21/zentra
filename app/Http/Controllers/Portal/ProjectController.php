@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Portal;
 use App\Actions\Portal\Project\ProjectList;
 use App\Actions\Portal\Project\ProjectCreate;
 use App\Actions\Portal\Project\ProjectUpdate;
+use App\Actions\Portal\Project\ProjectDelete;
 
 use App\Http\Requests\PageRequest;
 use App\Http\Requests\Portal\ProjectRequest;
@@ -108,5 +109,17 @@ class ProjectController extends Controller{
         }
 
         return inertia('portal/projects/show', ['values' => $this->data]);
+    }
+
+    public function destroy(PageRequest $request, ?int $id = null): RedirectResponse {
+        $this->request['id'] = $id;
+        
+        $action = new ProjectDelete($this->request);
+        $result = $action->execute();
+
+        session()->flash('notification-status', $result['status']);
+        session()->flash('notification-msg', $result['message']);
+
+        return $result['success'] ? redirect()->route('portal.projects.index') : redirect()->back();
     }
 }

@@ -38,7 +38,9 @@ class UserVerification extends Model{
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'expires_at' => 'datetime',
+    ];
 
     public function user(): BelongsTo
     {

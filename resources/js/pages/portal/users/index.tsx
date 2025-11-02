@@ -163,7 +163,7 @@ export default function Index({ values }: { values: Users }){
                                             <DropdownMenuItem className="cursor-pointer" asChild>
                                                  <ConfirmDialog
                                                     triggerText="Delete"
-                                                    title="Do want to delete this user account?"
+                                                    title="Do you want to delete this user account?"
                                                     description="Deleting this user will permanently remove their account and all associated data. This action cannot be undone."
                                                     confirmText="Delete User"
                                                     onConfirm={() => handleDelete(user.id)}

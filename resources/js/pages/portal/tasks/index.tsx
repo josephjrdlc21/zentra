@@ -1,11 +1,12 @@
-import { Head, Link, usePage, useForm } from "@inertiajs/react";
+import { Head, Link, usePage, useForm, router } from "@inertiajs/react";
 import { Tasks } from "@/types/portal/task";
 import { PageProps } from "@/types/props";
-import { index, create, show, edit } from "@/routes/portal/tasks";
+import { index, create, show, edit, deleteMethod } from "@/routes/portal/tasks";
 import { statusBadgeClass, textSpace, initialsFormat, boardDate } from "@/lib/helper";
 
 import Main from "@/layouts/main";
 import PagePagination from "@/components/page-paginate";
+import ConfirmDialog from "@/components/confirmation";
 import { Notification } from "@/components/notification";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,6 +28,10 @@ export default function Index({ values }: { values: Tasks }){
         e.preventDefault();
 
         form.submit(index());
+    }
+
+    const handleDelete = (id: number) => {
+        router.delete(deleteMethod.url(id));
     }
 
     return(
@@ -125,7 +130,16 @@ export default function Index({ values }: { values: Tasks }){
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
-                                                <Link href="#">Delete</Link>
+                                                <ConfirmDialog
+                                                    triggerText="Delete"
+                                                    title="Do you want to delete this task?"
+                                                    description="Deleting this task will permanently remove. This action cannot be undone."
+                                                    confirmText="Delete Task"
+                                                    onConfirm={() => handleDelete(task.id)}
+                                                    cancelText="Cancel"
+                                                    variant="ghost"
+                                                    className="text-red-500"
+                                                />
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
