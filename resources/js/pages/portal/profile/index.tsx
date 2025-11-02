@@ -114,7 +114,7 @@ export default function Index({ values }: { values: Profile }){
 
                     <Separator/>
 
-                    <CardFooter className="flex justify-end gap-2">
+                    <CardFooter className="flex flex-col md:flex-row justify-end gap-2">
                         <Button variant={"secondary"} asChild>
                             <Link href={index()}>
                                 Go to Dashboard

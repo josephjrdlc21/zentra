@@ -4,10 +4,14 @@ namespace App\Actions\Portal\Auth;
 
 use App\Models\User;
 use App\Models\UserRole;
+use App\Models\UserVerification;
+
+use App\Events\UserRegisterAccount;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
+use Carbon\Carbon;
 class AuthRegister{
     private array $request = [];
 
@@ -27,6 +31,20 @@ class AuthRegister{
 
             $role = UserRole::where('name', $this->request['type'])->where('guard_name','portal')->first();
             $user->assignRole($role);
+
+            $user_verification = new UserVerification;
+            $user_verification->user_id = $user->id;
+            $user_verification->email = $user->email;
+            $user_verification->code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+            $user_verification->token = Str::random(12);
+            $user_verification->expires_at = Carbon::now()->addMinutes(5);
+            $user_verification->save();
+
+            if(env('MAIL_SERVICE', false)){
+                $link = route('portal.auth.verify', $user_verification->token);
+
+                event(new UserRegisterAccount($user_verification, $link));
+            }
 
             DB::commit();
         } catch (\Exception $e) {

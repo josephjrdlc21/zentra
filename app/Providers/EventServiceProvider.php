@@ -20,9 +20,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Event::listen(
-            \App\Events\UserAccountCreated::class, 
-            \App\Listeners\UserAccountCreatedListener::class,
-        );
+        Event::listen(\App\Events\UserAccountCreated::class, \App\Listeners\UserAccountCreatedListener::class,);
+        Event::listen(\App\Events\UserResetPassword::class, \App\Listeners\UserResetPasswordListener::class,);
+        Event::listen(\App\Events\UserRegisterAccount::class, \App\Listeners\UserRegisterAccountListener::class,);
     }
 }

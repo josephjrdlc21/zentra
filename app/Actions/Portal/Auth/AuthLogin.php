@@ -19,6 +19,16 @@ class AuthLogin{
         ])){
             $account = Auth::guard($this->request['guard'])->user();
 
+            if(!$account->email_verified_at) {
+                Auth::guard($this->request['guard'])->logout();
+
+                return [
+                    'success' => false, 
+                    'status'  => "failed", 
+                    'message' => "Account is not verfied. Please contact the administrator."
+                ];
+            }
+
             if($account->status == "inactive") {
                 Auth::guard($this->request['guard'])->logout();
 

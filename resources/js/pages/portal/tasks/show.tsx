@@ -76,7 +76,7 @@ export default function Show({ values }: { values: Task }){
 
                     <Separator/>
 
-                    <CardFooter className="flex justify-end gap-2">
+                    <CardFooter className="flex flex-col md:flex-row justify-end gap-2">
                         <Button variant={"secondary"} asChild>
                             <Link href={board.url()}>
                                 Go To Boards

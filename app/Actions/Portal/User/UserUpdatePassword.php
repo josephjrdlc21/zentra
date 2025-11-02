@@ -4,6 +4,8 @@ namespace App\Actions\Portal\User;
 
 use App\Models\User;
 
+use App\Events\UserResetPassword;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -31,6 +33,12 @@ class UserUpdatePassword{
 
             $user->password = bcrypt($password);
             $user->save();
+
+            if(env('MAIL_SERVICE', false)){
+                $link = route('portal.auth.login');
+
+                event(new UserResetPassword($user, $password, $link));
+            }
 
             DB::commit();
         } catch (\Exception $e) {

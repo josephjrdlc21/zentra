@@ -9,7 +9,8 @@ Route::name('auth.')->group(function () {
         Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
         Route::get('/register', [AuthController::class, 'register'])->name('register');
         Route::post('/store', [AuthController::class, 'store'])->name('store');
-        Route::get('/verify', [AuthController::class, 'verify'])->name('verify');
+        Route::get('/verify/{token?}', [AuthController::class, 'verify'])->name('verify');
+        Route::post('/store-verify/{token?}', [AuthController::class, 'store_verify'])->name('store_verify');
     });
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });

@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Portal;
 use App\Actions\Portal\Auth\AuthLogin;
 use App\Actions\Portal\Auth\AuthLogout;
 use App\Actions\Portal\Auth\AuthRegister;
+use App\Actions\Portal\Auth\AuthVerify;
 
 use App\Http\Requests\PageRequest;
 use App\Http\Requests\Portal\AuthRequest;
 
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response;
+use Carbon\Carbon;
 
 class AuthController extends Controller{
     protected array $data = [];
@@ -50,6 +52,43 @@ class AuthController extends Controller{
         $this->data['page_title'] .= " - Login";
 
         return inertia('portal/auth/login', ['values' => $this->data]);
+    }
+
+    public function verify(PageRequest $request, ?string $token = null): Response|RedirectResponse {
+        $this->data['page_title'] .= " - Verify";
+
+        $this->data['verify'] = \App\Models\UserVerification::where('token', $token)->first();
+
+        if(!$this->data['verify']) {
+            session()->flash('notification-status', 'failed');
+            session()->flash('notification-msg', "Invalid token to verify account.");
+
+            return redirect()->route('portal.auth.login');
+        }
+
+        if($this->data['verify']->expires_at->isPast()) {
+            $this->data['verify']->delete();
+
+            session()->flash('notification-status', 'failed');
+            session()->flash('notification-msg', "Verification has been expired. Contact administrator.");
+
+            return redirect()->route('portal.auth.login');
+        }
+
+        return inertia('portal/auth/verify', ['values' => $this->data]);
+    }
+
+    public function store_verify(PageRequest $request, ?string $token = null): RedirectResponse {
+        $this->request['token'] = $token;
+        $this->request['code'] = $request->input('code');
+
+        $action = new AuthVerify($this->request);
+        $result = $action->execute();
+
+        session()->flash('notification-status', $result['status']);
+        session()->flash('notification-msg', $result['message']);
+
+        return $result['success'] ? redirect()->route('portal.auth.login') : redirect()->back();
     }
 
     public function authenticate(PageRequest $request): RedirectResponse {
