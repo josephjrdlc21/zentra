@@ -56,7 +56,7 @@ export default function Register({ values }: { values: Regist }) {
                                     {flash.message && <Notification status={flash.status} message={flash.message} />}
                                     <div className="grid gap-6">
                                         <div className="grid gap-3">
-                                            <Label htmlFor="owner">Registed as </Label>
+                                            <Label htmlFor="owner">Register as </Label>
                                             <Select value={form.data.type} onValueChange={(e) => form.setData('type', e)}>
                                                 <SelectTrigger className="w-full">
                                                     <SelectValue placeholder="Select" />
