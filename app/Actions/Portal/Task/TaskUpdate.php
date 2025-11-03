@@ -4,6 +4,8 @@ namespace App\Actions\Portal\Task;
 
 use App\Models\Task;
 
+use App\Events\AuditTrailLogged;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -33,6 +35,12 @@ class TaskUpdate{
             $task->priority = $this->request['priority'];
             $task->assigned_id = $this->request['assigned_to'];
             $task->save();
+
+            event(new AuditTrailLogged(
+                process: 'UPDATE_TASK',
+                remarks: 'Updated a task details.',
+                type: 'USER_ACTION',
+            ));
 
             DB::commit();
         } catch (\Exception $e) {

@@ -4,6 +4,8 @@ namespace App\Actions\Portal\Role;
 
 use App\Models\UserRole;
 
+use App\Events\AuditTrailLogged;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -23,6 +25,12 @@ class RoleCreate{
             $role->save();
 
             $role->givePermissionTo($this->request['permissions']);
+
+            event(new AuditTrailLogged(
+                process: 'CREATE_ROLE',
+                remarks: 'Created a new role.',
+                type: 'USER_ACTION',
+            ));
             
             DB::commit();
         } catch (\Exception $e) {

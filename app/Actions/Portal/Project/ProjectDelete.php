@@ -4,6 +4,8 @@ namespace App\Actions\Portal\Project;
 
 use App\Models\Project;
 
+use App\Events\AuditTrailLogged;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -28,6 +30,12 @@ class ProjectDelete{
         DB::beginTransaction();
         try {
             $project->delete();
+
+            event(new AuditTrailLogged(
+                process: 'DELETE_PROJECT',
+                remarks: 'Deleted a project.',
+                type: 'USER_ACTION',
+            ));
 
             DB::commit();
         } catch (\Exception $e) {

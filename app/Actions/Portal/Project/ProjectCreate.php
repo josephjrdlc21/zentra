@@ -5,6 +5,8 @@ namespace App\Actions\Portal\Project;
 use App\Models\Project;
 use App\Models\ProjectUser;
 
+use App\Events\AuditTrailLogged;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -28,6 +30,12 @@ class ProjectCreate{
             $project->save();
 
             $project->members()->sync($this->request['members']);
+
+            event(new AuditTrailLogged(
+                process: 'CREATE_PROJECT',
+                remarks: 'Created a new project.',
+                type: 'USER_ACTION',
+            ));
             
             DB::commit();
         } catch (\Exception $e) {

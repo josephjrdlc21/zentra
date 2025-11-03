@@ -5,6 +5,8 @@ namespace App\Actions\Portal\User;
 use App\Models\User;
 use App\Models\UserRole;
 
+use App\Events\AuditTrailLogged;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -32,6 +34,12 @@ class UserUpdate{
 
             $role = UserRole::where('name', $this->request['role'])->where('guard_name','portal')->first();
             $user->syncRoles($role);
+
+            event(new AuditTrailLogged(
+                process: 'UPDATE_USER',
+                remarks: 'Updated a user details.',
+                type: 'USER_ACTION',
+            ));
 
             DB::commit();
         } catch (\Exception $e) {

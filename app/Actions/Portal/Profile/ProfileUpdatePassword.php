@@ -4,6 +4,8 @@ namespace App\Actions\Portal\Profile;
 
 use App\Models\User;
 
+use App\Events\AuditTrailLogged;
+
 use Illuminate\Support\Facades\DB;
 
 class ProfileUpdatePassword{
@@ -28,6 +30,12 @@ class ProfileUpdatePassword{
         try {
             $profile->password = bcrypt($this->request['password']);
             $profile->save();
+
+            event(new AuditTrailLogged(
+                process: 'UPDATE_PASSWORD_PROFILE',
+                remarks: 'Updated a profile password.',
+                type: 'USER_ACTION',
+            ));
 
             DB::commit();
         } catch (\Exception $e) {

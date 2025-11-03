@@ -4,6 +4,8 @@ namespace App\Actions\Portal\User;
 
 use App\Models\User;
 
+use App\Events\AuditTrailLogged;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -29,6 +31,12 @@ class UserUpdateStatus{
         try {
             $user->status = ($user->status == 'active') ? 'inactive' : 'active';
             $user->save();
+
+            event(new AuditTrailLogged(
+                process: 'UPADTE_STATUS_USER',
+                remarks: 'Updated a user status.',
+                type: 'USER_ACTION',
+            ));
 
             DB::commit();
         } catch (\Exception $e) {

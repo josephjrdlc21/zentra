@@ -4,6 +4,8 @@ namespace App\Actions\Portal\Task;
 
 use App\Models\Task;
 
+use App\Events\AuditTrailLogged;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -29,6 +31,12 @@ class TaskUpdateStatus{
         try {
             $task->status = $this->request['status'];
             $task->save();
+
+            event(new AuditTrailLogged(
+                process: 'UPDATE_STATUS_TASK',
+                remarks: 'Updated a task status.',
+                type: 'USER_ACTION',
+            ));
 
             DB::commit();
         } catch (\Exception $e) {

@@ -5,6 +5,8 @@ namespace App\Actions\Portal\Project;
 use App\Models\Project;
 use App\Models\ProjectUser;
 
+use App\Events\AuditTrailLogged;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -32,6 +34,12 @@ class ProjectUpdate{
             $project->save();
 
             $project->members()->sync($this->request['members']);
+
+            event(new AuditTrailLogged(
+                process: 'UPDATE_PROJECT',
+                remarks: 'Updated a project details.',
+                type: 'USER_ACTION',
+            ));
             
             DB::commit();
         } catch (\Exception $e) {

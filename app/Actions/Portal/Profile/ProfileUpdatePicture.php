@@ -4,6 +4,8 @@ namespace App\Actions\Portal\Profile;
 
 use App\Models\User;
 
+use App\Events\AuditTrailLogged;
+
 use Illuminate\Support\Facades\DB;
 use App\Support\ImageUploader;
 
@@ -35,6 +37,12 @@ class ProfileUpdatePicture{
                 $profile->filename = $profile_picture['filename'];
                 $profile->source = $profile_picture['source'];
                 $profile->save();
+
+                event(new AuditTrailLogged(
+                    process: 'UPDATE_PICTURE_PROFILE',
+                    remarks: 'Updated a profile picture.',
+                    type: 'USER_ACTION',
+                ));
             }
 
             DB::commit();

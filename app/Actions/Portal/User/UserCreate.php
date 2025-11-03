@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\UserRole;
 
 use App\Events\UserAccountCreated;
+use App\Events\AuditTrailLogged;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -31,6 +32,12 @@ class UserCreate{
 
             $role = UserRole::where('name', $this->request['role'])->where('guard_name','portal')->first();
             $user->assignRole($role);
+
+            event(new AuditTrailLogged(
+                process: 'CREATE_USER',
+                remarks: 'Created a new user.',
+                type: 'USER_ACTION',
+            ));
 
             if(env('MAIL_SERVICE', false)){
                 $link = route('portal.auth.login');

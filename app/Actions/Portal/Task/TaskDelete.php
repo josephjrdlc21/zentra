@@ -4,6 +4,8 @@ namespace App\Actions\Portal\Task;
 
 use App\Models\Task;
 
+use App\Events\AuditTrailLogged;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -28,6 +30,12 @@ class TaskDelete{
         DB::beginTransaction();
         try {
             $task->delete();
+
+            event(new AuditTrailLogged(
+                process: 'DELETE_TASK',
+                remarks: 'Deleted a task.',
+                type: 'USER_ACTION',
+            ));
 
             DB::commit();
         } catch (\Exception $e) {

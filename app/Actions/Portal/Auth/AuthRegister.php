@@ -7,6 +7,7 @@ use App\Models\UserRole;
 use App\Models\UserVerification;
 
 use App\Events\UserRegisterAccount;
+use App\Events\AuditTrailLogged;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -39,6 +40,12 @@ class AuthRegister{
             $user_verification->token = Str::random(60);
             $user_verification->expires_at = Carbon::now()->addMinutes(5);
             $user_verification->save();
+
+            event(new AuditTrailLogged(
+                process: 'REGISTER_AUTHENTICATION',
+                remarks: 'Registered a user account.',
+                type: 'USER_ACTION',
+            ));
 
             if(env('MAIL_SERVICE', false)){
                 $link = route('portal.auth.verify', $user_verification->token);

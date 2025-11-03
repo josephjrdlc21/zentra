@@ -5,6 +5,8 @@ namespace App\Actions\Portal\Auth;
 use App\Models\User;
 use App\Models\UserVerification;
 
+use App\Events\AuditTrailLogged;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -49,6 +51,12 @@ class AuthVerify{
             $user->save();
 
             $verify->delete();
+
+            event(new AuditTrailLogged(
+                process: 'VERIFY_AUTHENTICATION',
+                remarks: 'Verified a user account.',
+                type: 'USER_ACTION',
+            ));
 
             Auth::guard('portal')->login($user);
 

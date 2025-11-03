@@ -5,6 +5,7 @@ namespace App\Actions\Portal\User;
 use App\Models\User;
 
 use App\Events\UserResetPassword;
+use App\Events\AuditTrailLogged;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -33,6 +34,12 @@ class UserUpdatePassword{
 
             $user->password = bcrypt($password);
             $user->save();
+
+            event(new AuditTrailLogged(
+                process: 'UPADTE_PASSWORD_USER',
+                remarks: 'Updated a user password.',
+                type: 'USER_ACTION',
+            ));
 
             if(env('MAIL_SERVICE', false)){
                 $link = route('portal.auth.login');
