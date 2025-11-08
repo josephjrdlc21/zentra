@@ -33,6 +33,7 @@ import { board as boards } from '@/routes/portal/tasks';
 import { index as reports } from '@/routes/portal/reports';
 import { index as permissions } from '@/routes/portal/permissions';
 import { index as roles } from '@/routes/portal/roles';
+import { index as audit } from '@/routes/portal/audit-trails';
 
 const data = {
     versions: ['1.0.1'],
@@ -67,8 +68,9 @@ const data = {
                 },
                 {
                     title: 'Activity Logs',
-                    url: '#',
+                    url: audit.url(),
                     icon: <Logs className="size-4" />,
+                    isActive: location.pathname === audit.url(),
                 },
             ],
         },

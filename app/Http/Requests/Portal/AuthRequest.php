@@ -23,12 +23,26 @@ class AuthRequest extends RequestManager
     {
         $id = $this->id ?? 0;
 
-		$rules = [
-            'name' => "required|max:50",
-            'type' => "required",
-            'email' => "required|email:rfc,dns|unique_email:{$id},user|max:40",
-            'password' => "required|confirmed|password_format",
-		];
+        $rules = [];
+
+        switch ($this->route()->getName()) {
+            case 'portal.auth.store':
+                $rules = [
+                    'name' => "required|max:50",
+                    'type' => "required",
+                    'email' => "required|email:rfc,dns|unique_email:{$id},user|max:40",
+                    'password' => "required|confirmed|password_format",
+                ];
+
+                break;
+
+            case 'portal.auth.store_password':
+                $rules = [
+                    'password' => "required|confirmed|password_format",
+                ];
+
+                break;
+        }
 
         return $rules;
     }

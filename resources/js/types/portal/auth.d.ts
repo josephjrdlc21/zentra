@@ -6,5 +6,8 @@ export interface Verif extends Auth {
     verify: {
         id: number; 
         token: string;
+        email: string;
+        password: string;
+        password_confirmation: string;
     };
 }

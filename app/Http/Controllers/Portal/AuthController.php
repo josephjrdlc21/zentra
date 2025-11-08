@@ -6,6 +6,8 @@ use App\Actions\Portal\Auth\AuthLogin;
 use App\Actions\Portal\Auth\AuthLogout;
 use App\Actions\Portal\Auth\AuthRegister;
 use App\Actions\Portal\Auth\AuthVerify;
+use App\Actions\Portal\Auth\AuthForgotPassword;
+use App\Actions\Portal\Auth\AuthPassword;
 
 use App\Http\Requests\PageRequest;
 use App\Http\Requests\Portal\AuthRequest;
@@ -104,6 +106,61 @@ class AuthController extends Controller{
         session()->flash('notification-status', $result['status']);
         session()->flash('notification-msg', $result['message']);
         return $result['success'] ? redirect()->route('portal.index') : redirect()->route('portal.auth.login');
+    }
+
+    public function forgot_password(PageRequest $request): Response {
+        $this->data['page_title'] .= " - Forgot Password";
+
+        return inertia('portal/auth/forgot-password', ['values' => $this->data]);
+    }
+
+    public function store_forgot_password(PageRequest $request): RedirectResponse {
+        $this->request['email'] = $request->input('email');
+
+        $action = new AuthForgotPassword($this->request);
+        $result = $action->execute();
+
+        session()->flash('notification-status', $result['status']);
+        session()->flash('notification-msg', $result['message']);
+
+        return $result['success'] ? redirect()->route('portal.index') : redirect()->back();
+    }
+
+    public function password(PageRequest $request, ?string $token = null): Response|RedirectResponse {
+        $this->data['page_title'] .= " - Password";
+
+        $this->data['password'] = \App\Models\UserForgotPassword::where('token', $token)->first();
+
+        if(!$this->data['password']) {
+            session()->flash('notification-status', 'failed');
+            session()->flash('notification-msg', "Invalid token.");
+
+            return redirect()->route('portal.auth.login');
+        }
+
+        if($this->data['password']->expires_at->isPast()) {
+            $this->data['password']->delete();
+
+            session()->flash('notification-status', 'failed');
+            session()->flash('notification-msg', "Password reset has been expired. Please try again.");
+
+            return redirect()->route('portal.auth.login');
+        }
+
+        return inertia('portal/auth/password', ['values' => $this->data]);
+    }
+
+    public function store_password(AuthRequest $request, ?string $token = null): RedirectResponse {
+        $this->request['token'] = $token;
+        $this->request['password'] = $request->input('password');
+
+        $action = new AuthPassword($this->request);
+        $result = $action->execute();
+
+        session()->flash('notification-status', $result['status']);
+        session()->flash('notification-msg', $result['message']);
+
+        return $result['success'] ? redirect()->route('portal.index') : redirect()->back();
     }
 
     public function logout(PageRequest $request): RedirectResponse {

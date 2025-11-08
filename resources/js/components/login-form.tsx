@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LoaderCircle } from 'lucide-react';
+import { forgot_password } from '@/routes/portal/auth';
 
 import { cn } from '@/lib/utils';
 import { authenticate } from '@/routes/portal/auth';
@@ -65,7 +66,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                                 <div className="grid gap-3">
                                     <div className="flex items-center">
                                         <Label htmlFor="password">Password</Label>
-                                        <a href="#" className="ml-auto text-sm underline-offset-4 hover:underline">
+                                        <a href={forgot_password.url()} className="ml-auto text-sm underline-offset-4 hover:underline">
                                             Forgot your password?
                                         </a>
                                     </div>

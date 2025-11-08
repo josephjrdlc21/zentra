@@ -12,4 +12,5 @@ Route::name('portal.')->group(function () {
     require __DIR__. '/portal/profile.php';
     require __DIR__. '/portal/permission.php';
     require __DIR__. '/portal/role.php';
+    require __DIR__. '/portal/audit-trail.php';
 });
