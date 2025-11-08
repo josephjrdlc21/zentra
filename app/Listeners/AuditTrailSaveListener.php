@@ -17,7 +17,7 @@ class AuditTrailSaveListener
     {
         $ip = Request::header('X-Forwarded-For') ?? Request::getClientIp();
         $user = Auth::guard('portal')->user();
-        $user_name = $user->name ?? 'System';
+        $user_name = $user?->name ?? 'System';
 
         DB::beginTransaction();
         try {

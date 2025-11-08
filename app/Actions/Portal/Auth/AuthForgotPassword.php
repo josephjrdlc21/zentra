@@ -43,7 +43,7 @@ class AuthForgotPassword{
             }
 
             if ($reset && $reset->expires_at->isPast()) {
-                $reset->delete();
+                ForgotPassword::where('email', $user->email)->delete();
             }
         }
         

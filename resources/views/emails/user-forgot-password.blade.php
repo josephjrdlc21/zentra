@@ -173,13 +173,6 @@
 
             <tr>
                 <td>
-                    This code will expire in <b>5 minutes</b>. If you did not request this forgot password, please ignore this email. Please click the link to reset your password<br>
-                    <a href="{{ $link }}">Click me!</a>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
                     <b>NOTE:</b> If the link expires, you may request a new password reset after <b>10 minutes</b>.<br>
                     Thank you for using our services.
                 </td>

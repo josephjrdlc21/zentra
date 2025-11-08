@@ -32,7 +32,7 @@ class AuthPassword{
         }
 
         if($reset->expires_at->isPast()){
-            $reset->delete();
+            ForgotPassword::where('token', $this->request['token'])->delete();
 
             return [
                 'success' => false, 
@@ -47,7 +47,7 @@ class AuthPassword{
             $user->password = bcrypt($this->request['password']);
             $user->save();
 
-            $reset->delete();
+            ForgotPassword::where('email', $user->email)->delete();
 
             event(new AuditTrailLogged(
                 process: 'NEW_PASSWORD_AUTHENTICATION',

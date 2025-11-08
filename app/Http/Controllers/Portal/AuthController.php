@@ -123,13 +123,13 @@ class AuthController extends Controller{
         session()->flash('notification-status', $result['status']);
         session()->flash('notification-msg', $result['message']);
 
-        return $result['success'] ? redirect()->route('portal.index') : redirect()->back();
+        return $result['success'] ? redirect()->route('portal.auth.login') : redirect()->back();
     }
 
     public function password(PageRequest $request, ?string $token = null): Response|RedirectResponse {
         $this->data['page_title'] .= " - Password";
 
-        $this->data['password'] = \App\Models\UserForgotPassword::where('token', $token)->first();
+        $this->data['password'] = \App\Models\ForgotPassword::where('token', $token)->first();
 
         if(!$this->data['password']) {
             session()->flash('notification-status', 'failed');
@@ -139,7 +139,7 @@ class AuthController extends Controller{
         }
 
         if($this->data['password']->expires_at->isPast()) {
-            $this->data['password']->delete();
+            \App\Models\ForgotPassword::where('token', $token)->delete();
 
             session()->flash('notification-status', 'failed');
             session()->flash('notification-msg', "Password reset has been expired. Please try again.");

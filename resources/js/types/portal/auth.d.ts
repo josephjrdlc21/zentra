@@ -10,4 +10,8 @@ export interface Verif extends Auth {
         password: string;
         password_confirmation: string;
     };
+
+    password: {
+        token: string;
+    }
 }

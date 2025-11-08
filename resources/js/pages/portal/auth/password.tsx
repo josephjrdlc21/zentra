@@ -25,7 +25,7 @@ export default function Password({ values }: { values: Verif }) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        form.submit(store_password());
+        form.submit(store_password(values.password.token));
     };
 
     return (
@@ -44,7 +44,7 @@ export default function Password({ values }: { values: Verif }) {
                     <Card>
                         <CardHeader className="text-center">
                             <CardTitle className="text-xl">Forgot Password</CardTitle>
-                            <CardDescription>Please enter your new password.</CardDescription>
+                            <CardDescription>Please enter your new password. This will expire in 5 minutes.</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={handleSubmit}>
