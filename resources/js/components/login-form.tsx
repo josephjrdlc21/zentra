@@ -18,6 +18,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+    DialogDescription,
 } from "@/components/ui/dialog"
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
@@ -114,6 +115,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                     <DialogContent className="max-w-lg">
                     <DialogHeader>
                         <DialogTitle>Terms of Service</DialogTitle>
+                        <DialogDescription>Please read these terms carefully before using the application.</DialogDescription>
                     </DialogHeader>
                     <div className="space-y-3 text-sm">
                         <p>This project is a personal, non-commercial application created for learning and demonstration purposes.</p>
@@ -136,19 +138,20 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                     </button>
                     </DialogTrigger>
                     <DialogContent className="max-w-lg">
-                    <DialogHeader>
-                        <DialogTitle>Privacy Policy</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-3 text-sm">
-                        <p>This is a personal project and does not commercially process or sell user data.</p>
-                        <ul className="list-disc pl-4 space-y-1">
-                        <li>The application may store any information you provide (e.g., name, email, account data).</li>
-                        <li>Your data may be deleted by the owner at any time, especially during updates or resets.</li>
-                        <li>No information is shared with third-party services except those required for basic functionality.</li>
-                        <li>You may request data deletion at any time.</li>
-                        </ul>
-                        <p>Using this application means you agree to this Privacy Policy.</p>
-                    </div>
+                        <DialogHeader>
+                            <DialogTitle>Privacy Policy</DialogTitle>
+                            <DialogDescription>Learn how your information is collected, used, and protected.</DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-3 text-sm">
+                            <p>This is a personal project and does not commercially process or sell user data.</p>
+                            <ul className="list-disc pl-4 space-y-1">
+                            <li>The application may store any information you provide (e.g., name, email, account data).</li>
+                            <li>Your data may be deleted by the owner at any time, especially during updates or resets.</li>
+                            <li>No information is shared with third-party services except those required for basic functionality.</li>
+                            <li>You may request data deletion at any time.</li>
+                            </ul>
+                            <p>Using this application means you agree to this Privacy Policy.</p>
+                        </div>
                     </DialogContent>
                 </Dialog>
             </div>

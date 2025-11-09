@@ -17,6 +17,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+    DialogDescription,
 } from "@/components/ui/dialog"
 
 import { PocketKnife, LoaderCircle } from "lucide-react";
@@ -154,6 +155,7 @@ export default function Register({ values }: { values: Regist }) {
                             <DialogContent className="max-w-lg">
                             <DialogHeader>
                                 <DialogTitle>Terms of Service</DialogTitle>
+                                <DialogDescription>Please read these terms carefully before using the application.</DialogDescription>
                             </DialogHeader>
                             <div className="space-y-3 text-sm">
                                 <p>This project is a personal, non-commercial application created for learning and demonstration purposes.</p>
@@ -178,6 +180,7 @@ export default function Register({ values }: { values: Regist }) {
                             <DialogContent className="max-w-lg">
                             <DialogHeader>
                                 <DialogTitle>Privacy Policy</DialogTitle>
+                                <DialogDescription>Learn how your information is collected, used, and protected.</DialogDescription>
                             </DialogHeader>
                             <div className="space-y-3 text-sm">
                                 <p>This is a personal project and does not commercially process or sell user data.</p>
