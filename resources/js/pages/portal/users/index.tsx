@@ -3,6 +3,7 @@ import { Users } from "@/types/portal/user";
 import { PageProps } from "@/types/props";
 import { index, create, edit, show, update_status, update_password, deleteMethod } from "@/routes/portal/users";
 import { statusBadgeClass, boardDate, initialsFormat, titleCase } from "@/lib/helper";
+import { can } from "@/lib/permission";
 
 import Main from "@/layouts/main";
 import PagePagination from "@/components/page-paginate";
@@ -20,7 +21,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { MoreHorizontal, Search, FunnelX, Plus } from "lucide-react";
 
 export default function Index({ values }: { values: Users }){
-    const { flash } = usePage<PageProps>().props;
+    const { flash, auth_portal } = usePage<PageProps>().props as any;
+    const permissions = auth_portal?.permissions ?? [];
     
     const form = useForm({keyword: values.keyword ?? '',});
 
@@ -72,7 +74,7 @@ export default function Index({ values }: { values: Users }){
                             </Button>
                         </div>
                         <div className="flex flex-row gap-2">
-                            <Button asChild>
+                            <Button asChild className={can('portal.users.create', permissions) ? 'block' : 'hidden'}>
                                 <Link href={create.url()}>
                                     <Plus className="size-4"/>
                                     Add Member
@@ -131,13 +133,13 @@ export default function Index({ values }: { values: Users }){
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.users.view', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <Link href={show(user.id)}>View</Link>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.users.update', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <Link href={edit(user.id)}>Edit</Link>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.users.update_password', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <ConfirmDialog
                                                     triggerText="Reset"
                                                     title="Do want to reset user account password?"
@@ -148,7 +150,7 @@ export default function Index({ values }: { values: Users }){
                                                     variant="ghost"
                                                 />
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.users.update_status', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <ConfirmDialog
                                                     triggerText={user.status == "active" ? "Deactivate" : "Activate"}
                                                     title="Do want to update user account status?"
@@ -160,7 +162,7 @@ export default function Index({ values }: { values: Users }){
                                                 />
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer text-red-500 ${can('portal.users.delete', permissions) ? 'block' : 'hidden'}`} asChild>
                                                  <ConfirmDialog
                                                     triggerText="Delete"
                                                     title="Do you want to delete this user account?"

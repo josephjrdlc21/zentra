@@ -3,6 +3,7 @@ import { Reports } from "@/types/portal/report";
 import { PageProps } from "@/types/props";
 import { index, export_report } from "@/routes/portal/reports";
 import { boardDate } from "@/lib/helper";
+import { can } from "@/lib/permission";
 
 import Main from "@/layouts/main";
 import PagePagination from "@/components/page-paginate";
@@ -16,7 +17,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Search, FunnelX, Download } from "lucide-react";
 
 export default function Index({ values }: { values: Reports }){
-    const { flash } = usePage<PageProps>().props;
+    const { flash, auth_portal } = usePage<PageProps>().props as any;
+    const permissions = auth_portal?.permissions ?? [];
 
     const form = useForm({keyword: values.keyword ?? '',});
     
@@ -56,7 +58,7 @@ export default function Index({ values }: { values: Reports }){
                             </Button>
                         </div>
                         <div className="flex flex-row gap-2">
-                            <Button variant="destructive" asChild>
+                            <Button variant="destructive" className={can('portal.reports.export', permissions) ? 'block' : 'hidden'} asChild>
                                 <a
                                     href={export_report.url({
                                         query: { keyword: form.data.keyword },

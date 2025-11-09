@@ -38,6 +38,7 @@ class InertiaServiceProvider extends ServiceProvider
                     'name' => $user->name,
                     'roles' => $user->roles->pluck('name', 'name'),
                     'avatar' => "{$user->directory}/{$user->filename}",
+                    'permissions' => $user->getAllPermissions()->pluck('name'),
                 ] : null;
             },
         ]);

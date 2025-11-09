@@ -3,6 +3,7 @@ import { Task } from "@/types/portal/task";
 import { board, edit, update_status } from "@/routes/portal/tasks";
 import { PageProps } from '@/types/props';
 import { statusBadgeClass, dateOnly, initialsFormat, textSpace, boardDate, titleCase } from "@/lib/helper";
+import { can } from "@/lib/permission";
 
 import Main from "@/layouts/main";
 import { Notification } from "@/components/notification";
@@ -16,7 +17,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Flag } from "lucide-react";
 
 export default function Show({ values }: { values: Task }){
-    const { flash } = usePage<PageProps>().props;
+    const { flash, auth_portal } = usePage<PageProps>().props as any;
+    const permissions = auth_portal?.permissions ?? [];
 
     const handleStatus = (id: number, status: string) => {
         const statuses = {
@@ -77,12 +79,12 @@ export default function Show({ values }: { values: Task }){
                     <Separator/>
 
                     <CardFooter className="flex flex-col md:flex-row justify-end gap-2">
-                        <Button variant={"secondary"} asChild>
+                        <Button variant={"secondary"} className={can('portal.tasks.board', permissions) ? 'block' : 'hidden'} asChild>
                             <Link href={board.url()}>
                                 Go To Boards
                             </Link>
                         </Button>
-                        <Button variant={"secondary"} asChild>
+                        <Button variant={"secondary"} className={can('portal.tasks.update', permissions) ? 'block' : 'hidden'} asChild>
                             <Link href={edit.url(values.tasks.id)}>
                                 Edit
                             </Link>
@@ -91,10 +93,10 @@ export default function Show({ values }: { values: Task }){
                             <DropdownMenuTrigger asChild>
                                 <Button variant="outline">
                                     <span className="sr-only">Open menu</span>
-                                    {titleCase(values.tasks.status)}
+                                    {titleCase(values.tasks.status) ?? "Disabled"}
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
+                            <DropdownMenuContent align="end" className={can('portal.tasks.update_status', permissions) ? 'block' : 'hidden'}>
                                 <DropdownMenuItem onClick={() => handleStatus(values.tasks.id, "pending")}>
                                     Pending
                                 </DropdownMenuItem>

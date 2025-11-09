@@ -6,6 +6,7 @@ import { PageProps } from "@/types/props";
 import { board, create, show, index, edit, deleteMethod } from "@/routes/portal/tasks";
 import { initialsFormat, statusPriority, boardDate } from "@/lib/helper";
 import { cn } from '@/lib/utils';
+import { can } from "@/lib/permission";
 
 import Main from "@/layouts/main";
 import { Notification } from "@/components/notification";
@@ -23,7 +24,8 @@ import { MoreHorizontal, Search, FunnelX, Plus, CircleDot, CircleEllipsis, Circl
 } from "lucide-react";
 
 export default function Board({ values }: { values: Boards }){
-    const { flash } = usePage<PageProps>().props;
+    const { flash, auth_portal } = usePage<PageProps>().props as any;
+    const permissions = auth_portal?.permissions ?? [];
     const { ref, inView } = useInView({});
 
     const [tasks, setTasks] = useState(values.record.data);
@@ -90,7 +92,7 @@ export default function Board({ values }: { values: Boards }){
                         </Button>
                     </div>
                     <div className="flex flex-row gap-2">
-                        <Button asChild>
+                        <Button asChild className={can('portal.tasks.create', permissions) ? 'block' : 'hidden'}>
                             <Link href={create.url()}>
                                 <Plus className="size-4"/>
                                 Add Task
@@ -128,14 +130,14 @@ export default function Board({ values }: { values: Boards }){
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.tasks.view', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <Link href={show(task.id)}>View</Link>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.tasks.update', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <Link href={edit(task.id)}>Edit</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer text-red-500 ${can('portal.tasks.delete', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <ConfirmDialog
                                                     triggerText="Delete"
                                                     title="Do you want to delete this task?"
@@ -203,14 +205,14 @@ export default function Board({ values }: { values: Boards }){
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.tasks.view', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <Link href={show(task.id)}>View</Link>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.tasks.update', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <Link href={edit(task.id)}>Edit</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer text-red-500 ${can('portal.tasks.delete', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <ConfirmDialog
                                                     triggerText="Delete"
                                                     title="Do you want to delete this task?"
@@ -278,14 +280,14 @@ export default function Board({ values }: { values: Boards }){
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.tasks.view', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <Link href={show(task.id)}>View</Link>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.tasks.update', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <Link href={edit(task.id)}>Edit</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer text-red-500 ${can('portal.tasks.delete', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <ConfirmDialog
                                                     triggerText="Delete"
                                                     title="Do you want to delete this task?"
@@ -353,14 +355,14 @@ export default function Board({ values }: { values: Boards }){
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.tasks.view', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <Link href={show(task.id)}>View</Link>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.tasks.update', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <Link href={edit(task.id)}>Edit</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer text-red-5-- ${can('portal.tasks.view', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <ConfirmDialog
                                                     triggerText="Delete"
                                                     title="Do you want to delete this task?"

@@ -1,7 +1,9 @@
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import { User } from "@/types/portal/user";
+import { PageProps } from "@/types/props";
 import { index, edit } from "@/routes/portal/users";
 import { statusBadgeClass, boardDate, titleCase, initialsFormat } from "@/lib/helper";
+import { can } from "@/lib/permission";
 
 import Main from "@/layouts/main";
 import { Separator } from "@/components/ui/separator";
@@ -11,6 +13,9 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 
 export default function Show({ values }: { values: User }){
+    const { auth_portal } = usePage<PageProps>().props as any;
+    const permissions = auth_portal?.permissions ?? [];
+
     return(
         <Main>
             <Head title={values.page_title}>
@@ -76,7 +81,7 @@ export default function Show({ values }: { values: User }){
                                 Go Back
                             </Link>
                         </Button>
-                        <Button variant={"secondary"} asChild>
+                        <Button variant={"secondary"} className={can('portal.users.update', permissions) ? 'block' : 'hidden'} asChild>
                             <Link href={edit(values.user.id)}>
                                 Edit
                             </Link>

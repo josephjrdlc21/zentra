@@ -3,6 +3,7 @@ import { PageProps } from "@/types/props";
 import { index, create, edit } from "@/routes/portal/roles";
 import { Roles } from "@/types/portal/role";
 import { boardDate } from "@/lib/helper";
+import { can } from "@/lib/permission";
 
 import Main from "@/layouts/main";
 import PagePagination from "@/components/page-paginate";
@@ -17,7 +18,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { MoreHorizontal, Search, FunnelX, Plus } from "lucide-react";
 
 export default function Index({ values }: { values: Roles }){
-    const { flash } = usePage<PageProps>().props;
+    const { flash, auth_portal } = usePage<PageProps>().props as any;
+    const permissions = auth_portal?.permissions ?? [];
         
     const form = useForm({keyword: values.keyword ?? '',});
 
@@ -57,7 +59,7 @@ export default function Index({ values }: { values: Roles }){
                             </Button>
                         </div>
                         <div className="flex flex-row gap-2">
-                            <Button asChild>
+                            <Button className={can('portal.roles.create', permissions) ? 'block' : 'hidden'} asChild>
                                 <Link href={create.url()}>
                                     <Plus className="size-4"/>
                                     Add Role
@@ -97,7 +99,7 @@ export default function Index({ values }: { values: Roles }){
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.roles.update', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <Link href={edit(role.id)}>Edit</Link>
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>

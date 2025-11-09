@@ -1,7 +1,9 @@
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import { Project } from "@/types/portal/project";
+import { PageProps } from "@/types/props";
 import { index, edit } from "@/routes/portal/projects";
 import { statusBadgeClass, dateOnly, initialsFormat, boardDate } from "@/lib/helper";
+import { can } from "@/lib/permission";
 
 import Main from "@/layouts/main";
 import { Separator } from "@/components/ui/separator";
@@ -12,6 +14,8 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 
 export default function Show({ values }: { values: Project }){
+    const { flash, auth_portal } = usePage<PageProps>().props as any;
+    const permissions = auth_portal?.permissions ?? [];
 
     return(
         <Main>
@@ -111,7 +115,7 @@ export default function Show({ values }: { values: Project }){
                                 Go Back
                             </Link>
                         </Button>
-                        <Button variant={"secondary"} asChild>
+                        <Button variant={"secondary"} className={can('portal.projects.update', permissions) ? 'block' : 'hidden'} asChild>
                             <Link href={edit.url(values.project.id)}>
                                 Edit
                             </Link>

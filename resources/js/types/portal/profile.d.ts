@@ -18,6 +18,10 @@ export interface Profile extends Title {
             id: number;
             name: string;
         }[];
+        permissions: {
+            id: number;
+            name: string;
+        }[];
     },
     password: string;
     current_password: string;

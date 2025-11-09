@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { usePage } from "@inertiajs/react";
+import { can, canAny } from "@/lib/permission";
 
 import {
     Sidebar,
@@ -41,72 +43,84 @@ const data = {
         {
             title: 'Navigation',
             url: '#',
+            permissions: null,
             items: [
                 {
                     title: 'Dashboard',
                     url: dashboard.url(),
                     icon: <LayoutDashboard className="size-4" />,
                     isActive: location.pathname === dashboard.url(),
+                    permission: '',
                 },
                 {
                     title: 'Team Members',
                     url: users.url(),
                     icon: <Users className="size-4" />,
                     isActive: location.pathname === users.url(),
+                    permission: 'portal.users.index',
                 },
                 {
                     title: 'Projects',
                     url: projects.url(),
                     icon: <PanelsTopLeft className="size-4" />,
                     isActive: location.pathname === projects.url(),
+                    permission: 'portal.projects.index',
                 },
                 {
                     title: 'Reports',
                     url: reports.url(),
                     icon: <FileChartColumnIncreasing className="size-4" />,
                     isActive: location.pathname === reports.url(),
+                    permission: 'portal.reports.index',
                 },
                 {
                     title: 'Activity Logs',
                     url: audit.url(),
                     icon: <Logs className="size-4" />,
                     isActive: location.pathname === audit.url(),
+                    permission: 'portal.activity_logs.index',
                 },
             ],
         },
         {
             title: 'Task Management',
             url: '#',
+            permissions: ['portal.tasks.index', 'portal.boards.index'],
             items: [
                 {
                     title: 'Tasks',
                     url: tasks.url(),
                     icon: <ListTodo className="size-4" />,
                     isActive: location.pathname === tasks.url(),
+                    permission: 'portal.tasks.index',
                 },
                 {
                     title: 'Boards',
                     url: boards.url(),
                     icon: <SquareMinus className="size-4" />,
                     isActive: location.pathname === boards.url(),
+                    permission: 'portal.boards.index',
                 },
             ]
         },
         {
             title: 'Settings',
             url: '#',
+            permissions: ['portal.roles.index', 'portal.permissions.index'],
             items: [
                 {
                     title: 'Roles',
                     url: roles.url(),
                     icon: <UserCog className="size-4" />,
                     isActive: location.pathname === roles.url(),
+                    permission: 'portal.roles.index',
                 },
                 {
                     title: 'Permissions',
                     url: permissions.url(),
                     icon: <BrickWallShield className="size-4" />,
                     isActive: location.pathname === permissions.url(),
+                    permission: 'portal.permissions.index',
                 },
             ]
         },
@@ -114,6 +128,9 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const { auth_portal } = usePage().props as any;
+    const permissions = auth_portal?.permissions ?? [];
+
     return (
         <Sidebar {...props}>
             <SidebarHeader>
@@ -122,12 +139,30 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarContent>
                 {/* We create a SidebarGroup for each parent. */}
                 {data.navMain.map((item) => (
-                    <SidebarGroup key={item.title}>
+                    <SidebarGroup 
+                        key={item.title}
+                        className={
+                            item.permissions == null
+                            ? "block"
+                            : Array.isArray(item.permissions) && item.permissions.length > 0
+                                ? (canAny(item.permissions, permissions) ? "block" : "hidden")
+                                : "hidden"
+                        }
+                    >
                         <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
                         <SidebarGroupContent>
                             <SidebarMenu>
                                 {item.items.map((item) => (
-                                    <SidebarMenuItem key={item.title}>
+                                    <SidebarMenuItem
+                                        key={item.title}
+                                        className={
+                                            !item.permission || item.permission === ""
+                                            ? "block"
+                                            : can(item.permission, permissions)
+                                                ? "block"
+                                                : "hidden"
+                                        }
+                                    >
                                         <SidebarMenuButton asChild isActive={item.isActive}>
                                             <a href={item.url} className="flex items-center gap-4">
                                                 {item.icon}

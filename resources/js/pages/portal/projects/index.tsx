@@ -3,6 +3,7 @@ import { Projects } from "@/types/portal/project";
 import { PageProps } from "@/types/props";
 import { index, create, edit, show, deleteMethod } from "@/routes/portal/projects";
 import { statusBadgeClass, dateOnly, initialsFormat } from "@/lib/helper";
+import { can } from "@/lib/permission";
 
 import Main from "@/layouts/main";
 import PagePagination from "@/components/page-paginate";
@@ -20,7 +21,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { MoreHorizontal, Search, FunnelX, Plus } from "lucide-react";
 
 export default function Index({ values }: { values: Projects }){
-    const { flash } = usePage<PageProps>().props;
+    const { flash, auth_portal } = usePage<PageProps>().props as any;
+    const permissions = auth_portal?.permissions ?? [];
     
     const form = useForm({keyword: values.keyword ?? '',});
 
@@ -64,7 +66,7 @@ export default function Index({ values }: { values: Projects }){
                             </Button>
                         </div>
                         <div className="flex flex-row gap-2">
-                            <Button asChild>
+                            <Button asChild className={can('portal.projects.create', permissions) ? 'block' : 'hidden'}>
                                 <Link href={create.url()}>
                                     <Plus className="size-4"/>
                                     Add Project
@@ -141,14 +143,14 @@ export default function Index({ values }: { values: Projects }){
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.projects.view', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <Link href={show(project.id)}>View</Link>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.projects.update', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <Link href={edit(project.id)}>Edit</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuItem className="cursor-pointer text-red-500" asChild>
+                                            <DropdownMenuItem className={`cursor-pointer text-red-500 ${can('portal.projects.delete', permissions) ? 'block' : 'hidden'}`} asChild>
                                                 <ConfirmDialog
                                                     triggerText="Delete"
                                                     title="Do you want to delete this project?"

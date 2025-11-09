@@ -12,6 +12,14 @@ import { PageProps } from '@/types/props';
 import { useForm, usePage } from '@inertiajs/react';
 import { register } from '@/routes/portal/auth';
 
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+
 export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
     const { flash } = usePage<PageProps>().props;
 
@@ -95,7 +103,54 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                 </CardContent>
             </Card>
             <div className="text-center text-xs text-balance text-muted-foreground *:[a]:underline *:[a]:underline-offset-4 *:[a]:hover:text-primary">
-                By clicking continue, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+                By clicking continue, you agree to our{" "}
+                {/* Terms of Service */}
+                <Dialog>
+                    <DialogTrigger asChild>
+                    <button className="underline text-primary cursor-pointer px-1">
+                        Terms of Service
+                    </button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-lg">
+                    <DialogHeader>
+                        <DialogTitle>Terms of Service</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-3 text-sm">
+                        <p>This project is a personal, non-commercial application created for learning and demonstration purposes.</p>
+                        <ul className="list-disc pl-4 space-y-1">
+                        <li>The owner may change or remove features at any time without notice.</li>
+                        <li>All user accounts and stored data can be deleted by the owner at any time.</li>
+                        <li>You are responsible for the accuracy of any information you provide.</li>
+                        <li>The application is provided “as is” without warranties of any kind.</li>
+                        </ul>
+                        <p>If you do not agree, please discontinue using the application.</p>
+                    </div>
+                    </DialogContent>
+                </Dialog>
+                {" and "}
+                {/* Privacy Policy */}
+                <Dialog>
+                    <DialogTrigger asChild>
+                    <button className="underline text-primary cursor-pointer px-1">
+                        Privacy Policy
+                    </button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-lg">
+                    <DialogHeader>
+                        <DialogTitle>Privacy Policy</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-3 text-sm">
+                        <p>This is a personal project and does not commercially process or sell user data.</p>
+                        <ul className="list-disc pl-4 space-y-1">
+                        <li>The application may store any information you provide (e.g., name, email, account data).</li>
+                        <li>Your data may be deleted by the owner at any time, especially during updates or resets.</li>
+                        <li>No information is shared with third-party services except those required for basic functionality.</li>
+                        <li>You may request data deletion at any time.</li>
+                        </ul>
+                        <p>Using this application means you agree to this Privacy Policy.</p>
+                    </div>
+                    </DialogContent>
+                </Dialog>
             </div>
         </div>
     );
