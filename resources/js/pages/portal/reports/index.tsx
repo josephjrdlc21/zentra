@@ -58,7 +58,7 @@ export default function Index({ values }: { values: Reports }){
                             </Button>
                         </div>
                         <div className="flex flex-row gap-2">
-                            <Button variant="destructive" className={can('portal.reports.export', permissions) ? 'block' : 'hidden'} asChild>
+                            <Button variant="destructive" className={can('portal.reports.export', permissions) ? '' : 'hidden'} asChild>
                                 <a
                                     href={export_report.url({
                                         query: { keyword: form.data.keyword },

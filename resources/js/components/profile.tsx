@@ -42,11 +42,9 @@ export default function Profile(){
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>
                         {auth_portal.name} <br/>
-                        <small>
-                            {auth_portal.roles.length > 0
-                            ? auth_portal.roles.map((role: { name: string }) => role.name).join(',')
-                            : 'no roles'}
-                        </small>
+                        {auth_portal.roles && Object.values(auth_portal.roles).length > 0
+                        ? Object.values(auth_portal.roles).join(', ')
+                        : 'no roles'}
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>

@@ -18,6 +18,7 @@ class MemberSeeder extends Seeder
         $role = UserRole::where('name', 'member')->first();
         $role->givePermissionTo([
             'portal.users.index', 'portal.users.view',
+            'portal.projects.index', 'portal.projects.view',
             'portal.tasks.index', 'portal.tasks.create', 'portal.tasks.update', 'portal.tasks.view', 'portal.tasks.update_status', 'portal.tasks.board', 'portal.tasks.delete',
         ]);
     }

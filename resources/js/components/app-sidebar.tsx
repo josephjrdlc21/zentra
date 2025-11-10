@@ -85,7 +85,7 @@ const data = {
         {
             title: 'Task Management',
             url: '#',
-            permissions: ['portal.tasks.index', 'portal.boards.index'],
+            permissions: ['portal.tasks.index', 'portal.tasks.board'],
             items: [
                 {
                     title: 'Tasks',
@@ -99,7 +99,7 @@ const data = {
                     url: boards.url(),
                     icon: <SquareMinus className="size-4" />,
                     isActive: location.pathname === boards.url(),
-                    permission: 'portal.boards.index',
+                    permission: 'portal.tasks.board',
                 },
             ]
         },

@@ -59,7 +59,7 @@ export default function Index({ values }: { values: Roles }){
                             </Button>
                         </div>
                         <div className="flex flex-row gap-2">
-                            <Button className={can('portal.roles.create', permissions) ? 'block' : 'hidden'} asChild>
+                            <Button className={can('portal.roles.create', permissions) ? '' : 'hidden'} asChild>
                                 <Link href={create.url()}>
                                     <Plus className="size-4"/>
                                     Add Role
@@ -99,7 +99,7 @@ export default function Index({ values }: { values: Roles }){
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.roles.update', permissions) ? 'block' : 'hidden'}`} asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.roles.update', permissions) ? '' : 'hidden'}`} asChild>
                                                 <Link href={edit(role.id)}>Edit</Link>
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>

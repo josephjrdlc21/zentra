@@ -79,12 +79,12 @@ export default function Show({ values }: { values: Task }){
                     <Separator/>
 
                     <CardFooter className="flex flex-col md:flex-row justify-end gap-2">
-                        <Button variant={"secondary"} className={can('portal.tasks.board', permissions) ? 'block' : 'hidden'} asChild>
+                        <Button variant={"secondary"} className={can('portal.tasks.board', permissions) ? '' : 'hidden'} asChild>
                             <Link href={board.url()}>
                                 Go To Boards
                             </Link>
                         </Button>
-                        <Button variant={"secondary"} className={can('portal.tasks.update', permissions) ? 'block' : 'hidden'} asChild>
+                        <Button variant={"secondary"} className={can('portal.tasks.update', permissions) ? '' : 'hidden'} asChild>
                             <Link href={edit.url(values.tasks.id)}>
                                 Edit
                             </Link>
@@ -96,7 +96,7 @@ export default function Show({ values }: { values: Task }){
                                     {titleCase(values.tasks.status) ?? "Disabled"}
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className={can('portal.tasks.update_status', permissions) ? 'block' : 'hidden'}>
+                            <DropdownMenuContent align="end" className={can('portal.tasks.update_status', permissions) ? '' : 'hidden'}>
                                 <DropdownMenuItem onClick={() => handleStatus(values.tasks.id, "pending")}>
                                     Pending
                                 </DropdownMenuItem>

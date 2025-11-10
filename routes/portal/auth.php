@@ -1,10 +1,14 @@
 <?php
 
 use App\Http\Controllers\Portal\AuthController;
+use App\Http\Controllers\Portal\SocialiteController;
 use Illuminate\Support\Facades\Route; 
 
 Route::name('auth.')->group(function () {
     Route::middleware('portal.guest')->group(function () {
+        Route::get('/google-login', [SocialiteController::class, 'google_login'])->name('google_login');
+        Route::get('/google-callback', [SocialiteController::class, 'google_callback'])->name('google_callback');
+
         Route::get('/login', [AuthController::class, 'login'])->name('login');
         Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
         Route::get('/register', [AuthController::class, 'register'])->name('register');

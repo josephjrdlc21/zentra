@@ -74,7 +74,7 @@ export default function Index({ values }: { values: Users }){
                             </Button>
                         </div>
                         <div className="flex flex-row gap-2">
-                            <Button asChild className={can('portal.users.create', permissions) ? 'block' : 'hidden'}>
+                            <Button asChild className={can('portal.users.create', permissions) ? '' : 'hidden'}>
                                 <Link href={create.url()}>
                                     <Plus className="size-4"/>
                                     Add Member
@@ -133,13 +133,13 @@ export default function Index({ values }: { values: Users }){
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.users.view', permissions) ? 'block' : 'hidden'}`} asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.users.view', permissions) ? '' : 'hidden'}`} asChild>
                                                 <Link href={show(user.id)}>View</Link>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.users.update', permissions) ? 'block' : 'hidden'}`} asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.users.update', permissions) ? '' : 'hidden'}`} asChild>
                                                 <Link href={edit(user.id)}>Edit</Link>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.users.update_password', permissions) ? 'block' : 'hidden'}`} asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.users.update_password', permissions) ? '' : 'hidden'}`} asChild>
                                                 <ConfirmDialog
                                                     triggerText="Reset"
                                                     title="Do want to reset user account password?"
@@ -150,7 +150,7 @@ export default function Index({ values }: { values: Users }){
                                                     variant="ghost"
                                                 />
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.users.update_status', permissions) ? 'block' : 'hidden'}`} asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.users.update_status', permissions) ? '' : 'hidden'}`} asChild>
                                                 <ConfirmDialog
                                                     triggerText={user.status == "active" ? "Deactivate" : "Activate"}
                                                     title="Do want to update user account status?"
@@ -162,7 +162,7 @@ export default function Index({ values }: { values: Users }){
                                                 />
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuItem className={`cursor-pointer text-red-500 ${can('portal.users.delete', permissions) ? 'block' : 'hidden'}`} asChild>
+                                            <DropdownMenuItem className={`cursor-pointer text-red-500 ${can('portal.users.delete', permissions) ? '' : 'hidden'}`} asChild>
                                                  <ConfirmDialog
                                                     triggerText="Delete"
                                                     title="Do you want to delete this user account?"

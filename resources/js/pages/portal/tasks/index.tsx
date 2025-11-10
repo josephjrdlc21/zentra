@@ -66,7 +66,7 @@ export default function Index({ values }: { values: Tasks }){
                             </Button>
                         </div>
                         <div className="flex flex-row gap-2">
-                            <Button asChild className={can('portal.tasks.create', permissions) ? 'block' : 'hidden'}>
+                            <Button asChild className={can('portal.tasks.create', permissions) ? '' : 'hidden'}>
                                 <Link href={create.url()}>
                                     <Plus className="size-4"/>
                                     Add Task
@@ -124,14 +124,14 @@ export default function Index({ values }: { values: Tasks }){
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.tasks.view', permissions) ? 'block' : 'hidden'}`} asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.tasks.view', permissions) ? '' : 'hidden'}`} asChild>
                                                 <Link href={show(task.id)}>View</Link>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.tasks.update', permissions) ? 'block' : 'hidden'}`} asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.tasks.update', permissions) ? '' : 'hidden'}`} asChild>
                                                 <Link href={edit(task.id)}>Edit</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuItem className={`cursor-pointer text-red-500 ${can('portal.tasks.delete', permissions) ? 'block' : 'hidden'}`} asChild>
+                                            <DropdownMenuItem className={`cursor-pointer text-red-500 ${can('portal.tasks.delete', permissions) ? '' : 'hidden'}`} asChild>
                                                 <ConfirmDialog
                                                     triggerText="Delete"
                                                     title="Do you want to delete this task?"

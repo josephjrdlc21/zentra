@@ -115,7 +115,7 @@ export default function Show({ values }: { values: Project }){
                                 Go Back
                             </Link>
                         </Button>
-                        <Button variant={"secondary"} className={can('portal.projects.update', permissions) ? 'block' : 'hidden'} asChild>
+                        <Button variant={"secondary"} className={can('portal.projects.update', permissions) ? '' : 'hidden'} asChild>
                             <Link href={edit.url(values.project.id)}>
                                 Edit
                             </Link>

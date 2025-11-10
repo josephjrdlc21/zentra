@@ -66,7 +66,7 @@ export default function Index({ values }: { values: Projects }){
                             </Button>
                         </div>
                         <div className="flex flex-row gap-2">
-                            <Button asChild className={can('portal.projects.create', permissions) ? 'block' : 'hidden'}>
+                            <Button asChild className={can('portal.projects.create', permissions) ? '' : 'hidden'}>
                                 <Link href={create.url()}>
                                     <Plus className="size-4"/>
                                     Add Project
@@ -143,14 +143,14 @@ export default function Index({ values }: { values: Projects }){
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.projects.view', permissions) ? 'block' : 'hidden'}`} asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.projects.view', permissions) ? '' : 'hidden'}`} asChild>
                                                 <Link href={show(project.id)}>View</Link>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.projects.update', permissions) ? 'block' : 'hidden'}`} asChild>
+                                            <DropdownMenuItem className={`cursor-pointer ${can('portal.projects.update', permissions) ? '' : 'hidden'}`} asChild>
                                                 <Link href={edit(project.id)}>Edit</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuItem className={`cursor-pointer text-red-500 ${can('portal.projects.delete', permissions) ? 'block' : 'hidden'}`} asChild>
+                                            <DropdownMenuItem className={`cursor-pointer text-red-500 ${can('portal.projects.delete', permissions) ? '' : 'hidden'}`} asChild>
                                                 <ConfirmDialog
                                                     triggerText="Delete"
                                                     title="Do you want to delete this project?"
