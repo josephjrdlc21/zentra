@@ -22,6 +22,7 @@ class AdminAccountSeeder extends Seeder
             $account->name = "Super Admin";
             $account->status = "active";
             $account->email = "admin@gmail.com";
+            $account->email_verified_at = Carbon\Carbon::now();
             $account->password = bcrypt("admin");
             $account->save();
 
