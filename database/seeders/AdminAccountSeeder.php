@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 use App\Models\User;
 use App\Models\UserRole;
@@ -22,7 +23,7 @@ class AdminAccountSeeder extends Seeder
             $account->name = "Super Admin";
             $account->status = "active";
             $account->email = "admin@gmail.com";
-            $account->email_verified_at = Carbon\Carbon::now();
+            $account->email_verified_at = Carbon::now();
             $account->password = bcrypt("admin");
             $account->save();
 
