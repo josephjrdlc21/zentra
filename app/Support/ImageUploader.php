@@ -180,7 +180,7 @@ class ImageUploader {
 
             case 'aws':
                 $thumbnail = ['height' => 250, 'width' => 250];
-                $ph_directoryat = $image_directory;
+                $path_directory = $image_directory;
                 $resized_directory = $image_directory."/resized";
                 $thumb_directory = $image_directory."/thumbnails";
 
