@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
 use Intervention\Image\Image;
+use Illuminate\Support\Facades\Storage;
 use App\Support\Helper;
 
 class FileUploader {

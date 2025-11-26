@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use App\Support\Helper;
 
 class ImageUploader {
@@ -179,7 +180,7 @@ class ImageUploader {
 
             case 'aws':
                 $thumbnail = ['height' => 250, 'width' => 250];
-                $path_directory = $image_directory;
+                $ph_directoryat = $image_directory;
                 $resized_directory = $image_directory."/resized";
                 $thumb_directory = $image_directory."/thumbnails";
 
