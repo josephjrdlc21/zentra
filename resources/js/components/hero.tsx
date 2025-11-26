@@ -23,7 +23,7 @@ const actions = [
 
 export default function Hero(){
     return(
-        <div className="container px-4 md:px-6">
+        <div className="container mx-auto px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]">
                 <motion.div 
                     initial={{ opacity: 0, x: -50 }}

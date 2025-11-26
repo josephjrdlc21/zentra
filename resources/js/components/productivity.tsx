@@ -3,7 +3,7 @@ import { login, register } from "@/routes/portal/auth";
 
 export default function Productivity(){
     return(
-        <div className="container px-4 md:px-6 text-center">
+        <div className="container mx-auto px-4 md:px-6 text-center">
             <div className="mx-auto flex max-w-3xl flex-col items-center justify-center space-y-4">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
