@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
 import { Head, Link, usePage, useForm, router } from "@inertiajs/react";
-import { useInView } from "react-intersection-observer";
 import { Boards } from "@/types/portal/task";
 import { PageProps } from "@/types/props";
 import { board, create, show, index, edit, deleteMethod } from "@/routes/portal/tasks";
@@ -26,11 +24,9 @@ import { MoreHorizontal, Search, FunnelX, Plus, CircleDot, CircleEllipsis, Circl
 export default function Board({ values }: { values: Boards }){
     const { flash, auth_portal } = usePage<PageProps>().props as any;
     const permissions = auth_portal?.permissions ?? [];
-    const { ref, inView } = useInView({});
 
-    const [tasks, setTasks] = useState(values.record.data);
-    const [page, setPage] = useState(1);
-    
+    const tasks = values.record;
+
     const form = useForm({keyword: values.keyword ?? '',});
 
     const handleFilter = (e: React.FormEvent) => {
@@ -42,26 +38,6 @@ export default function Board({ values }: { values: Boards }){
     const handleDelete = (id: number) => {
         router.delete(deleteMethod.url(id));
     }
-
-    useEffect(() => {
-        if (inView && page <= 5) {
-            const nextPage = page === 5 ? page : page + 1;
-            
-            router.reload({
-                data: { page: nextPage, keyword: form.data.keyword},
-                onSuccess: (response: any) => {
-                    setTasks((prev) => {
-                        const all = [...prev, ...response.props.values.record.data];
-                        const unique = all.filter(
-                            (task, index, self) => index === self.findIndex((t) => t.id === task.id)
-                        );
-                        return unique;
-                    });
-                    setPage(nextPage);
-                },
-            });
-        }
-    }, [inView])
 
     return(
         <Main>
@@ -407,24 +383,14 @@ export default function Board({ values }: { values: Boards }){
                     ))}
                 </div>  
             </div>
-            {page < 5 && values.keyword === '' && (
-                <div className="flex items-center justify-center mt-5">
-                    <div
-                    ref={ref}
-                    className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-500 dark:border-gray-200"
-                    ></div>
-                </div>
-            )}
-
-            {(page > 4 || values.keyword !== '') && (
-                <div className="flex items-center justify-center mt-5">
-                    <Button variant="secondary" asChild>
-                        <Link href={index.url()}>
-                            <Search className="size-4" /> See More Old Works...
-                        </Link>
-                    </Button>
-                </div>
-            )}
+            
+            <div className="flex items-center justify-center mt-5">
+                <Button variant="secondary" asChild>
+                    <Link href={index.url()}>
+                        <Search className="size-4" /> See More Old Works...
+                    </Link>
+                </Button>
+            </div>  
         </Main>
     );
 }
